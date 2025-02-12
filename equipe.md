@@ -32,17 +32,23 @@ Tecnologias: PHP, Java, MySQL/MariaDB, TailwindCSS
 ### Mateus dos Santos
 
 ```bash
-(Detalhar áreas e interesses)
+Área: Desenvolvedor Fullstack
+
+Tecnologia: Java, C++, MySQL/MariaDB
 ```
 
 ### Luis Fabiano dos Santos Junior
 
 ```bash
-(Detalhar áreas e interesses)
+Área: Desenvolvedor Backend
+
+Tecnologia: Java, C#, Python
 ```
 
 ### Davi Pereira Batista
 
 ```bash
-(Detalhar áreas e interesses)
+Área: Analista de Sistemas
+
+Tecnologia: Pacote office , Astah
 ```
