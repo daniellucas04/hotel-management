@@ -9,7 +9,7 @@
 
 | Na semana | Fim de semana | Total   |
 |-----------|---------------|---------|
-| 3 horas   | 4 horas       | 7 horas |
+| 3 horas   | 2 horas       | 7 horas |
 
 > Todos os membros terão a mesma quantidade de horas semanais
 
