@@ -52,3 +52,11 @@ Tecnologia: Java, C#, Python
 
 Tecnologia: Pacote office , Astah
 ```
+
+### Vinícius Andrade Vezono
+
+```bash
+Área: Desenvolvedor web Fullstack
+
+Tecnologia: React, Node, AWS, TypeScript, PHP, MongoDb, Mysql/MariaDb e TailwindCSS
+```
