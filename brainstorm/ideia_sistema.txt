@@ -1,0 +1,25 @@
+			HOTEL ???
+
+	Info 1
+-Controle de ocupação
+
+-Dia de entrada/saida
+
+-Quarto destinado
+
+-LEI DA PROTEÇÃO DE DADOS
+	-Placa da carro
+	-entre outros informaçoes
+
+-Sistema de compras
+
+-Telas de:
+	-Relatorio de pagamento dinheiro/cartão
+	-% de ocupação do quartos
+	-Preço de diaria média
+
+	Info 2
+-Sistema integrado na rede por nuvem
+-Cada rede hotelereia usa o proprio ou algum sistema que raramente sera vistos outros usaraem
+-O sistema de referencia teve preferencia por poder conduzir vendas automaticamente
+

@@ -3,6 +3,7 @@
 - Líder: Daniel Lucas da Silva
 - Desenvolvedor: Mateus dos Santos
 - Desenvolvedor: Luis Fabiano dos Santos Junior
+- Desenvolvedor: Vinícius Andrade Vezono
 - Analista: Davi Pereira Batista
 
 ### Horas
