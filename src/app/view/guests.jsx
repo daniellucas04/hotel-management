@@ -5,7 +5,7 @@ import { Badge, Table } from "flowbite-react";
 export default function Guests() {
   return (
     <section className="overflow-x-auto m-10">
-      <h1 className="text-2xl mb-4">All guests</h1>
+      <h1 className="text-2xl mb-4">Todos os hóspedes</h1>
       <Table striped>
         <Table.Head>
           <Table.HeadCell>Nome</Table.HeadCell>
