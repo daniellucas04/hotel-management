@@ -13,7 +13,7 @@ export default function Guests() {
           <Table.HeadCell>Tipo de hospedagem</Table.HeadCell>
           <Table.HeadCell>Quarto</Table.HeadCell>
           <Table.HeadCell>
-            <span className="sr-only">Edit</span>
+            <span className="sr-only">Editar</span>
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -34,7 +34,7 @@ export default function Guests() {
                 href="#"
                 className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
               >
-                Edit
+                Editar
               </a>
             </Table.Cell>
           </Table.Row>
@@ -55,7 +55,7 @@ export default function Guests() {
                 href="#"
                 className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
               >
-                Edit
+                Editar
               </a>
             </Table.Cell>
           </Table.Row>
@@ -76,7 +76,7 @@ export default function Guests() {
                 href="#"
                 className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
               >
-                Edit
+                Editar
               </a>
             </Table.Cell>
           </Table.Row>
