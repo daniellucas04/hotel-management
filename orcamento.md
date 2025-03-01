@@ -22,8 +22,20 @@ Local onde o software será hospedado (conforme necessidades do cliente):
 
 ### Esboço de telas
 
+- Em desenvolvimento
+
 ### Quantidade de horas investidas pela equipe
+
+- Semanal: 7h
+- Mensal: 28h
+- Total de 6 meses: 168h
+
+Cada membro da equipe trabalhará 168h totais neste projeto
 
 ### Prazo de entrega
 
+O projeto completo será entregue na data 17/06/2025
+
 ### Custo ao cliente
+
+O cliente pagará R$ 30.000 no sistema completo
