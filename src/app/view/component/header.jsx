@@ -4,25 +4,23 @@ import { Button, Navbar } from "flowbite-react";
 
 export default function Header() {
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className="border-b border-b-gray-200">
       <Navbar.Brand href="/">
-      {/* LOGO DO CLIENTE */}
         <img
           src="https://placehold.co/400x400"
           className="mr-3 h-6 sm:h-9"
           alt="hotel logo"
         />
-        {/* NOME DO CLIENTE */}
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Hotel name
-        </span>
+        <span className="font-bold">Hotel name</span>
       </Navbar.Brand>
-      {/* NOME DO FUNCIONÁRIO */}
       <div className="flex md:order-2">
-        <img src="https://placehold.co/400x400" className="rounded-full h-14" alt="" />
+        <img
+          src="https://placehold.co/400x400"
+          className="rounded-full h-14"
+          alt=""
+        />
         <Navbar.Toggle />
       </div>
-      {/* ITENS DO MENU */}
       <Navbar.Collapse>
         <Navbar.Link href="#" active>
           Dashboard

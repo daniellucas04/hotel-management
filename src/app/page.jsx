@@ -5,7 +5,7 @@ import Dashboard from "./view/dashboard";
 export default function Home() {
 	return (
 		<Flowbite>
-			<main>
+			<main className="h-screen">
 				<Header />
 				<Dashboard />
 			</main>
