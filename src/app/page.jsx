@@ -1,16 +1,13 @@
 import { Flowbite } from "flowbite-react";
-import Header from "./view/component/header";
-import Dashboard from "./view/dashboard";
-import Guests from "./view/guests";
-import Bedrooms from "./view/bedrooms";
+import Header from "./component/header";
+import Dashboard from "./dashboard/page";
 
 export default function Home() {
-	return (
-		<Flowbite>
-			<main className="h-screen">
-				<Header activePage={"bedrooms"} />
-				<Bedrooms />
-			</main>
-		</Flowbite>
-	)
+  return (
+    <Flowbite>
+      <main className="h-screen">
+		<Dashboard />
+      </main>
+    </Flowbite>
+  );
 }
