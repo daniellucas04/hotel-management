@@ -3,9 +3,13 @@
 ### Dados do cliente
 
 Nome: José Ribeiro
+
 CPF: 123.129.989-23
+
 Endereço: Rua do seu João, 559 - Barretos - SP
+
 Telefone: (17) 9999-9999
+
 E-mail: joseribeiro_1999@gmail.com
 
 ### Arquitetura do sistema
