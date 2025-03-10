@@ -1,18 +1,37 @@
 import Header from "@/app/component/header";
-import { Card } from "flowbite-react";
+import { Button, Card, Select, Textarea, TextInput } from "flowbite-react";
 
-export default function ProductDetails() {
+export default function ProductsDetails() {
   return (
     <>
       <Header />
       <section className="h-full m-10">
-        <Card>
-          <div className="flex items-center gap-4">
-            <img
-              src="https://placehold.co/40x40"
-              className="max-w-20 max-h-2max-w-20 rounded-full"
-            />
-            <span className="text-lg font-medium">Tipo de pedido</span>
+        <Card className="p-4">
+          <div className="text-lg font-medium flex justify-center">
+            <h1>Produto / Serviços</h1>
+          </div>
+          <div>
+            <form className="flex flex-col gap-8">
+              <div>
+                <Select>
+                  <option value="">Produto</option>
+                  <option value="">Serviço</option>
+                </Select>
+              </div>
+              <div>
+                <TextInput placeholder="Responsável" />
+              </div>
+              <div>
+                <Textarea
+                  placeholder="Mais informações do produto / serviço"
+                  rows={4}
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button color="light">Cancelar</Button>
+                <Button color="blue">Cadastrar</Button>
+              </div>
+            </form>
           </div>
         </Card>
       </section>
