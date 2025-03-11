@@ -75,6 +75,7 @@ E-mail: joseribeiro_1999@gmail.com
 Valor a pagar: R$ 30.000,00
 
 Formas de pagamento: Cartão de crédito ou débito, PIX, boleto e carnê.
+
 Parcelamento: em até 12x sem juros.
 
 ### Prazo da entrega
