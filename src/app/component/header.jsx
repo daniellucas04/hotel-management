@@ -26,7 +26,8 @@ export default function Header() {
       </div>
       <Navbar.Collapse>
         <Navbar.Link href="/" active={(pathName.includes('dashboard') || pathName == '/') ? true : false}>Dashboard</Navbar.Link>
-        <Navbar.Link href="/guests" active={(pathName.includes('guests')) ? true : false}>Hospedes</Navbar.Link>
+        <Navbar.Link href="/employee" active={(pathName.includes('employee')) ? true : false}>Funcionários</Navbar.Link>
+        <Navbar.Link href="/guests" active={(pathName.includes('guests')) ? true : false}>Hóspedes</Navbar.Link>
         <Navbar.Link href="/bedrooms" active={(pathName.includes('bedrooms')) ? true : false}>Quartos</Navbar.Link>
         <Navbar.Link href="/products" active={(pathName.includes('products')) ? true : false}>Produtos / Serviços</Navbar.Link>
         <Navbar.Link href="/reports" active={(pathName.includes('reports')) ? true : false}>Relatórios</Navbar.Link>
