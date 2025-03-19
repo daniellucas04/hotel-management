@@ -6,14 +6,16 @@ import {
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
   HiOutlineCollection,
+  HiOutlineHashtag,
   HiOutlineIdentification,
   HiOutlineKey,
   HiOutlineLogin,
   HiOutlineMail,
+  HiOutlineOfficeBuilding,
   HiOutlinePhone,
   HiOutlineViewGrid,
 } from "react-icons/hi";
-import { Button, Card, FileInput, HR, Label, TextInput } from "flowbite-react";
+import { Button, Card, Checkbox, FileInput, HR, Label, TextInput } from "flowbite-react";
 
 export default function CreateUser() {
   return (
@@ -29,59 +31,46 @@ export default function CreateUser() {
             <div className="flex gap-4">
               <TextInput
                 className="flex-auto"
-                icon={HiOutlineBadgeCheck}
-                placeholder="Nome *"
+                icon={HiOutlineOfficeBuilding}
+                placeholder="Número *"
                 required
               />
               <TextInput
                 className="flex-auto"
-                icon={HiOutlineBadgeCheck}
-                placeholder="Sobrenome *"
+                icon={HiOutlineHashtag}
+                placeholder="Quantidade de banheiros *"
                 required
               />
               <TextInput
                 className="flex-auto"
-                icon={HiOutlineIdentification}
-                placeholder="Documento *"
+                icon={HiOutlineHashtag}
+                placeholder="Quantidade de camas *" 
                 required
               />
               <TextInput
                 className="flex-auto"
-                icon={HiOutlineCalendar}
-                placeholder="Data de nascimento *"
+                icon={HiOutlineHashtag}
+                placeholder="Quantidade de TVs *"
                 required
               />
             </div>
-            <div className="flex gap-4">
-              <TextInput
-                className="flex-1"
-                icon={HiOutlinePhone}
-                placeholder="Telefone 1 *"
-                required
-              />
-              <TextInput
-                className="flex-1"
-                icon={HiOutlinePhone}
-                placeholder="Telefone 2"
-              />
-            </div>
-            <div className="flex gap-4">
-              <TextInput
-                className="flex-1"
-                icon={HiLocationMarker}
-                placeholder="Endereço *"
-                required
-              />
-              <TextInput
-                className="flex-1"
-                icon={HiOutlineCollection}
-                placeholder="Setor *"
-                required
-              />
+            <div className="flex items-center gap-8 my-8">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="balcony" className="text-md">Possui varanda</Label>
+                <Checkbox id="balcony" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Label htmlFor="wifi" className="text-md">Possui wifi</Label>
+                <Checkbox id="wifi" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Label htmlFor="frigobar" className="text-md">Possui frigobar</Label>
+                <Checkbox id="frigobar" />
+              </div>
             </div>
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
-                Foto do funcionário
+                Foto quarto
               </Label>
               <Label
                 htmlFor="dropzone-file"
