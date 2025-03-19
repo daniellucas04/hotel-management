@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Table } from "flowbite-react";
+import { Badge, Button, Table } from "flowbite-react";
 import Header from "../component/header";
 import Link from "next/link";
 
@@ -9,7 +9,12 @@ export default function Guests() {
     <>
       <Header />
       <section className="overflow-x-auto m-10">
-        <h1 className="text-2xl mb-4">Todos os hóspedes</h1>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <h1 className="text-2xl mb-4">Todos os hóspedes</h1>
+          <Button color="light">
+            <a href="/guests/create">Novo hóspede</a>
+          </Button>
+        </div>
         <Table striped>
           <Table.Head>
             <Table.HeadCell>Nome</Table.HeadCell>
@@ -42,11 +47,11 @@ export default function Guests() {
               </Table.Cell>
               <Table.Cell className="font-bold">290</Table.Cell>
               <Table.Cell className="flex items-center gap-4">
-                <Link href="/guests/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                <Link href="/guests/details/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                   Details
                 </Link>
                 <Link
-                  href="#"
+                  href="/guests/edit/1"
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
                   Editar

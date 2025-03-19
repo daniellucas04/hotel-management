@@ -5,22 +5,31 @@ import {
   HiOutlineAtSymbol,
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
+  HiOutlineCash,
   HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlineKey,
-  HiOutlineLogin,
   HiOutlineMail,
   HiOutlinePhone,
   HiOutlineViewGrid,
 } from "react-icons/hi";
-import { Button, Card, FileInput, HR, Label, TextInput } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Checkbox,
+  FileInput,
+  HR,
+  Label,
+  Radio,
+  TextInput,
+} from "flowbite-react";
 
 export default function CreateUser() {
   return (
     <>
       <Header />
       <section className="overflow-x-auto m-10">
-        <h1 className="text-2xl mb-4">Editar funcionário</h1>
+        <h1 className="text-2xl mb-4">Criar novo hóspede</h1>
         <Card>
           <form className="flex flex-col gap-4">
             <h1 className="text-xl font-bold flex items-center gap-2">
@@ -30,29 +39,34 @@ export default function CreateUser() {
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
-                placeholder="Nome"
+                placeholder="Nome *"
+                required
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
-                placeholder="Sobrenome"
+                placeholder="Sobrenome *"
+                required
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineIdentification}
-                placeholder="Documento"
+                placeholder="Documento *"
+                required
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineCalendar}
-                placeholder="Data de nascimento"
+                placeholder="Data de nascimento *"
+                required
               />
             </div>
             <div className="flex gap-4">
               <TextInput
                 className="flex-1"
                 icon={HiOutlinePhone}
-                placeholder="Telefone 1"
+                placeholder="Telefone 1 *"
+                required
               />
               <TextInput
                 className="flex-1"
@@ -64,18 +78,13 @@ export default function CreateUser() {
               <TextInput
                 className="flex-1"
                 icon={HiLocationMarker}
-                placeholder="Endereço"
-              />
-              <TextInput
-                className="flex-1"
-                icon={HiOutlineCollection}
-                placeholder="Setor"
+                placeholder="Endereço *"
+                required
               />
             </div>
-            {/* Condição para mostrar a foto do funcionário caso exista */}
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
-                Foto do funcionário
+                Foto do hóspede
               </Label>
               <Label
                 htmlFor="dropzone-file"
@@ -99,39 +108,24 @@ export default function CreateUser() {
 
             <HR />
             <h1 className="text-xl font-bold flex items-center gap-2">
-              <HiOutlineLogin /> Informações de login
+              <HiOutlineCash /> Plano de hospedagem
             </h1>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineAtSymbol}
-                  placeholder="Usuário para login"
-                />
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineMail}
-                  placeholder="E-mail"
-                />
+            <div className="flex gap-8 justify-center">
+              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
+                <span className="font-medium">Básico</span> <Radio name="plan" /> 
               </div>
-              <div className="flex gap-4">
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineKey}
-                  placeholder="Senha"
-                />
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineKey}
-                  placeholder="Confirme a senha"
-                />
+              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
+                <span className="font-medium">Premium</span> <Radio name="plan" />
+              </div>
+              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
+                <span className="font-medium">Deluxe</span> <Radio name="plan" /> 
               </div>
             </div>
 
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/employee">Cancelar</a>
+                <a href="/guests">Cancelar</a>
               </Button>
               <Button color="success">Salvar</Button>
             </div>

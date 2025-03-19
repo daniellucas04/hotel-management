@@ -8,8 +8,10 @@ import {
   HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlineKey,
+  HiOutlineLogin,
   HiOutlineMail,
   HiOutlinePhone,
+  HiOutlineViewGrid,
 } from "react-icons/hi";
 import { Button, Card, FileInput, HR, Label, TextInput } from "flowbite-react";
 
@@ -21,7 +23,9 @@ export default function CreateUser() {
         <h1 className="text-2xl mb-4">Criar novo funcionário</h1>
         <Card>
           <form className="flex flex-col gap-4">
-            <h1 className="text-xl font-bold">Informações gerais</h1>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              <HiOutlineViewGrid /> Informações gerais
+            </h1>
             <div className="flex gap-4">
               <TextInput
                 className="flex-auto"
@@ -77,7 +81,7 @@ export default function CreateUser() {
             </div>
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
-                Foto do usuário
+                Foto do funcionário
               </Label>
               <Label
                 htmlFor="dropzone-file"
@@ -100,7 +104,9 @@ export default function CreateUser() {
             </div>
 
             <HR />
-            <h1 className="text-xl font-bold">Informações de login</h1>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              <HiOutlineLogin /> Informações gerais
+            </h1>
             <div className="flex flex-col gap-4">
               <div className="flex gap-4">
                 <TextInput
