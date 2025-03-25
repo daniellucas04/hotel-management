@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 import { usePathname } from "next/navigation";
+import { HiOutlineBookmark, HiOutlineClipboardList, HiOutlineCollection, HiOutlineTemplate, HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi";
 
 export default function Header() {
   const pathName = usePathname();
@@ -25,12 +26,12 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="/" active={(pathName.includes('dashboard') || pathName == '/') ? true : false}>Dashboard</Navbar.Link>
-        <Navbar.Link href="/employee" active={(pathName.includes('employee')) ? true : false}>Funcionários</Navbar.Link>
-        <Navbar.Link href="/guests" active={(pathName.includes('guests')) ? true : false}>Hóspedes</Navbar.Link>
-        <Navbar.Link href="/bedrooms" active={(pathName.includes('bedrooms')) ? true : false}>Quartos</Navbar.Link>
-        <Navbar.Link href="/products" active={(pathName.includes('products')) ? true : false}>Produtos / Serviços</Navbar.Link>
-        <Navbar.Link href="/reports" active={(pathName.includes('reports')) ? true : false}>Relatórios</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/" active={(pathName.includes('dashboard') || pathName == '/') ? true : false}><HiOutlineTemplate size={20} /> Dashboard</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/employee" active={(pathName.includes('employee')) ? true : false}><HiOutlineUserGroup size={20} /> Funcionários</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/guests" active={(pathName.includes('guests')) ? true : false}><HiOutlineUsers size={20} /> Hóspedes</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/bedrooms" active={(pathName.includes('bedrooms')) ? true : false}><HiOutlineCollection size={20} /> Quartos</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/tasks" active={(pathName.includes('tasks')) ? true : false}><HiOutlineBookmark size={20} /> Tarefas</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/reports" active={(pathName.includes('reports')) ? true : false}><HiOutlineClipboardList size={20} /> Relatórios</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
