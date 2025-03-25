@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Table } from "flowbite-react";
+import { Badge, Button, Table } from "flowbite-react";
 import Header from "../component/header";
 import Link from "next/link";
 
@@ -9,7 +9,10 @@ export default function Bedrooms() {
     <>
       <Header />
       <section className="overflow-x-auto m-10">
-        <h1 className="text-2xl mb-4">Todos os quartos</h1>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <h1 className="text-2xl mb-4">Todos os quartos</h1>
+          <Button color="light"><a href="/bedrooms/create">Novo Quarto</a></Button>
+        </div>
         <Table striped>
           <Table.Head>
             <Table.HeadCell>Número</Table.HeadCell>
@@ -29,17 +32,17 @@ export default function Bedrooms() {
                 </div>
               </Table.Cell>
               <Table.Cell>
-                  <span>2 camas, 1 banheiro, 1 televisão, 1 frigobar</span>
+                <span>2 camas, 1 banheiro, 1 televisão, 1 frigobar</span>
               </Table.Cell>
               <Table.Cell>
-                  <Badge color="red" className="w-fit">Ocupado</Badge>
+                <Badge color="red" className="w-fit">Ocupado</Badge>
               </Table.Cell>
               <Table.Cell className="flex items-center gap-4">
-                <Link href="/bedrooms/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  Details
+                <Link href="/bedrooms/details/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                  Detalhes
                 </Link>
                 <a
-                  href="#"
+                  href="/bedrooms/edit/1"
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
                   Editar
@@ -55,10 +58,10 @@ export default function Bedrooms() {
                 </div>
               </Table.Cell>
               <Table.Cell>
-                  <span>1 camas, 2 banheiro, 1 televisão, 1 frigobar</span>
+                <span>1 camas, 2 banheiro, 1 televisão, 1 frigobar</span>
               </Table.Cell>
               <Table.Cell>
-                  <Badge color="success" className="w-fit">Livre</Badge>
+                <Badge color="success" className="w-fit">Livre</Badge>
               </Table.Cell>
               <Table.Cell>
                 <a
@@ -78,10 +81,10 @@ export default function Bedrooms() {
                 </div>
               </Table.Cell>
               <Table.Cell>
-                  <span>2 camas, 1 banheiro, 1 televisão</span>
+                <span>2 camas, 1 banheiro, 1 televisão</span>
               </Table.Cell>
               <Table.Cell>
-                  <Badge color="warning" className="w-fit">Manutenção</Badge>
+                <Badge color="warning" className="w-fit">Manutenção</Badge>
               </Table.Cell>
               <Table.Cell>
                 <a

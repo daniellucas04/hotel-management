@@ -48,7 +48,7 @@ export default function Guests() {
               <Table.Cell className="font-bold">290</Table.Cell>
               <Table.Cell className="flex items-center gap-4">
                 <Link href="/guests/details/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  Details
+                  Detalhes
                 </Link>
                 <Link
                   href="/guests/edit/1"

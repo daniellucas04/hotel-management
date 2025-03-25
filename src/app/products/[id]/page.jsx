@@ -1,5 +1,6 @@
 import Header from "@/app/component/header";
 import { Button, Card, Select, Textarea, TextInput } from "flowbite-react";
+import { HiOutlineBookmark, HiOutlineUser } from "react-icons/hi";
 
 export default function ProductsDetails() {
   return (
@@ -12,14 +13,17 @@ export default function ProductsDetails() {
           </div>
           <div>
             <form className="flex flex-col gap-8">
-              <div>
-                <Select>
-                  <option value="">Produto</option>
-                  <option value="">Serviço</option>
-                </Select>
-              </div>
-              <div>
-                <TextInput placeholder="Responsável" />
+              <div className="flex gap-4">
+                <div className="flex-auto">
+                  <Select icon={HiOutlineBookmark}>
+                    <option value="">Produto</option>
+                    <option value="">Serviço</option>
+                  </Select>
+                </div>
+
+                <div className="flex-auto">
+                  <TextInput icon={HiOutlineUser} placeholder="Responsável" />
+                </div>
               </div>
               <div>
                 <Textarea

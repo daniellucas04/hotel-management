@@ -1,23 +1,15 @@
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
-  HiLocationMarker,
-  HiOutlineAtSymbol,
-  HiOutlineBadgeCheck,
-  HiOutlineCalendar,
-  HiOutlineCollection,
+  HiOutlineBookmark,
   HiOutlineHashtag,
-  HiOutlineIdentification,
-  HiOutlineKey,
-  HiOutlineLogin,
-  HiOutlineMail,
+  HiOutlineInformationCircle,
   HiOutlineOfficeBuilding,
-  HiOutlinePhone,
   HiOutlineViewGrid,
 } from "react-icons/hi";
-import { Button, Card, Checkbox, FileInput, HR, Label, TextInput } from "flowbite-react";
+import { Button, Card, Checkbox, FileInput, HR, Label, Select, Textarea, TextInput } from "flowbite-react";
 
-export default function CreateUser() {
+export default function CreateBedroom() {
   return (
     <>
       <Header />
@@ -32,7 +24,7 @@ export default function CreateUser() {
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineOfficeBuilding}
-                placeholder="Número *"
+                placeholder="Número / Identificação *"
                 required
               />
               <TextInput
@@ -44,7 +36,7 @@ export default function CreateUser() {
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineHashtag}
-                placeholder="Quantidade de camas *" 
+                placeholder="Quantidade de camas *"
                 required
               />
               <TextInput
@@ -54,19 +46,74 @@ export default function CreateUser() {
                 required
               />
             </div>
-            <div className="flex items-center gap-8 my-8">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="balcony" className="text-md">Possui varanda</Label>
-                <Checkbox id="balcony" />
+            <div className="flex gap-4">
+              <div className="flex-auto">
+                <Label htmlFor="category">Categoria *</Label>
+                <Select id="category">
+                  <option value="">Escolha uma opção</option>
+                  <option>Solteiro</option>
+                  <option>Duplo solteiro</option>
+                  <option>Quarto casal</option>
+                  <option>Dormitórios</option>
+                  <option>Apartamentos</option>
+                </Select>
               </div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="wifi" className="text-md">Possui wifi</Label>
-                <Checkbox id="wifi" />
+
+              <div className="flex-auto">
+                <Label htmlFor="category">Classificação *</Label>
+                <Select id="category">
+                  <option value="">Escolha uma opção</option>
+                  <option>Standard</option>
+                  <option>Master</option>
+                  <option>Deluxe</option>
+                </Select>
               </div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="frigobar" className="text-md">Possui frigobar</Label>
-                <Checkbox id="frigobar" />
+            </div>
+            <div className="my-4">
+              <h1 className="flex items-center gap-2"><HiOutlineInformationCircle /> Privilégios</h1>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
+                <div className="flex items-center gap-2">
+                  <Checkbox id="free_wifi" />
+                  <Label htmlFor="free_wifi">Wifi gratuito</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="air_conditioner" />
+                  <Label htmlFor="air_conditioner">Ar-condicionado</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="frigobar" />
+                  <Label htmlFor="frigobar">Frigobar</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="frigobar" />
+                  <Label htmlFor="frigobar">Café da manhã</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="bedroom_bathroom" />
+                  <Label htmlFor="bedroom_bathroom">Banheiro no quarto</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="fan" />
+                  <Label htmlFor="fan">Ventilador</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="garage" />
+                  <Label htmlFor="garage">Vaga de estacinonamento</Label>
+                </div>
               </div>
+            </div>
+            <div>
+              <Label htmlFor="short_description">Descrição breve</Label>
+              <Textarea id="short_description" rows={4} maxLength={250}></Textarea>
+            </div>
+            <div>
+              <Label>Status</Label>
+              <Select>
+                <option value="">Escolha uma opção</option>
+                <option value="">Livre</option>
+                <option value="">Ocupado</option>
+                <option value="">Em manutenção</option>
+              </Select>
             </div>
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
