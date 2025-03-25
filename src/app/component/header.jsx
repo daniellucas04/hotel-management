@@ -2,7 +2,7 @@
 
 import { Navbar } from "flowbite-react";
 import { usePathname } from "next/navigation";
-import { HiOutlineBriefcase, HiOutlineClipboardList, HiOutlineCollection, HiOutlineTemplate, HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi";
+import { HiOutlineBookmark, HiOutlineClipboardList, HiOutlineCollection, HiOutlineTemplate, HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi";
 
 export default function Header() {
   const pathName = usePathname();
@@ -30,7 +30,7 @@ export default function Header() {
         <Navbar.Link className="flex items-center gap-2" href="/employee" active={(pathName.includes('employee')) ? true : false}><HiOutlineUserGroup size={20} /> Funcionários</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/guests" active={(pathName.includes('guests')) ? true : false}><HiOutlineUsers size={20} /> Hóspedes</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/bedrooms" active={(pathName.includes('bedrooms')) ? true : false}><HiOutlineCollection size={20} /> Quartos</Navbar.Link>
-        <Navbar.Link className="flex items-center gap-2" href="/products" active={(pathName.includes('products')) ? true : false}><HiOutlineBriefcase size={20} /> Produtos / Serviços</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/tasks" active={(pathName.includes('tasks')) ? true : false}><HiOutlineBookmark size={20} /> Tarefas</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/reports" active={(pathName.includes('reports')) ? true : false}><HiOutlineClipboardList size={20} /> Relatórios</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
