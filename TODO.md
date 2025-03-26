@@ -1,0 +1,3 @@
+# Adicionar
+
+= [ ] Categoria em tarefas
