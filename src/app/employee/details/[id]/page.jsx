@@ -9,7 +9,7 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi";
 
-export default function GuestDetails() {
+export default function EmployeeDetails() {
   let guest = {
     name: "Fernando",
     fullName: "Fernando Pereira",
@@ -113,67 +113,6 @@ export default function GuestDetails() {
               <span>{guest.hosting.since}</span>
             </div>
           </section>
-        </div>
-
-        <HR />
-
-        <div className="flex flex-col items-center justify-center mt-14">
-          <h1 className="text-lg font-bold">Plano do hóspede</h1>
-          <div className="flex gap-8">
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">{guest.hosting.plan}</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guest.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
-            </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold hover-90 hover:scale-110 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Normal</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guest.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <span className="text-sm border py-2 px-4 rounded-md text-gray-500 shadow">
-                  Plano atual
-                </span>
-              </div>
-            </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Premium</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guest.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </>
