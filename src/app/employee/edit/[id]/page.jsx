@@ -133,7 +133,7 @@ export default function CreateUser() {
               <Button color="light">
                 <a href="/employee">Cancelar</a>
               </Button>
-              <Button color="success">Salvar</Button>
+              <Button>Salvar</Button>
             </div>
           </form>
         </Card>

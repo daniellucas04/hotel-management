@@ -1,8 +1,16 @@
 create database if not exists `hotel_management`;
 use `hotel_management`;
 
+create table employee_workgroup (
+    `id`                    int not null primary key auto_increment,
+    `name`                  varchar(50) not null,
+    `created_at`            datetime not null default current_timestamp,
+    `updated_at`            datetime not null default current_timestamp on update current_timestamp
+);
+
 create table employees (
     `id`                    int not null primary key auto_increment,
+    `id_workgroup`          int not null,
     `name`                  varchar(50) not null,
     `last_name`             varchar(100) not null,
     `document`              varchar(14) not null,
@@ -15,7 +23,9 @@ create table employees (
     `email`                 varchar(100) not null,
     `password`              varchar(255) not null,
     `created_at`            datetime not null default current_timestamp,
-    `updated_at`            datetime not null default current_timestamp on update current_timestamp
+    `updated_at`            datetime not null default current_timestamp on update current_timestamp,
+
+    foreign key(`id_workgroup`) references employee_workgroup (id)
 );
 
 create table plans (
@@ -40,6 +50,15 @@ create table guests (
     `updated_at`            datetime not null default current_timestamp on update current_timestamp,
 
     foreign key(`id_plan`) references plans(`id`)
+);
+
+create table guest_consumptions (
+    `id`                    int not null primary key auto_increment,
+    `id_guest`              int not null,
+    `price`                 decimal(10,2) not null,
+    `created_at`            datetime not null default current_timestamp,
+    
+    foreign key(`id_guest`) references guests (`id`)
 );
 
 create table bedrooms (
@@ -72,28 +91,7 @@ create table reservations (
     foreign key(`id_bedroom`) references bedrooms(id)
 );
 
-create table invoices (
-    `id`                    int not null primary key auto_increment,
-    `id_guest`              int not null,
-    `total_amount`          decimal(10,2) not null,
-    `due_date`              date not null,
-    `status`                enum('Pendente', 'Pago', 'Cancelado') not null default 'Pendente',
-    `created_at`            datetime not null default current_timestamp,
-
-    foreign key(`id_guest`) references guests(id)
-);
-
-create table payments (
-    `id`                    int not null primary key auto_increment,
-    `id_invoice`            int not null,
-    `payment_date`          datetime not null default current_timestamp,
-    `payment_method`        enum('Cartão', 'Dinheiro', 'Transferência') not null,
-    `amount_paid`           decimal(10,2) not null,
-    
-    foreign key(`id_invoice`) references invoices(id)
-);
-
-create table tasks(
+create table tasks (
     `id`                    int not null primary key auto_increment,
     `id_employee`           int not null,
     `id_reservation`        int not null,
@@ -115,7 +113,32 @@ create table reports (
     `created_at`            datetime not null default current_timestamp
 );
 
-create table logs(
+create table meetings (
+    `id`                    int not null primary key auto_increment,
+    `id_employee`           int not null, -- Quem criou a reunião
+    `title`                 varchar(50) not null,
+    `link`                  varchar(100) not null,
+    `meeting_date`          datetime not null,
+    `created_at`            datetime not null default current_timestamp,
+    `updated_at`            datetime not null default current_timestamp on update current_timestamp,
+
+    foreign key (`id_employee`) references employees (`id`)
+);
+
+
+create table email_log (
+    `id`                    int not null primary key auto_increment,
+    `id_employee`           int not null,
+    `id_guest`              int not null,
+    `title`                 varchar(50) not null
+    `message`               text not null,
+    `created_at`            datetime not null default current_timestamp,
+
+    foreign key(`id_employee`) references employees (`id`),
+    foreign key(`id_guest`) references guests (`id`),
+);
+
+create table logs (
     `id`                    int not null primary key auto_increment,
     `id_employee`           int not null,
     `error_code`            varchar(10) not null,

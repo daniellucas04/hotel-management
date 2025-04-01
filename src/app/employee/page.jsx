@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Button, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Header from "../component/header";
 import Link from "next/link";
 
@@ -42,7 +42,7 @@ export default function employee() {
                 </Badge>
               </Table.Cell>
               <Table.Cell className="font-bold">
-                <Badge color="success" className="w-fit">
+                <Badge  className="w-fit">
                     Online
                 </Badge>
               </Table.Cell>
@@ -85,7 +85,7 @@ export default function employee() {
                 </Badge>
               </Table.Cell>
               <Table.Cell className="font-bold">
-                <Badge color="success" className="w-fit">
+                <Badge  className="w-fit">
                     Online
                 </Badge>
               </Table.Cell>
@@ -128,7 +128,7 @@ export default function employee() {
                 </Badge>
               </Table.Cell>
               <Table.Cell className="font-bold">
-                <Badge color="success" className="w-fit">
+                <Badge  className="w-fit">
                     Online
                 </Badge>
               </Table.Cell>
@@ -155,6 +155,9 @@ export default function employee() {
             </Table.Row>
           </Table.Body>
         </Table>
+        <div className="flex justify-end">
+          <Pagination currentPage={1} totalPages={10} />
+        </div>
       </section>
     </>
   );
