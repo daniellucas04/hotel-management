@@ -61,7 +61,7 @@ export default function Bedrooms() {
                 <span>1 camas, 2 banheiro, 1 televisão, 1 frigobar</span>
               </Table.Cell>
               <Table.Cell>
-                <Badge color="success" className="w-fit">Livre</Badge>
+                <Badge  className="w-fit">Livre</Badge>
               </Table.Cell>
               <Table.Cell>
                 <a

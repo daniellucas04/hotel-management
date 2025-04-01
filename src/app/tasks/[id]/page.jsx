@@ -52,7 +52,7 @@ export default function ProductsDetails() {
               </div>
               <div className="flex justify-end gap-4">
                 <Button color="light">Cancelar</Button>
-                <Button color="blue">Cadastrar</Button>
+                <Button>Cadastrar</Button>
               </div>
             </form>
           </div>

@@ -36,7 +36,7 @@ export default function Guests() {
                 <span>Henrique</span>
               </Table.Cell>
               <Table.Cell>
-                <Badge color="success" className="w-fit">
+                <Badge  className="w-fit">
                   Hospedado
                 </Badge>
               </Table.Cell>
