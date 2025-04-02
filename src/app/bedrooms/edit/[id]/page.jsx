@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
@@ -6,9 +8,33 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlineViewGrid,
 } from "react-icons/hi";
-import { Button, Card, Checkbox, FileInput, HR, Label, Select, Textarea, TextInput } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Checkbox,
+  FileInput,
+  HR,
+  Label,
+  Select,
+  Textarea,
+  TextInput,
+} from "flowbite-react";
+import { useState } from "react";
 
 export default function EditRoom() {
+  const [bedroomData, setBedroomData] = useState({
+    number: 202,
+    bathroom_quantity: 1,
+    bed_quantity: 2,
+    tv_quantity: 1,
+    category: "Solteiro",
+    classification: "Standard",
+    privileges: "free-wifi, firgobar",
+    short_description: "Descrição pequena",
+    status: "Ocupado",
+    photo: "https://placehold.co/2000x300",
+  });
+
   return (
     <>
       <Header />
@@ -25,30 +51,34 @@ export default function EditRoom() {
                 icon={HiOutlineOfficeBuilding}
                 placeholder="Número / Identificação *"
                 required
+                value={bedroomData.number}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineHashtag}
                 placeholder="Quantidade de banheiros *"
                 required
+                value={bedroomData.bathroom_quantity}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineHashtag}
                 placeholder="Quantidade de camas *"
                 required
+                value={bedroomData.bed_quantity}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineHashtag}
                 placeholder="Quantidade de TVs *"
                 required
+                value={bedroomData.tv_quantity}
               />
             </div>
             <div className="flex gap-4">
               <div className="flex-auto">
                 <Label htmlFor="category">Categoria *</Label>
-                <Select id="category">
+                <Select id="category" value={bedroomData.category}>
                   <option value="">Escolha uma opção</option>
                   <option>Solteiro</option>
                   <option>Duplo solteiro</option>
@@ -60,7 +90,7 @@ export default function EditRoom() {
 
               <div className="flex-auto">
                 <Label htmlFor="category">Classificação *</Label>
-                <Select id="category">
+                <Select id="category" value={bedroomData.classification}>
                   <option value="">Escolha uma opção</option>
                   <option>Standard</option>
                   <option>Master</option>
@@ -69,45 +99,58 @@ export default function EditRoom() {
               </div>
             </div>
             <div className="my-4">
-              <h1 className="flex items-center gap-2"><HiOutlineInformationCircle /> Privilégios</h1>
+              <h1 className="flex items-center gap-2">
+                <HiOutlineInformationCircle /> Privilégios
+              </h1>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
                 <div className="flex items-center gap-2">
-                  <Checkbox id="free_wifi" />
+                  <Checkbox id="free_wifi" value={bedroomData.privileges} />
                   <Label htmlFor="free_wifi">Wifi gratuito</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="air_conditioner" />
+                  <Checkbox
+                    id="air_conditioner"
+                    value={bedroomData.privileges}
+                  />
                   <Label htmlFor="air_conditioner">Ar-condicionado</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="frigobar" />
+                  <Checkbox id="frigobar" value={bedroomData.privileges} />
                   <Label htmlFor="frigobar">Frigobar</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="frigobar" />
+                  <Checkbox id="frigobar" value={bedroomData.privileges} />
                   <Label htmlFor="frigobar">Café da manhã</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="bedroom_bathroom" />
+                  <Checkbox
+                    id="bedroom_bathroom"
+                    value={bedroomData.privileges}
+                  />
                   <Label htmlFor="bedroom_bathroom">Banheiro no quarto</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="fan" />
+                  <Checkbox id="fan" value={bedroomData.privileges} />
                   <Label htmlFor="fan">Ventilador</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="garage" />
+                  <Checkbox id="garage" value={bedroomData.privileges} />
                   <Label htmlFor="garage">Vaga de estacinonamento</Label>
                 </div>
               </div>
             </div>
             <div>
               <Label htmlFor="short_description">Descrição breve</Label>
-              <Textarea id="short_description" rows={4} maxLength={250}></Textarea>
+              <Textarea
+                id="short_description"
+                rows={4}
+                maxLength={250}
+                value={bedroomData.short_description}
+              ></Textarea>
             </div>
             <div>
               <Label>Status</Label>
-              <Select>
+              <Select value={bedroomData.status}>
                 <option value="">Escolha uma opção</option>
                 <option value="">Livre</option>
                 <option value="">Ocupado</option>
@@ -141,9 +184,9 @@ export default function EditRoom() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/employee">Cancelar</a>
+                <a href="/bedrooms">Cancelar</a>
               </Button>
-              <Button >Salvar</Button>
+              <Button>Salvar</Button>
             </div>
           </form>
         </Card>

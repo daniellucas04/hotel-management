@@ -1,30 +1,40 @@
+"use client";
+
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
   HiLocationMarker,
-  HiOutlineAtSymbol,
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
   HiOutlineCash,
-  HiOutlineCollection,
   HiOutlineIdentification,
-  HiOutlineKey,
-  HiOutlineMail,
   HiOutlinePhone,
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import {
   Button,
   Card,
-  Checkbox,
   FileInput,
   HR,
   Label,
   Radio,
   TextInput,
 } from "flowbite-react";
+import { useState } from "react";
 
 export default function CreateUser() {
+  const [guestData, setGuestData] = useState({
+    id_plan: 1,
+    name: "Hóspede",
+    last_name: "Teste",
+    document: "123.123.123-23",
+    birthday: "2003-09-20",
+    phone1: "(12) 11231-2131",
+    phone2: "",
+    address: "Rua hóspede, 20",
+    photo: "https://placehold.co/50x50",
+  });
+
   return (
     <>
       <Header />
@@ -41,24 +51,28 @@ export default function CreateUser() {
                 icon={HiOutlineBadgeCheck}
                 placeholder="Nome *"
                 required
+                value={guestData.name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
                 placeholder="Sobrenome *"
                 required
+                value={guestData.last_name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineIdentification}
                 placeholder="Documento *"
                 required
+                value={guestData.document}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineCalendar}
                 placeholder="Data de nascimento *"
                 required
+                value={guestData.birthday}
               />
             </div>
             <div className="flex gap-4">
@@ -67,11 +81,13 @@ export default function CreateUser() {
                 icon={HiOutlinePhone}
                 placeholder="Telefone 1 *"
                 required
+                value={guestData.phone1}
               />
               <TextInput
                 className="flex-1"
                 icon={HiOutlinePhone}
                 placeholder="Telefone 2"
+                value={guestData.phone2}
               />
             </div>
             <div className="flex gap-4">
@@ -80,6 +96,7 @@ export default function CreateUser() {
                 icon={HiLocationMarker}
                 placeholder="Endereço *"
                 required
+                value={guestData.address}
               />
             </div>
             <div>
@@ -112,13 +129,28 @@ export default function CreateUser() {
             </h1>
             <div className="flex gap-8 justify-center">
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Básico</span> <Radio name="plan" /> 
+                <span className="font-medium">Básico</span>{" "}
+                <Radio
+                  name="plan"
+                  value={1}
+                  checked={guestData.id_plan == 1 ? true : false}
+                />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Premium</span> <Radio name="plan" />
+                <span className="font-medium">Premium</span>{" "}
+                <Radio
+                  name="plan"
+                  value={2}
+                  checked={guestData.id_plan == 2 ? true : false}
+                />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Deluxe</span> <Radio name="plan" /> 
+                <span className="font-medium">Deluxe</span>{" "}
+                <Radio
+                  name="plan"
+                  value={3}
+                  checked={guestData.id_plan == 3 ? true : false}
+                />
               </div>
             </div>
 
@@ -127,7 +159,7 @@ export default function CreateUser() {
               <Button color="light">
                 <a href="/guests">Cancelar</a>
               </Button>
-              <Button >Salvar</Button>
+              <Button>Salvar</Button>
             </div>
           </form>
         </Card>
