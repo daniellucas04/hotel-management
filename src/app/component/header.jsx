@@ -2,7 +2,7 @@
 
 import { Navbar } from "flowbite-react";
 import { usePathname } from "next/navigation";
-import { HiOutlineBookmark, HiOutlineClipboardList, HiOutlineCollection, HiOutlineTemplate, HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi";
+import { HiOutlineBookmark, HiOutlineCash, HiOutlineClipboardList, HiOutlineCollection, HiOutlineTemplate, HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi";
 
 export default function Header() {
   const pathName = usePathname();
@@ -28,6 +28,7 @@ export default function Header() {
       <Navbar.Collapse>
         <Navbar.Link className="flex items-center gap-2" href="/" active={(pathName.includes('dashboard') || pathName == '/') ? true : false}><HiOutlineTemplate size={20} /> Dashboard</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/employee" active={(pathName.includes('employee')) ? true : false}><HiOutlineUserGroup size={20} /> Funcionários</Navbar.Link>
+        <Navbar.Link className="flex items-center gap-2" href="/plans" active={(pathName.includes('plans')) ? true : false}><HiOutlineCash size={20} /> Planos</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/guests" active={(pathName.includes('guests')) ? true : false}><HiOutlineUsers size={20} /> Hóspedes</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/bedrooms" active={(pathName.includes('bedrooms')) ? true : false}><HiOutlineCollection size={20} /> Quartos</Navbar.Link>
         <Navbar.Link className="flex items-center gap-2" href="/tasks" active={(pathName.includes('tasks')) ? true : false}><HiOutlineBookmark size={20} /> Tarefas</Navbar.Link>
