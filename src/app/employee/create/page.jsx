@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
@@ -14,8 +16,23 @@ import {
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import { Button, Card, FileInput, HR, Label, TextInput } from "flowbite-react";
+import { useState } from "react";
 
 export default function CreateUser() {
+  const [employeeData, setEmployeeData] = useState({
+    id_workgroup: 1,
+    name: "",
+    last_name: "",
+    document: "",
+    birthday: "",
+    phone1: "",
+    phone2: "",
+    photo: "",
+    login: "",
+    email: "",
+    password: "",
+  });
+
   return (
     <>
       <Header />

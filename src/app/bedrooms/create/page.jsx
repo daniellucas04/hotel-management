@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
@@ -7,9 +9,33 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlineViewGrid,
 } from "react-icons/hi";
-import { Button, Card, Checkbox, FileInput, HR, Label, Select, Textarea, TextInput } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Checkbox,
+  FileInput,
+  HR,
+  Label,
+  Select,
+  Textarea,
+  TextInput,
+} from "flowbite-react";
+import { useState } from "react";
 
 export default function CreateBedroom() {
+  const [bedroomData, setBedroomData] = useState({
+    number: 0,
+    bathroom_quantity: 0,
+    bed_quantity: 0,
+    tv_quantity: 0,
+    category: 0,
+    classification: "Standard",
+    privileges: [],
+    short_description: 0,
+    status: "",
+    photo: "",
+  });
+
   return (
     <>
       <Header />
@@ -70,7 +96,9 @@ export default function CreateBedroom() {
               </div>
             </div>
             <div className="my-4">
-              <h1 className="flex items-center gap-2"><HiOutlineInformationCircle /> Privilégios</h1>
+              <h1 className="flex items-center gap-2">
+                <HiOutlineInformationCircle /> Privilégios
+              </h1>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
                 <div className="flex items-center gap-2">
                   <Checkbox id="free_wifi" />
@@ -104,7 +132,11 @@ export default function CreateBedroom() {
             </div>
             <div>
               <Label htmlFor="short_description">Descrição breve</Label>
-              <Textarea id="short_description" rows={4} maxLength={250}></Textarea>
+              <Textarea
+                id="short_description"
+                rows={4}
+                maxLength={250}
+              ></Textarea>
             </div>
             <div>
               <Label>Status</Label>
@@ -144,7 +176,7 @@ export default function CreateBedroom() {
               <Button color="light">
                 <a href="/employee">Cancelar</a>
               </Button>
-              <Button >Salvar</Button>
+              <Button>Salvar</Button>
             </div>
           </form>
         </Card>

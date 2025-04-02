@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/app/component/header";
 import {
   HiCloudUpload,
@@ -14,8 +16,25 @@ import {
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import { Button, Card, FileInput, HR, Label, TextInput } from "flowbite-react";
+import { useState } from "react";
 
-export default function CreateUser() {
+export default function CreateEmployee() {
+  const [employeeData, setEmployeeData] = useState({
+    id_workgroup: 1,
+    name: "Teste",
+    last_name: "Teste",
+    document: "123.123.123-23",
+    birthday: "2004-03-20",
+    phone1: "(18) 9000-0000",
+    phone2: "(18) 9000-0000",
+    address: "Rua teste, 200",
+    photo: "https://placehold.co/50x50",
+    login: "teste",
+    password: "",
+    email: "teste@email.com",
+    created_at: "2024-02-10",
+  });
+
   return (
     <>
       <Header />
@@ -31,21 +50,25 @@ export default function CreateUser() {
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
                 placeholder="Nome"
+                value={employeeData.name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
                 placeholder="Sobrenome"
+                value={employeeData.last_name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineIdentification}
                 placeholder="Documento"
+                value={employeeData.document}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineCalendar}
                 placeholder="Data de nascimento"
+                value={employeeData.birthday}
               />
             </div>
             <div className="flex gap-4">
@@ -53,11 +76,13 @@ export default function CreateUser() {
                 className="flex-1"
                 icon={HiOutlinePhone}
                 placeholder="Telefone 1"
+                value={employeeData.phone1}
               />
               <TextInput
                 className="flex-1"
                 icon={HiOutlinePhone}
                 placeholder="Telefone 2"
+                value={employeeData.phone2}
               />
             </div>
             <div className="flex gap-4">
@@ -65,11 +90,13 @@ export default function CreateUser() {
                 className="flex-1"
                 icon={HiLocationMarker}
                 placeholder="Endereço"
+                value={employeeData.address}
               />
               <TextInput
                 className="flex-1"
                 icon={HiOutlineCollection}
                 placeholder="Setor"
+                value={employeeData.address}
               />
             </div>
             {/* Condição para mostrar a foto do funcionário caso exista */}
@@ -107,11 +134,13 @@ export default function CreateUser() {
                   className="flex-1"
                   icon={HiOutlineAtSymbol}
                   placeholder="Usuário para login"
+                  value={employeeData.login}
                 />
                 <TextInput
                   className="flex-1"
                   icon={HiOutlineMail}
                   placeholder="E-mail"
+                  value={employeeData.email}
                 />
               </div>
               <div className="flex gap-4">

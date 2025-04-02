@@ -2,29 +2,37 @@ import Header from "@/app/component/header";
 import {
   HiCloudUpload,
   HiLocationMarker,
-  HiOutlineAtSymbol,
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
   HiOutlineCash,
-  HiOutlineCollection,
   HiOutlineIdentification,
-  HiOutlineKey,
-  HiOutlineMail,
   HiOutlinePhone,
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import {
   Button,
   Card,
-  Checkbox,
   FileInput,
   HR,
   Label,
   Radio,
   TextInput,
 } from "flowbite-react";
+import { useState } from "react";
 
 export default function CreateUser() {
+  const [guestData, setGuestData] = useState({
+    id_plan: 1,
+    name: "",
+    last_name: "",
+    document: "",
+    birthday: "",
+    phone1: "",
+    phone2: "",
+    address: "",
+    photo: "",
+  });
+
   return (
     <>
       <Header />
@@ -112,13 +120,16 @@ export default function CreateUser() {
             </h1>
             <div className="flex gap-8 justify-center">
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Básico</span> <Radio name="plan" /> 
+                <span className="font-medium">Básico</span>{" "}
+                <Radio name="plan" />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Premium</span> <Radio name="plan" />
+                <span className="font-medium">Premium</span>{" "}
+                <Radio name="plan" />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Deluxe</span> <Radio name="plan" /> 
+                <span className="font-medium">Deluxe</span>{" "}
+                <Radio name="plan" />
               </div>
             </div>
 
@@ -127,7 +138,7 @@ export default function CreateUser() {
               <Button color="light">
                 <a href="/guests">Cancelar</a>
               </Button>
-              <Button >Salvar</Button>
+              <Button>Salvar</Button>
             </div>
           </form>
         </Card>
