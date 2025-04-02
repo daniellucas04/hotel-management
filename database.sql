@@ -1,11 +1,20 @@
 create database if not exists `hotel_management`;
 use `hotel_management`;
 
-create table employee_workgroup (
+create table workgroups (
     `id`                    int not null primary key auto_increment,
     `name`                  varchar(50) not null,
     `created_at`            datetime not null default current_timestamp,
     `updated_at`            datetime not null default current_timestamp on update current_timestamp
+);
+
+create table workgroup_permissions (
+    `id`                    int not null primary key auto_increment,
+    `id_workgroup`          varchar(50) not null,
+    `created_at`            datetime not null default current_timestamp,
+    `updated_at`            datetime not null default current_timestamp on update current_timestamp
+
+    foreign key(`id_workgroup`) references workgroups(`id`)
 );
 
 create table employees (
@@ -25,14 +34,16 @@ create table employees (
     `created_at`            datetime not null default current_timestamp,
     `updated_at`            datetime not null default current_timestamp on update current_timestamp,
 
-    foreign key(`id_workgroup`) references employee_workgroup (id)
+    foreign key(`id_workgroup`) references workgroups (id)
 );
 
 create table plans (
     `id`                    int not null primary key auto_increment,
     `title`                 varchar(50) not null,
     `description`           varchar(255) not null,
-    `price`                 decimal(10,2) not null
+    `price`                 decimal(10,2) not null,
+    `created_at`            datetime not null default current_timestamp,
+    `updated_at`            datetime not null default current_timestamp on update current_timestamp
 );
 
 create table guests (
@@ -106,19 +117,13 @@ create table tasks (
     foreign key(`id_reservation`) references reservations (id)
 );
 
-create table reports (
-    `id`                    int not null primary key auto_increment,
-    `type`                  varchar(50) not null,  -- Tipo de relatório
-    `content`               text not null,
-    `created_at`            datetime not null default current_timestamp
-);
-
 create table meetings (
     `id`                    int not null primary key auto_increment,
     `id_employee`           int not null, -- Quem criou a reunião
     `title`                 varchar(50) not null,
     `link`                  varchar(100) not null,
-    `meeting_date`          datetime not null,
+    `meeting_start_date`    datetime not null,
+    `meeting_finish_date`   datetime not null,
     `created_at`            datetime not null default current_timestamp,
     `updated_at`            datetime not null default current_timestamp on update current_timestamp,
 
