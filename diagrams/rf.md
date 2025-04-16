@@ -12,6 +12,7 @@
             <th>Ação</th>
             <th>Pré-condição</th>
             <th>Pós-condição</th>
+            <th>Efeito colateral</th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
             <td>Validar o login e senha do funcionário</td>
             <td>O funcionário deve estar cadastrado no sistema</td>
             <td>É redirecionado para a dashboard do sistema</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF02 - Cadastrar Funcionário</td>
@@ -55,6 +57,7 @@
             </td>
             <td>Usuário deve estar autenticado como gerente.</td>
             <td>Funcionário cadastrado com sucesso.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF03 - Excluir Funcionário</td>
@@ -73,6 +76,7 @@
             </td>
             <td>Funcionário deve estar cadastrado</td>
             <td>Funcionário removido do sistema.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF04 - Editar Funcionário</td>
@@ -92,6 +96,7 @@
             </td>
             <td>Funcionário existente</td>
             <td>Informações atualizadas.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF05 - Consultar Funcionário</td>
@@ -109,6 +114,7 @@
             </td>
             <td>Funcionário deve estar cadastrado.</td>
             <td>Funcionário visualizado.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF06 - Cadastrar Hóspede</td>
@@ -133,6 +139,7 @@
             </td>
             <td>Usuário autenticado como recepcionista.</td>
             <td>Hóspede cadastrado.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF07 - Excluir Hóspede</td>
@@ -151,6 +158,7 @@
             </td>
             <td>Hóspede cadastrado.</td>
             <td>Hóspede removido do sistema.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF08 - Editar Hóspede</td>
@@ -172,6 +180,7 @@
             </td>
             <td>Hóspede existente.</td>
             <td>Informações atualizadas.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF09 - Consultar Hóspede</td>
@@ -189,6 +198,7 @@
             </td>
             <td>Hóspede cadastrado.</td>
             <td>Visualização completa do hóspede.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF10 - Cadastrar Quarto</td>
@@ -215,6 +225,7 @@
             </td>
             <td>Usuário autenticado.</td>
             <td>Quarto cadastrado.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF11 - Excluir Quarto</td>
@@ -231,6 +242,7 @@
             </td>
             <td>Quarto sem reservas futuras.</td>
             <td>Quarto excluído com sucesso.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF12 - Editar Quarto</td>
@@ -249,6 +261,7 @@
             </td>
             <td>Quarto existente.</td>
             <td>Dados atualizados com sucesso.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF13 - Consultar Quarto</td>
@@ -265,6 +278,7 @@
             </td>
             <td>Quarto deve existir.</td>
             <td>Visualização dos dados.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF14 - Cadastrar Reserva</td>
@@ -286,6 +300,7 @@
             </td>
             <td>Hóspede e quarto cadastrados.</td>
             <td>Reserva criada.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF15 - Cancelar Reserva</td>
@@ -302,6 +317,7 @@
             </td>
             <td>Reserva ativa.</td>
             <td>Reserva cancelada.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF16 - Consultar Reserva</td>
@@ -318,6 +334,7 @@
             </td>
             <td>Reserva existente.</td>
             <td>Reserva visualizada.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF17 - Cadastrar Gasto</td>
@@ -336,6 +353,7 @@
             </td>
             <td>Usuário autenticado.</td>
             <td>Serviço disponível.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF18 - Excluir Tarefa</td>
@@ -352,6 +370,7 @@
             </td>
             <td>Tarefa existente.</td>
             <td>Tarefa excluída.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF19 - Gerenciar Tarefa</td>
@@ -370,6 +389,7 @@
             </td>
             <td>Tarefa existente.</td>
             <td>Status atualizado.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF20 - Gerenciar Check-in</td>
@@ -387,6 +407,7 @@
             </td>
             <td>Hóspede existente.</td>
             <td>Dados exibidos.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF21 - Gerenciar Check-out</td>
@@ -404,6 +425,7 @@
             </td>
             <td>Hóspede existente.</td>
             <td>Dados exibidos.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF22 - Cadastrar Planos</td>
@@ -422,6 +444,7 @@
             </td>
             <td>Usuário deve estar autenticado como gerente.</td>
             <td>Plano cadastrado com sucesso.</td>
+            <td>É possível que no cadastro de planos possa haver planos duplicados</td>
         </tr>
         <tr>
             <td>RF23 - Excluir Plano</td>
@@ -440,6 +463,7 @@
             </td>
             <td>Plano deve estar cadastrado.</td>
             <td>Plano removido do sistema.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF24 - Editar Plano</td>
@@ -459,6 +483,7 @@
             </td>
             <td>Plano existente.</td>
             <td>Informações atualizadas.</td>
+            <td>Sem efeito colateral</td>
         </tr>
         <tr>
             <td>RF25 - Consultar Plano</td>
@@ -475,6 +500,7 @@
             </td>
             <td>Plano deve estar cadastrado.</td>
             <td>Plano visualizado.</td>
+            <td>Sem efeito colateral</td>
         </tr>
     </tbody>
 </table>
