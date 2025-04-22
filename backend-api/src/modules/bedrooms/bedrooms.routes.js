@@ -1,0 +1,15 @@
+// vai definir as rotas para o controller 
+
+
+import express from 'express';
+import { BedroomController } from './bedrooms.controller.js';
+
+const router = express.Router();
+
+router.get('/', BedroomController.getAll);
+router.get('/:id', BedroomController.getById);
+router.post('/', BedroomController.create);
+router.put('/:id', BedroomController.update);
+router.delete('/:id', BedroomController.remove);
+
+export default router;
