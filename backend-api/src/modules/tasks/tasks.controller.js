@@ -1,4 +1,4 @@
-import TaskService from './tasks.service.js';
+import {TaskService} from './tasks.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -34,5 +34,3 @@ export const TaskController = {
 
 
 
-
-export default { getAll };

@@ -1,4 +1,4 @@
-import BedroomService from './bedrooms.service.js';
+import { BedroomService } from './bedrooms.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -31,5 +31,3 @@ export const BedroomController = {
         res.status(204).send();
     },
 };
-
-export default { getAll };

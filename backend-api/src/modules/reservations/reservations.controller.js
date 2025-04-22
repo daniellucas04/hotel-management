@@ -1,4 +1,4 @@
-import ReservationService from './reservations.service.js';
+import {ReservationService} from './reservations.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -31,5 +31,3 @@ export const ReservationController = {
         res.status(204).send();
     },
 };
-
-export default { getAll };

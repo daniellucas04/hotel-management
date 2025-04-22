@@ -1,4 +1,4 @@
-import WorkService from './workgroups.service.js';
+import {WorkService} from './workgroups.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -31,5 +31,3 @@ export const WorkController = {
         res.status(204).send();
     },
 };
-
-export default { getAll };

@@ -1,4 +1,4 @@
-import PlanService from './plans.service.js';
+import {PlanService} from './plans.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -33,6 +33,3 @@ export const PlanController = {
 };
 
 
-
-
-export default { getAll };

@@ -1,5 +1,5 @@
 
-import EmployeeService from './employees.service.js';
+import {EmployeeService} from './employees.service.js';
 
 // const getAll = async (req, res) => {
 //     const plans = await PlanService.getAll();
@@ -34,6 +34,3 @@ export const EmployeeController = {
 };
 
 
-
-
-export default { getAll };

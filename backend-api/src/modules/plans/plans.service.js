@@ -1,6 +1,6 @@
 // vai ter as regras de negocios 
 
-import { PlanRepository } from './guests.repository.js';
+import { PlanRepository } from './plans.repository.js';
 
 export const PlanService = {
     getAll: () => PlanRepository.findAll(),

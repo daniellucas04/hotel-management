@@ -2,7 +2,7 @@
 
 
 import express from 'express';
-import { EmployeeController } from './employees.controller'
+import { EmployeeController } from './employees.controller.js'
 
 
 const router = express.Router();
