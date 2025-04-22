@@ -1,5 +1,3 @@
-// vai ter as regras de negocios 
-
 import { GuestRepository } from './guests.repository.js';
 
 export const GuestService = {
