@@ -104,7 +104,7 @@ export default function TaskCreate() {
               </div>
               <div className="flex justify-end gap-4">
                 <Button color="light">
-                  <a href="/tasks">Cancelar</a>
+                  <Link href="/tasks">Cancelar</Link>
                 </Button>
                 <Button type="submit">Cadastrar</Button>
               </div>

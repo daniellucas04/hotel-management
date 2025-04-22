@@ -24,6 +24,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function CreateUser() {
   const [employeeData, setEmployeeData] = useState({
@@ -205,7 +206,7 @@ export default function CreateUser() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/employee">Cancelar</a>
+                <Link href="/employee">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

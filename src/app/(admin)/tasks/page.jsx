@@ -12,7 +12,7 @@ export default function Tasks() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos as tarefas</h1>
           <Button color="light">
-            <a href="/tasks/create">Nova tarefa</a>
+            <Link href="/tasks/create">Nova tarefa</Link>
           </Button>
         </div>
         <Table striped>

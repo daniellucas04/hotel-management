@@ -13,7 +13,7 @@ export default function Plans() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os planos</h1>
           <Button color="light">
-            <a href="/plans/create">Novo plano</a>
+            <Link href="/plans/create">Novo plano</Link>
           </Button>
         </div>
         <Table striped>

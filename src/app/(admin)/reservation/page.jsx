@@ -3,7 +3,7 @@
 import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 
-export default function employee() {
+export default function Plans() {
   let qtd = [1, 2, 3, 4, 5];
 
   return (
@@ -11,20 +11,16 @@ export default function employee() {
       
       <section className="overflow-x-auto m-10">
         <div className="flex justify-between items-center my-8 gap-2">
-          <h1 className="text-2xl mb-4">Todos os funcionários</h1>
+          <h1 className="text-2xl mb-4">Todos as reservas</h1>
           <Button color="light">
-            <Link href="/employee/create">Novo funcionário</Link>
+            <Link href="/reservation/create">Nova reserva</Link>
           </Button>
         </div>
         <Table striped>
           <Table.Head>
-            <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Usuário</Table.HeadCell>
-            <Table.HeadCell>Setor</Table.HeadCell>
-            <Table.HeadCell>Online</Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only">Editar</span>
-            </Table.HeadCell>
+            <Table.HeadCell>Título</Table.HeadCell>
+            <Table.HeadCell>Preço</Table.HeadCell>
+            <Table.HeadCell>Ações</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {qtd.map((key) => {
@@ -39,32 +35,20 @@ export default function employee() {
                       className="rounded-md"
                       alt=""
                     />
-                    <span>Henrique</span>
+                    <span>Plano básico</span>
                   </Table.Cell>
-                  <Table.Cell>henrique2000</Table.Cell>
                   <Table.Cell>
-                    <Badge color="blue" className="w-fit">
-                      Recepcionista
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell className="font-bold">
-                    <Badge className="w-fit">Online</Badge>
+                    <Badge color="success" className="w-fit">R$ 10,00</Badge>
                   </Table.Cell>
                   <Table.Cell className="flex items-center gap-4">
                     <Link
-                      href="/employee/permissions/1"
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Permissões
-                    </Link>
-                    <Link
-                      href="/employee/details/1"
+                      href="/reservation/details/1"
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Detalhes
                     </Link>
                     <Link
-                      href="/employee/edit/1"
+                      href="/reservation/edit/1"
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Editar

@@ -13,7 +13,7 @@ export default function Bedrooms() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os quartos</h1>
           <Button color="light">
-            <a href="/bedrooms/create">Novo Quarto</a>
+            <Link href="/bedrooms/create">Novo Quarto</Link>
           </Button>
         </div>
         <Table striped>
@@ -60,12 +60,12 @@ export default function Bedrooms() {
                     >
                       Detalhes
                     </Link>
-                    <a
+                    <Link
                       href="/bedrooms/edit/1"
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Editar
-                    </a>
+                    </Link>
                   </Table.Cell>
                 </Table.Row>
               );
