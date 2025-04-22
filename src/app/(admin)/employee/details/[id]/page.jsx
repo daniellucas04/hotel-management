@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, HR } from "flowbite-react";
+import Link from "next/link";
 import { useState } from "react";
 import {
   HiOutlineArrowLeft,
@@ -31,13 +32,13 @@ export default function EmployeeDetails() {
     <>
       
       <section className="h-full mx-52 my-14">
-        <a
+        <Link
           className="flex items-center gap-2 text-gray-600 hover:text-gray-400 transition-all"
           href="/employees"
         >
           <HiOutlineArrowLeft size={"16px"} />
           Funcionários
-        </a>
+        </Link>
         <div className="flex items-center justify-between gap-4 mt-4">
           <div className="flex items-center gap-4">
             <img
@@ -48,7 +49,7 @@ export default function EmployeeDetails() {
           </div>
           <div>
             <Button color="light" size="sm">
-              <a href="/employee/edit/1">Editar funcionário</a>
+              <Link href="/employee/edit/1">Editar funcionário</Link>
             </Button>
           </div>
         </div>

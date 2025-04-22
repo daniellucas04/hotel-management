@@ -72,7 +72,7 @@ export default function EditPlan() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/plans">Cancelar</a>
+                <Link href="/plans">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

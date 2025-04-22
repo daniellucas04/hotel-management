@@ -5,6 +5,8 @@ import Link from "next/link";
 
 export default function Guests() {
   let qtd = [1, 2, 3, 4, 5];
+  let check = false;
+  let checkButtonText = check ? 'Check out' : 'Check in';
 
   return (
     <>
@@ -13,7 +15,7 @@ export default function Guests() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os hóspedes</h1>
           <Button color="light">
-            <a href="/guests/create">Novo hóspede</a>
+            <Link href="/guests/create">Novo hóspede</Link>
           </Button>
         </div>
         <Table striped>

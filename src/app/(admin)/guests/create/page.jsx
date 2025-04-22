@@ -1,3 +1,5 @@
+'use client'
+
 import {
   HiCloudUpload,
   HiLocationMarker,
@@ -18,6 +20,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function CreateUser() {
   const [guestData, setGuestData] = useState({
@@ -163,7 +166,7 @@ export default function CreateUser() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/guests">Cancelar</a>
+                <Link href="/guests">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

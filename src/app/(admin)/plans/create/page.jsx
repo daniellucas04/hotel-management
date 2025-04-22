@@ -12,6 +12,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function CreatePlan() {
   const [planData, setPlanData] = useState({
@@ -72,7 +73,7 @@ export default function CreatePlan() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/plans">Cancelar</a>
+                <Link href="/plans">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

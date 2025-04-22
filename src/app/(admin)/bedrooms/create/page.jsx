@@ -19,6 +19,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function CreateBedroom() {
   const [bedroomData, setBedroomData] = useState({
@@ -196,7 +197,7 @@ export default function CreateBedroom() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <a href="/employee">Cancelar</a>
+                <Link href="/employee">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>
