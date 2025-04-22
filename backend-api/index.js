@@ -1,16 +1,15 @@
-import connectionDB from './src/config/db.js';  
 import express from 'express';
+import dotenv from 'dotenv';
+import guestRoutes from './src/modules/guests/guests.routes.js';
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+app.use(express.json());
 
+app.use('/guests', guestRoutes);
 
-// connectionDB();
-
-// app.get('/', (req, res) => {
-//   res.send('Olá, mundo!');
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Servidor rodando na porta ${PORT}`);\ 
-// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+});
