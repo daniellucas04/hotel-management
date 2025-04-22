@@ -83,6 +83,7 @@ create table reservations (
     `id`                    int not null primary key auto_increment COMMENT "Identificador da reserva",
     `id_guest`              int not null COMMENT "Identificador do hóspede",
     `id_bedroom`            int not null COMMENT "Identificador do quarto",
+    `id_plan`               int not null COMMENT "Identificador do plano",
     `check_in`              DATE not null COMMENT "Data do Check-in",
     `check_out`             DATE not null COMMENT "Data do Check-out",
     `status`                enum('Reservado', 'Confirmado', 'Cancelado') not null default 'Reservado' COMMENT "Estado da reserva",
