@@ -32,7 +32,4 @@ export const WorkController = {
     },
 };
 
-
-
-
 export default { getAll };

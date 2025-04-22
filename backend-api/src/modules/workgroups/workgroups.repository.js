@@ -3,9 +3,9 @@
 import prisma from '../../config/prisma.js';
 
 export const WorkRepository = {
-    findAll: () => prisma.plans.findMany(),
-    findById: (id) => prisma.plans.findUnique({ where: { id } }),
-    create: (data) => prisma.plans.create({ data }),
-    update: (id, data) => prisma.plans.update({ where: { id }, data }),
-    remove: (id) => prisma.plans.delete({ where: { id } }),
+    findAll: () => prisma.workgroups.findMany(),
+    findById: (id) => prisma.workgroups.findUnique({ where: { id } }),
+    create: (data) => prisma.workgroups.create({ data }),
+    update: (id, data) => prisma.workgroups.update({ where: { id }, data }),
+    remove: (id) => prisma.workgroups.delete({ where: { id } }),
 };

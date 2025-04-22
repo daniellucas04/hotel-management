@@ -3,9 +3,9 @@
 import prisma from '../../config/prisma.js';
 
 export const BedroomRepository = {
-    findAll: () => prisma.plans.findMany(),
-    findById: (id) => prisma.plans.findUnique({ where: { id } }),
-    create: (data) => prisma.plans.create({ data }),
-    update: (id, data) => prisma.plans.update({ where: { id }, data }),
-    remove: (id) => prisma.plans.delete({ where: { id } }),
+    findAll: () => prisma.bedrooms.findMany(),
+    findById: (id) => prisma.bedrooms.findUnique({ where: { id } }),
+    create: (data) => prisma.bedrooms.create({ data }),
+    update: (id, data) => prisma.bedrooms.update({ where: { id }, data }),
+    remove: (id) => prisma.bedrooms.delete({ where: { id } }),
 };
