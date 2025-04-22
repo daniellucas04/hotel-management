@@ -12,18 +12,18 @@ export const PlanController = {
     },
 
     getById: async (req, res) => {
-        const guest = await PlanService.getById(Number(req.params.id));
-        res.json(guest);
+        const plan = await PlanService.getById(Number(req.params.id));
+        res.json(plan);
     },
 
     create: async (req, res) => {
-        const guest = await PlanService.create(req.body);
-        res.status(201).json(guest);
+        const plan = await PlanService.create(req.body);
+        res.status(201).json(plan);
     },
 
     update: async (req, res) => {
-        const guest = await PlanService.update(Number(req.params.id), req.body);
-        res.json(guest);
+        const plan = await PlanService.update(Number(req.params.id), req.body);
+        res.json(plan);
     },
 
     remove: async (req, res) => {

@@ -7,23 +7,23 @@ import WorkService from './workgroups.service.js';
 
 export const WorkController = {
     getAll: async (req, res) => {
-        const plans = await WorkService.getAll();
-        res.json(plans);
+        const workgroups = await WorkService.getAll();
+        res.json(workgroups);
     },
 
     getById: async (req, res) => {
-        const guest = await WorkService.getById(Number(req.params.id));
-        res.json(guest);
+        const workgroup = await WorkService.getById(Number(req.params.id));
+        res.json(workgroup);
     },
 
     create: async (req, res) => {
-        const guest = await WorkService.create(req.body);
-        res.status(201).json(guest);
+        const workgroup = await WorkService.create(req.body);
+        res.status(201).json(workgroup);
     },
 
     update: async (req, res) => {
-        const guest = await WorkService.update(Number(req.params.id), req.body);
-        res.json(guest);
+        const workgroup = await WorkService.update(Number(req.params.id), req.body);
+        res.json(workgroup);
     },
 
     remove: async (req, res) => {

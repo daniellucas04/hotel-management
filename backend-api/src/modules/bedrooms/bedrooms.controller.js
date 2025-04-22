@@ -7,23 +7,23 @@ import BedroomService from './bedrooms.service.js';
 
 export const BedroomController = {
     getAll: async (req, res) => {
-        const plans = await BedroomService.getAll();
-        res.json(plans);
+        const bedrooms = await BedroomService.getAll();
+        res.json(bedrooms);
     },
 
     getById: async (req, res) => {
-        const guest = await BedroomService.getById(Number(req.params.id));
-        res.json(guest);
+        const bedroom = await BedroomService.getById(Number(req.params.id));
+        res.json(bedroom);
     },
 
     create: async (req, res) => {
-        const guest = await BedroomService.create(req.body);
-        res.status(201).json(guest);
+        const bedroom = await BedroomService.create(req.body);
+        res.status(201).json(bedroom);
     },
 
     update: async (req, res) => {
-        const guest = await BedroomService.update(Number(req.params.id), req.body);
-        res.json(guest);
+        const bedroom = await BedroomService.update(Number(req.params.id), req.body);
+        res.json(bedroom);
     },
 
     remove: async (req, res) => {

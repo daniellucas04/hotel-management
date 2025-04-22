@@ -8,23 +8,23 @@ import EmployeeService from './employees.service.js';
 
 export const EmployeeController = {
     getAll: async (req, res) => {
-        const plans = await EmployeeService.getAll();
-        res.json(plans);
+        const employees = await EmployeeService.getAll();
+        res.json(employees);
     },
 
     getById: async (req, res) => {
-        const guest = await EmployeeService.getById(Number(req.params.id));
-        res.json(guest);
+        const employee = await EmployeeService.getById(Number(req.params.id));
+        res.json(employee);
     },
 
     create: async (req, res) => {
-        const guest = await EmployeeService.create(req.body);
-        res.status(201).json(guest);
+        const employee = await EmployeeService.create(req.body);
+        res.status(201).json(employee);
     },
 
     update: async (req, res) => {
-        const guest = await EmployeeService.update(Number(req.params.id), req.body);
-        res.json(guest);
+        const employee = await EmployeeService.update(Number(req.params.id), req.body);
+        res.json(employee);
     },
 
     remove: async (req, res) => {
