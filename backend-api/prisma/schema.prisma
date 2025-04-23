@@ -22,7 +22,7 @@ model employees {
   name       String
   last_name  String
   document   String    @db.VarChar(14)
-  birthday   DateTime
+  birthday   DateTime? @db.Date
   phone1     String    @db.VarChar(14)
   phone2     String    @db.VarChar(14)
   address    String
