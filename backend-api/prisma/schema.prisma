@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model workgroups {
+  id         Int         @id @default(autoincrement())
+  name       String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+
+  employees  employees[]
+}
+
+model employees {
+  id         Int       @id @default(autoincrement())
+  id_workgroup Int
+  name       String
+  last_name  String
+  document   String    @db.VarChar(14)
+  birthday   DateTime? @db.Date
+  phone1     String    @db.VarChar(14)
+  phone2     String    @db.VarChar(14)
+  address    String
+  photo      String
+  login      String
+  email      String
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  workgroup  workgroups @relation(fields: [id_workgroup], references: [id])
+  tasks      tasks[]
+  logs       logs[]
+}
+
+model plans {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  price       Decimal   @db.Decimal(10, 2)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  guests      guests[]
+}
+
+model guests {
+  id         Int       @id @default(autoincrement())
+  id_plan    Int
+  name       String
+  last_name  String
+  document   String    @db.VarChar(14)
+  birthday   DateTime? @db.Date
+  phone1     String    @db.VarChar(14)
+  phone2     String    @db.VarChar(14)
+  address    String
+  photo      String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  plan       plans      @relation(fields: [id_plan], references: [id])
+  consumptions guest_consumptions[]
+  reservations reservations[]
+}
+
+model guest_consumptions {
+  id         Int       @id @default(autoincrement())
+  id_guest   Int
+  price      Decimal   @db.Decimal(10, 2)
+  created_at DateTime  @default(now())
+
+  guest      guests    @relation(fields: [id_guest], references: [id])
+}
+
+model bedrooms {
+  id                Int                    @id @default(autoincrement())
+  number            Int
+  bathroom_quantity Int
+  bed_quantity      Int
+  tv_quantity       Int
+  category          BedroomCategory        @default(Solteiro)
+  classification    BedroomClassification  @default(Standard)
+  privileges        String?                // SET convertido em String
+  short_description String
+  status            BedroomStatus          @default(Livre)
+  photo             String
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @updatedAt
+
+  reservations      reservations[]
+}
+
+model reservations {
+  id                  Int      @id @default(autoincrement())
+  id_guest            Int
+  id_bedroom          Int
+  check_in            DateTime
+  check_out           DateTime
+  status              ReservationStatus @default(Reservado)
+  created_at          DateTime          @default(now())
+  antecipated_payment Boolean?          // Enum 'T', 'F' convertido em booleano
+
+  guest               guests    @relation(fields: [id_guest], references: [id])
+  bedroom             bedrooms  @relation(fields: [id_bedroom], references: [id])
+  tasks               tasks[]
+}
+
+model tasks {
+  id             Int       @id @default(autoincrement())
+  id_employee    Int
+  id_reservation Int
+  priority       TaskPriority         @default(Baixa)
+  description    String
+  price          Decimal              @db.Decimal(10, 2)
+  status         TaskStatus           @default(Pendente)
+  created_at     DateTime             @default(now())
+  updated_at     DateTime             @updatedAt
+
+  employee       employees    @relation(fields: [id_employee], references: [id])
+  reservation    reservations @relation(fields: [id_reservation], references: [id])
+}
+
+model logs {
+  id           Int      @id @default(autoincrement())
+  id_employee  Int
+  error_code   String   @db.VarChar(10)
+  message      String
+  ip           String   @db.VarChar(12)
+  created_at   DateTime @default(now())
+
+  employee     employees @relation(fields: [id_employee], references: [id])
+}
+
+enum BedroomCategory {
+  Solteiro
+  Duplo_solteiro
+  Quarto_casal
+  Dormitório
+  Apartamento
+}
+
+enum BedroomClassification {
+  Standard
+  Master
+  Deluxe
+}
+
+enum BedroomStatus {
+  Livre
+  Ocupado
+  Manutenção
+}
+
+enum ReservationStatus {
+  Reservado
+  Confirmado
+  Cancelado
+}
+
+enum TaskPriority {
+  Baixa
+  Normal
+  Alta
+  Urgente
+}
+
+enum TaskStatus {
+  Pendente
+  Em_andamento
+  Finalizado
+}
