@@ -2,12 +2,15 @@ import { EmployeeRepository } from './employees.repository.js';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 
-// Schema Zod
+//classe da validação
 const employeeSchema = z.object({
   id_workgroup: z.number(),
   name: z.string().min(1),
   last_name: z.string().min(1),
-  document: z.string().length(11, "Documento deve ter 11 dígitos"),
+  document: z.string()
+    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+      message: "Documento deve estar no formato xxx.xxx.xxx-xx",
+    }),
   birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de nascimento inválida",
   }),
