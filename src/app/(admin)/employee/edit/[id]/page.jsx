@@ -23,12 +23,16 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { getEmployee, updateEmployee } from "../../actions";
+import Swal from "sweetalert2";
 
-export default function CreateEmployee() {
-  const [employeeData, setEmployeeData] = useState({
-    id_workgroup: 1,
+export default function CreateEmployee({ params }) {
+  const { id } = use(params);
+
+  const [employee, setEmployee] = useState({
+    id_workgroup: "",
     name: "",
     last_name: "",
     document: "",
@@ -41,20 +45,54 @@ export default function CreateEmployee() {
     password: "",
     password_confirm: "",
     email: "",
-    created_at: "",
   });
+
+  async function fetchEmployee(id) {
+    try {
+      const result = await getEmployee(id);
+      setEmployee(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchEmployee(id)
+  }, []);
+
 
   function handleImageSubmit(event) {
     console.log(event.target.files[0].name);
   }
 
   function handleData(event) {
-    setEmployeeData((p) => ({ ...p, [event.target.name]: event.target.value }));
+    setEmployee((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(employeeData);
+
+    try {
+      await updateEmployee(id, employee)
+
+      Swal.fire({
+        text: "Funcionário editado com sucesso.",
+        icon: 'success',
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false
+      });
+    } catch(error) {
+      Swal.fire({
+        text: "Erro ao editar o funcionário. Tente novamente!",
+        icon: 'error',
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false
+      });
+    }
   }
 
   return (
@@ -78,7 +116,7 @@ export default function CreateEmployee() {
                 placeholder="Nome"
                 name="name"
                 onChange={handleData}
-                value={employeeData.name}
+                value={employee.name}
               />
               <TextInput
                 className="flex-auto"
@@ -86,7 +124,7 @@ export default function CreateEmployee() {
                 placeholder="Sobrenome"
                 name="last_name"
                 onChange={handleData}
-                value={employeeData.last_name}
+                value={employee.last_name}
               />
               <TextInput
                 className="flex-auto"
@@ -94,7 +132,7 @@ export default function CreateEmployee() {
                 placeholder="Documento"
                 name="document"
                 onChange={handleData}
-                value={employeeData.document}
+                value={employee.document}
               />
               <TextInput
                 className="flex-auto"
@@ -102,7 +140,7 @@ export default function CreateEmployee() {
                 placeholder="Data de nascimento"
                 name="birthday"
                 onChange={handleData}
-                value={employeeData.birthday}
+                value={employee.birthday}
               />
             </div>
             <div className="flex gap-4">
@@ -112,7 +150,7 @@ export default function CreateEmployee() {
                 placeholder="Telefone 1"
                 name="phone1"
                 onChange={handleData}
-                value={employeeData.phone1}
+                value={employee.phone1}
               />
               <TextInput
                 className="flex-1"
@@ -120,7 +158,7 @@ export default function CreateEmployee() {
                 placeholder="Telefone 2"
                 name="phone2"
                 onChange={handleData}
-                value={employeeData.phone2}
+                value={employee.phone2}
               />
             </div>
             <div className="flex gap-4">
@@ -130,7 +168,7 @@ export default function CreateEmployee() {
                 placeholder="Endereço"
                 name="address"
                 onChange={handleData}
-                value={employeeData.address}
+                value={employee.address}
               />
               <Select
                 className="flex-1"
@@ -187,7 +225,7 @@ export default function CreateEmployee() {
                   placeholder="Usuário para login"
                   name="login"
                   onChange={handleData}
-                  value={employeeData.login}
+                  value={employee.login}
                 />
                 <TextInput
                   className="flex-1"
@@ -195,7 +233,7 @@ export default function CreateEmployee() {
                   placeholder="E-mail"
                   name="email"
                   onChange={handleData}
-                  value={employeeData.email}
+                  value={employee.email}
                 />
               </div>
               <div className="flex gap-4">
@@ -221,7 +259,7 @@ export default function CreateEmployee() {
               <Button color="light">
                 <Link href="/employee">Cancelar</Link>
               </Button>
-              <Button>Salvar</Button>
+              <Button type="submit">Salvar</Button>
             </div>
           </form>
         </Card>

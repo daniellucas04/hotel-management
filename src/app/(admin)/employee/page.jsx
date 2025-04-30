@@ -2,13 +2,37 @@
 
 import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getAll } from "./actions";
 
 export default function employee() {
-  let qtd = [1, 2, 3, 4, 5];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [totalItems, setTotalItems] = useState(0);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const [employees, setEmployees] = useState([]);
+
+  async function fetchAllEmployees(page) {
+    try {
+      const result = await getAll(page, itemsPerPage);
+      setEmployees(result.data);
+      setTotalItems(result.total);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  useEffect(() => {
+    fetchAllEmployees(currentPage);
+  }, [currentPage]);
 
   return (
     <>
-      
       <section className="overflow-x-auto m-10">
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os funcionários</h1>
@@ -19,18 +43,17 @@ export default function employee() {
         <Table striped>
           <Table.Head>
             <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Usuário</Table.HeadCell>
-            <Table.HeadCell>Setor</Table.HeadCell>
-            <Table.HeadCell>Online</Table.HeadCell>
+            <Table.HeadCell>Email</Table.HeadCell>
+            <Table.HeadCell>Telefone</Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only">Editar</span>
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {qtd.map((key) => {
+            {employees.map((employee) => {
               return (
                 <Table.Row
-                  key={key}
+                  key={employee.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
                   <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -39,32 +62,25 @@ export default function employee() {
                       className="rounded-md"
                       alt=""
                     />
-                    <span>Henrique</span>
+                    <span>{employee.name}</span>
                   </Table.Cell>
-                  <Table.Cell>henrique2000</Table.Cell>
-                  <Table.Cell>
-                    <Badge color="blue" className="w-fit">
-                      Recepcionista
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell className="font-bold">
-                    <Badge className="w-fit">Online</Badge>
-                  </Table.Cell>
+                  <Table.Cell>{employee.email}</Table.Cell>
+                  <Table.Cell>{employee.phone1}</Table.Cell>
                   <Table.Cell className="flex items-center gap-4">
                     <Link
-                      href="/employee/permissions/1"
+                      href={`/employee/permissions/${employee.id}`}
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Permissões
                     </Link>
                     <Link
-                      href="/employee/details/1"
+                      href={`/employee/details/${employee.id}`}
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Detalhes
                     </Link>
                     <Link
-                      href="/employee/edit/1"
+                      href={`/employee/edit/${employee.id}`}
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Editar
@@ -76,7 +92,12 @@ export default function employee() {
           </Table.Body>
         </Table>
         <div className="flex justify-end">
-          <Pagination currentPage={1} totalPages={10} />
+          <Pagination 
+            currentPage={currentPage} 
+            totalPages={totalPages} 
+            onPageChange={onPageChange} 
+            showIcons
+          />
         </div>
       </section>
     </>

@@ -25,9 +25,12 @@ import {
 } from "flowbite-react";
 import { useState } from "react";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import { createEmployee, savePhoto, validate } from "../actions";
+import { redirect } from "next/navigation";
 
 export default function CreateUser() {
-  const [employeeData, setEmployeeData] = useState({
+  const [employee, setEmployee] = useState({
     id_workgroup: 1,
     name: "",
     last_name: "",
@@ -41,18 +44,52 @@ export default function CreateUser() {
     password: "",
     password_confirm: "",
   });
+  const [photo, setPhoto] = useState();
 
   function handleImageSubmit(event) {
-    console.log(event.target.files[0].name);
+    setPhoto();
+    setEmployee(p => ({...p, photo: event.target.files[0].name}))
+    savePhoto(event.target.files[0]);
   }
 
    function handleData(event) {
-    setEmployeeData(p => ({...p, [event.target.name]: event.target.value}))
+    setEmployee(p => ({...p, [event.target.name]: event.target.value}))
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(employeeData)
+    // savePhoto(photo);
+    let error = validate(employee);
+
+    if (error == '') {
+      try {
+        //await createEmployee(employee);
+  
+        Swal.fire({
+          text: "Funcionário cadastrado com sucesso",
+          icon: 'success',
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false
+        });
+  
+        setTimeout(() => {
+          //redirect('/employee');
+        }, 3000)
+      } catch (error) {
+        Swal.fire({
+          text: "Erro ao cadastrar o funcionário. Tente novamente!",
+          icon: 'error',
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false
+        });
+      }
+    } else {
+      console.log(error);
+    }
   }
 
   return (
@@ -131,9 +168,9 @@ export default function CreateUser() {
                 onChange={handleData}
                 required
               >
-                <option value="1">teste1</option>
-                <option value="2">teste2</option>
-                <option value="3">teste3</option>
+                <option value={1}>teste1</option>
+                <option value={2}>teste2</option>
+                <option value={3}>teste3</option>
               </Select>
             </div>
             <div>
@@ -153,7 +190,7 @@ export default function CreateUser() {
                     ou arraste e solte
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG ou JPG (MAX. 800x400px)
+                    SVG, PNG ou JPG
                   </p>
                 </div>
                 <FileInput id="dropzone-file" name="photo" onChange={handleImageSubmit} className="hidden" />
@@ -185,6 +222,7 @@ export default function CreateUser() {
               </div>
               <div className="flex gap-4">
                 <TextInput
+                  type="password"
                   className="flex-1"
                   icon={HiOutlineKey}
                   placeholder="Senha *"
@@ -193,6 +231,7 @@ export default function CreateUser() {
                   required
                 />
                 <TextInput
+                  type="password"
                   className="flex-1"
                   icon={HiOutlineKey}
                   placeholder="Confirme a senha *"
