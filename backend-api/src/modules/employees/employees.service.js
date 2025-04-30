@@ -21,7 +21,7 @@ const employeeSchema = z.object({
 });
 
 export const EmployeeService = {
-  getAll: () => EmployeeRepository.findAll(),
+  getAll: (page, limit) => EmployeeRepository.findAll(page, limit),
 
   getById: (id) => EmployeeRepository.findById(id),
 
