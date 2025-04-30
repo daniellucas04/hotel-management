@@ -51,7 +51,8 @@ export const EmployeeService = {
       birthday: new Date(validData.birthday),
     });
   },
-
+  
+  //fazer o update
   update: (id, data) => EmployeeRepository.update(id, data),
 
   remove: (id) => EmployeeRepository.remove(id),

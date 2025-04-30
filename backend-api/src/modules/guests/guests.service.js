@@ -40,6 +40,8 @@ export const GuestService = {
           birthday: new Date(validData.birthday),
         });
       },
+
+      //fazer o update
     update: (id, data) => GuestRepository.update(id, data),
     remove: (id) => GuestRepository.remove(id),
 };
