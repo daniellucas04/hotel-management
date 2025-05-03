@@ -1,3 +1,16 @@
+const requiredFields = {
+    id_workgroup: "O cargo é obrigatório",
+    name: "O nome é obrigatório",
+    last_name: "O sobrenome é obrigatório",
+    document: "O documento é obrigatório",
+    birthday: "A data de nascimento é obrigatória",
+    phone1: "O telefone 1 é obrigatório",
+    login: "O nome de login é obrigatório",
+    email: "O email é obrigatório",
+    password: "A senha é obrigatória",
+    password_confirm: "A confirmação de senha é obrigatória",
+}
+
 export async function getAll(page, limit) {
     try {
         const data = await fetch(`http://localhost:8000/employees?page=${page}&limit=${limit}`, {
@@ -19,6 +32,18 @@ export async function getEmployee(id) {
         return await data.json();
     } catch (error){
         console.log(error)
+    }
+}
+
+export async function getAllWorkgroups() {
+    try {
+        const data = await fetch('http://localhost:8000/workgroups', {
+            method: 'get',
+        });
+
+        return await data.json();
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -45,7 +70,7 @@ export async function createEmployee(employee) {
             headers: {
                 "Content-Type": "application/json",
               },
-            body: JSON.stringify(employee)
+            body: employee
         });
 
         return await data.json();
@@ -70,22 +95,29 @@ export function savePhoto(photo) {
 }
 
 export function validate(employee) {
-    let error = '';
+    let error = [];
+
+    Object.entries(requiredFields).forEach(([field, message]) => {
+        if (!employee[field]) {
+            error.push(message);
+        }
+    });
+
     if (employee.password_confirm != employee.password) {
-        error += 'Senha inválida';
+        error.push('- Senha inválida');
     }
 
     if (employee.document.length != 11) {
-        error += 'O documento precisa ter 11 digitos';
+        error.push('- Documento inválido');
     }
     
-    if (employee.phone1.length != 14) {
-        error += 'O telefone precisa ter 14 digitos';
+    if (employee.phone1.length != 11) {
+        error.push('- Telefone 1 inválido');
     }
 
     if (!String(employee.email).match('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')) {
-        error += "O email está inválido";
+        error.push('- Email inválido');
     }
-
+    console.log(error);
     return error;
 }

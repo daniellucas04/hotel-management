@@ -23,15 +23,20 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { createEmployee, savePhoto, validate } from "../actions";
+import {
+  createEmployee,
+  getAllWorkgroups,
+  savePhoto,
+  validate,
+} from "../actions";
 import { redirect } from "next/navigation";
 
 export default function CreateUser() {
   const [employee, setEmployee] = useState({
-    id_workgroup: 1,
+    id_workgroup: "",
     name: "",
     last_name: "",
     document: "",
@@ -45,15 +50,16 @@ export default function CreateUser() {
     password_confirm: "",
   });
   const [photo, setPhoto] = useState();
+  const [workgroups, setWorkgroups] = useState([]);
 
   function handleImageSubmit(event) {
     setPhoto();
-    setEmployee(p => ({...p, photo: event.target.files[0].name}))
+    setEmployee((p) => ({ ...p, photo: event.target.files[0].name }));
     savePhoto(event.target.files[0]);
   }
 
-   function handleData(event) {
-    setEmployee(p => ({...p, [event.target.name]: event.target.value}))
+  function handleData(event) {
+    setEmployee((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
 
   async function handleSubmit(event) {
@@ -61,43 +67,64 @@ export default function CreateUser() {
     // savePhoto(photo);
     let error = validate(employee);
 
-    if (error == '') {
+    if (error.length == 0) {
       try {
-        //await createEmployee(employee);
-  
+        await createEmployee(employee);
+
         Swal.fire({
           text: "Funcionário cadastrado com sucesso",
-          icon: 'success',
+          icon: "success",
           timer: 3000,
           toast: true,
           position: "top-right",
-          showConfirmButton: false
+          showConfirmButton: false,
         });
-  
+
         setTimeout(() => {
-          //redirect('/employee');
-        }, 3000)
+          redirect("/employee");
+        }, 3000);
       } catch (error) {
         Swal.fire({
           text: "Erro ao cadastrar o funcionário. Tente novamente!",
-          icon: 'error',
+          icon: "error",
           timer: 3000,
           toast: true,
           position: "top-right",
-          showConfirmButton: false
+          showConfirmButton: false,
         });
       }
     } else {
-      console.log(error);
+      Swal.fire({
+        html: error.join("<br>"),
+        icon: "error",
+        timer: 0,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
     }
   }
+
+  async function fetchAllWorkgroups() {
+    const results = await getAllWorkgroups();
+    setWorkgroups(results ?? []);
+  }
+
+  useEffect(() => {
+    fetchAllWorkgroups();
+  }, []);
 
   return (
     <>
       <section className="overflow-x-auto m-10">
         <h1 className="text-2xl mb-4">Criar novo funcionário</h1>
         <Card>
-          <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" className="flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit}
+            method="post"
+            encType="multipart/form-data"
+            className="flex flex-col gap-4"
+          >
             <h1 className="text-xl font-bold flex items-center gap-2">
               <HiOutlineViewGrid /> Informações gerais
             </h1>
@@ -167,10 +194,12 @@ export default function CreateUser() {
                 name="id_workgroup"
                 onChange={handleData}
                 required
+                defaultValue={''}
               >
-                <option value={1}>teste1</option>
-                <option value={2}>teste2</option>
-                <option value={3}>teste3</option>
+                <option key={0} value='' disabled>Selecione o cargo do funcionário</option>
+                {workgroups.map((workgroup) => (
+                    <option key={workgroup.id} value={workgroup.id}>{workgroup.name}</option>
+                ))}
               </Select>
             </div>
             <div>
@@ -193,7 +222,12 @@ export default function CreateUser() {
                     SVG, PNG ou JPG
                   </p>
                 </div>
-                <FileInput id="dropzone-file" name="photo" onChange={handleImageSubmit} className="hidden" />
+                <FileInput
+                  id="dropzone-file"
+                  name="photo"
+                  onChange={handleImageSubmit}
+                  className="hidden"
+                />
               </Label>
             </div>
 

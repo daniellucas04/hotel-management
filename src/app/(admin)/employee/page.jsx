@@ -40,65 +40,71 @@ export default function employee() {
             <Link href="/employee/create">Novo funcionário</Link>
           </Button>
         </div>
-        <Table striped>
-          <Table.Head>
-            <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Email</Table.HeadCell>
-            <Table.HeadCell>Telefone</Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only">Editar</span>
-            </Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {employees.map((employee) => {
-              return (
-                <Table.Row
-                  key={employee.id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    <img
-                      src="https://placehold.co/40x40"
-                      className="rounded-md"
-                      alt=""
-                    />
-                    <span>{employee.name}</span>
-                  </Table.Cell>
-                  <Table.Cell>{employee.email}</Table.Cell>
-                  <Table.Cell>{employee.phone1}</Table.Cell>
-                  <Table.Cell className="flex items-center gap-4">
-                    <Link
-                      href={`/employee/permissions/${employee.id}`}
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+        {employees.length > 0 ? (
+          <>
+            <Table striped>
+              <Table.Head>
+                <Table.HeadCell>Nome</Table.HeadCell>
+                <Table.HeadCell>Email</Table.HeadCell>
+                <Table.HeadCell>Telefone</Table.HeadCell>
+                <Table.HeadCell>
+                  <span className="sr-only">Editar</span>
+                </Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {employees.map((employee) => {
+                  return (
+                    <Table.Row
+                      key={employee.id}
+                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
                     >
-                      Permissões
-                    </Link>
-                    <Link
-                      href={`/employee/details/${employee.id}`}
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Detalhes
-                    </Link>
-                    <Link
-                      href={`/employee/edit/${employee.id}`}
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Editar
-                    </Link>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
-        <div className="flex justify-end">
-          <Pagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            onPageChange={onPageChange} 
-            showIcons
-          />
-        </div>
+                      <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                        <img
+                          src="https://placehold.co/40x40"
+                          className="rounded-md"
+                          alt=""
+                        />
+                        <span>{employee.name}</span>
+                      </Table.Cell>
+                      <Table.Cell>{employee.email}</Table.Cell>
+                      <Table.Cell>{employee.phone1}</Table.Cell>
+                      <Table.Cell className="flex items-center gap-4">
+                        <Link
+                          href={`/employee/permissions/${employee.id}`}
+                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        >
+                          Permissões
+                        </Link>
+                        <Link
+                          href={`/employee/details/${employee.id}`}
+                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        >
+                          Detalhes
+                        </Link>
+                        <Link
+                          href={`/employee/edit/${employee.id}`}
+                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        >
+                          Editar
+                        </Link>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+            <div className="flex justify-end">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={onPageChange}
+                showIcons
+              />
+            </div>
+          </>
+        ) : (
+          <div className="text-center bg-cyan-500 text-cyan-100 font-bold rounded-lg p-4">Não existem funcionários cadastrados.</div>
+        )}
       </section>
     </>
   );
