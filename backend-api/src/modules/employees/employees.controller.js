@@ -8,7 +8,8 @@ import {EmployeeService} from './employees.service.js';
 
 export const EmployeeController = {
     getAll: async (req, res) => {
-        const employees = await EmployeeService.getAll();
+        const {page, limit} = req.query;
+        const employees = await EmployeeService.getAll(page, limit);
         res.json(employees);
     },
 
@@ -23,6 +24,7 @@ export const EmployeeController = {
     },
 
     update: async (req, res) => {
+        console.log(req);
         const employee = await EmployeeService.update(Number(req.params.id), req.body);
         res.json(employee);
     },

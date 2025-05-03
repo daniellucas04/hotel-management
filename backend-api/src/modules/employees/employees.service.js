@@ -11,7 +11,7 @@ const employeeSchema = z.object({
   birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de nascimento inválida",
   }),
-  phone1: z.string().min(10),
+  phone1: z.string().min(11),
   phone2: z.string().optional(),
   address: z.string().min(1),
   photo: z.string().optional(),
@@ -21,7 +21,7 @@ const employeeSchema = z.object({
 });
 
 export const EmployeeService = {
-  getAll: () => EmployeeRepository.findAll(),
+  getAll: (page, limit) => EmployeeRepository.findAll(page, limit),
 
   getById: (id) => EmployeeRepository.findById(id),
 
