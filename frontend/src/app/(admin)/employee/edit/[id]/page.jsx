@@ -23,18 +23,14 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { getEmployee, updateEmployee } from "../../actions";
 import Swal from "sweetalert2";
-import {
-  createEmployee,
-  getAllWorkgroups,
-  savePhoto,
-  validate,
-} from "../actions";
-import { redirect } from "next/navigation";
 
-export default function CreateUser() {
+export default function CreateEmployee({ params }) {
+  const { id } = use(params);
+
   const [employee, setEmployee] = useState({
     id_workgroup: "",
     name: "",
@@ -43,19 +39,29 @@ export default function CreateUser() {
     birthday: "",
     phone1: "",
     phone2: "",
+    address: "",
     photo: "",
     login: "",
-    email: "",
     password: "",
     password_confirm: "",
+    email: "",
   });
-  const [photo, setPhoto] = useState();
-  const [workgroups, setWorkgroups] = useState([]);
+
+  async function fetchEmployee(id) {
+    try {
+      const result = await getEmployee(id);
+      setEmployee(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchEmployee(id);
+  }, []);
 
   function handleImageSubmit(event) {
-    setPhoto();
-    setEmployee((p) => ({ ...p, photo: event.target.files[0].name }));
-    savePhoto(event.target.files[0]);
+    console.log(event.target.files[0].name);
   }
 
   function handleData(event) {
@@ -64,40 +70,23 @@ export default function CreateUser() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // savePhoto(photo);
-    let error = validate(employee);
 
-    if (error.length == 0) {
-      try {
-        await createEmployee(employee);
+    try {
+      await updateEmployee(id, employee);
 
-        Swal.fire({
-          text: "Funcionário cadastrado com sucesso",
-          icon: "success",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          redirect("/employee");
-        }, 3000);
-      } catch (error) {
-        Swal.fire({
-          text: "Erro ao cadastrar o funcionário. Tente novamente!",
-          icon: "error",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-      }
-    } else {
       Swal.fire({
-        html: error.join("<br>"),
+        text: "Funcionário editado com sucesso.",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      Swal.fire({
+        text: "Erro ao editar o funcionário. Tente novamente!",
         icon: "error",
-        timer: 0,
+        timer: 3000,
         toast: true,
         position: "top-right",
         showConfirmButton: false,
@@ -105,25 +94,16 @@ export default function CreateUser() {
     }
   }
 
-  async function fetchAllWorkgroups() {
-    const results = await getAllWorkgroups();
-    setWorkgroups(results ?? []);
-  }
-
-  useEffect(() => {
-    fetchAllWorkgroups();
-  }, []);
-
   return (
     <>
       <section className="overflow-x-auto m-10">
-        <h1 className="text-2xl mb-4">Criar novo funcionário</h1>
+        <h1 className="text-2xl mb-4">Editar funcionário</h1>
         <Card>
           <form
             onSubmit={handleSubmit}
             method="post"
-            encType="multipart/form-data"
             className="flex flex-col gap-4"
+            encType="multipart/form-data"
           >
             <h1 className="text-xl font-bold flex items-center gap-2">
               <HiOutlineViewGrid /> Informações gerais
@@ -132,60 +112,62 @@ export default function CreateUser() {
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
-                placeholder="Nome *"
+                placeholder="Nome"
                 name="name"
                 onChange={handleData}
-                required
+                value={employee.name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineBadgeCheck}
-                placeholder="Sobrenome *"
+                placeholder="Sobrenome"
                 name="last_name"
                 onChange={handleData}
-                required
+                value={employee.last_name}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineIdentification}
-                placeholder="Documento *"
+                placeholder="Documento"
                 name="document"
                 onChange={handleData}
-                required
+                value={employee.document}
               />
               <TextInput
                 className="flex-auto"
                 icon={HiOutlineCalendar}
-                placeholder="Data de nascimento *"
+                placeholder="Data de nascimento"
                 name="birthday"
                 onChange={handleData}
-                required
+                value={employee.birthday}
               />
             </div>
             <div className="flex gap-4">
               <TextInput
                 className="flex-1"
                 icon={HiOutlinePhone}
-                placeholder="Telefone 1 *"
+                placeholder="Telefone 1"
                 name="phone1"
                 onChange={handleData}
-                required
+                value={employee.phone1}
               />
               <TextInput
                 className="flex-1"
                 icon={HiOutlinePhone}
                 placeholder="Telefone 2"
                 name="phone2"
+                onChange={handleData}
+                value={employee.phone2}
               />
             </div>
             <div className="flex gap-4">
               <TextInput
                 className="flex-1"
                 icon={HiLocationMarker}
-                placeholder="Endereço *"
+                placeholder="Endereço"
                 name="address"
                 onChange={handleData}
-                required
+                value={employee.address}
               />
               <Select
                 className="flex-1"
@@ -194,14 +176,13 @@ export default function CreateUser() {
                 name="id_workgroup"
                 onChange={handleData}
                 required
-                defaultValue={''}
               >
-                <option key={0} value='' disabled>Selecione o cargo do funcionário</option>
-                {workgroups.map((workgroup) => (
-                    <option key={workgroup.id} value={workgroup.id}>{workgroup.name}</option>
-                ))}
+                <option value="1">teste1</option>
+                <option value="2">teste2</option>
+                <option value="3">teste3</option>
               </Select>
             </div>
+            {/* Condição para mostrar a foto do funcionário caso exista */}
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
                 Foto do funcionário
@@ -215,11 +196,7 @@ export default function CreateUser() {
                     <span className="flex items-center justify-center m-2">
                       <HiCloudUpload size={35} />
                     </span>
-                    <span className="font-semibold">Selecione uma imagem</span>{" "}
-                    ou arraste e solte
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG ou JPG
+                    <span className="font-semibold">Selecione uma imagem</span>
                   </p>
                 </div>
                 <FileInput
@@ -233,45 +210,42 @@ export default function CreateUser() {
 
             <HR />
             <h1 className="text-xl font-bold flex items-center gap-2">
-              <HiOutlineLogin /> Informações gerais
+              <HiOutlineLogin /> Informações de login
             </h1>
             <div className="flex flex-col gap-4">
               <div className="flex gap-4">
                 <TextInput
                   className="flex-1"
                   icon={HiOutlineAtSymbol}
-                  placeholder="Usuário para login *"
+                  placeholder="Usuário para login"
                   name="login"
                   onChange={handleData}
-                  required
+                  value={employee.login}
                 />
                 <TextInput
                   className="flex-1"
                   icon={HiOutlineMail}
-                  placeholder="E-mail *"
+                  placeholder="E-mail"
                   name="email"
                   onChange={handleData}
-                  required
+                  value={employee.email}
                 />
               </div>
               <div className="flex gap-4">
                 <TextInput
-                  type="password"
                   className="flex-1"
                   icon={HiOutlineKey}
-                  placeholder="Senha *"
+                  placeholder="Senha"
                   name="password"
                   onChange={handleData}
-                  required
                 />
+
                 <TextInput
-                  type="password"
                   className="flex-1"
                   icon={HiOutlineKey}
-                  placeholder="Confirme a senha *"
+                  placeholder="Confirme a senha"
                   name="password_confirm"
                   onChange={handleData}
-                  required
                 />
               </div>
             </div>

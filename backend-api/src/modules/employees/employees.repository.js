@@ -19,5 +19,13 @@ export const EmployeeRepository = {
         data.id_workgroup = Number(data.id_workgroup);
         prisma.employees.update({ where: { id }, data })
     },
+    upload: async (id, data) => {
+        data = {
+            photo: data.filename
+        };
+
+        console.log(id, data);
+        await prisma.employees.update({ where: { id }, data })
+    },
     remove: (id) => prisma.employees.delete({ where: { id } }),
 };
