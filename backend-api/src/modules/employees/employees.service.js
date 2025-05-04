@@ -27,6 +27,7 @@ export const EmployeeService = {
 
   create: async (data) => {
     // Validação
+    data = {...data, id_workgroup: Number(data.id_workgroup)}
     const parsed = employeeSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
@@ -50,6 +51,8 @@ export const EmployeeService = {
   },
 
   update: (id, data) => EmployeeRepository.update(id, data),
+
+  upload: (id, data) => EmployeeRepository.upload(id, data),
 
   remove: (id) => EmployeeRepository.remove(id),
 };

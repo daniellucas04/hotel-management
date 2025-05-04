@@ -24,9 +24,16 @@ export const EmployeeController = {
     },
 
     update: async (req, res) => {
-        console.log(req);
         const employee = await EmployeeService.update(Number(req.params.id), req.body);
         res.json(employee);
+    },
+
+    upload: async (req, res) => {
+        if (!req.file)
+            return res.status(400);
+
+        const image = await EmployeeService.upload(Number(req.params.id), req.file);
+        res.json(image);
     },
 
     remove: async (req, res) => {

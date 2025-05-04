@@ -1,17 +1,17 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAll } from "./actions";
+import { HiUserCircle } from "react-icons/hi";
 
 export default function employee() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   const [employees, setEmployees] = useState([]);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   async function fetchAllEmployees(page) {
     try {
@@ -59,22 +59,19 @@ export default function employee() {
                       className="bg-white dark:border-gray-700 dark:bg-gray-800"
                     >
                       <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        <img
-                          src="https://placehold.co/40x40"
-                          className="rounded-md"
-                          alt=""
-                        />
+                        {employee.photo ? (
+                          <img
+                            src={`http://localhost:3000/uploads/${employee.photo}`}
+                            className="rounded-md w-10 h-10"
+                          />
+                        ) : (
+                          <HiUserCircle size={35} />
+                        )}
                         <span>{employee.name}</span>
                       </Table.Cell>
                       <Table.Cell>{employee.email}</Table.Cell>
                       <Table.Cell>{employee.phone1}</Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
-                        <Link
-                          href={`/employee/permissions/${employee.id}`}
-                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                        >
-                          Permissões
-                        </Link>
                         <Link
                           href={`/employee/details/${employee.id}`}
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
@@ -103,7 +100,9 @@ export default function employee() {
             </div>
           </>
         ) : (
-          <div className="text-center bg-cyan-500 text-cyan-100 font-bold rounded-lg p-4">Não existem funcionários cadastrados.</div>
+          <div className="text-center bg-cyan-600 text-white font-bold rounded-lg p-4">
+            Não existem funcionários cadastrados.
+          </div>
         )}
       </section>
     </>
