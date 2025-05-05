@@ -1,7 +1,8 @@
 import { ReservationRepository } from './reservations.repository.js';
+import { BedroomService } from '../bedrooms/bedrooms.service.js';
 import { z } from 'zod';
 
-const ReservationStatusEnum = z.enum(['Reservado', 'Confirmado', 'Cancelado']);  
+const ReservationStatusEnum = z.enum(['Reservado', 'Confirmado', 'Cancelado']);
 
 // ver o erro que está ao testar reservations
 const ReservationSchema = z.object({
@@ -11,22 +12,15 @@ const ReservationSchema = z.object({
   id_bedroom: z.number()
     .gte(0, { message: "O id do quarto tem que ser existente" }),
 
-  check_in: z.date()
-    .refine(date => date > new Date(), {
-      message: "A data de check-in deve ser no futuro.",
-    }),
+  check_in: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Data de check-in inválida",
+  }),
 
-  check_out: z.date()
-    .refine((date, ctx) => {
-      if (date <= ctx.parent.check_in) {
-        return false;
-      }
-      return true;
-    }, {
-      message: "A data de check-out deve ser posterior à data de check-in.",
-    }),
+  check_out: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Data de check-out inválida",
+  }),
 
-  status: ReservationStatusEnum.default('Reservado'), 
+  status: ReservationStatusEnum.default('Reservado'),
 
   antecipated_payment: z.boolean().optional(),
 });
@@ -35,20 +29,35 @@ export const ReservationService = {
   getAll: () => ReservationRepository.findAll(),
   getById: (id) => ReservationRepository.findById(id),
 
-  create: (data) => {
+  create: async (data) => {
     const parsed = ReservationSchema.safeParse(data);
     if (!parsed.success) {
-        const errors = parsed.error.flatten().fieldErrors;
-        const message = Object.entries(errors).map(
-          ([field, msgs]) => `${field}: ${msgs.join(', ')}`
-        ).join('; ');
-        throw new Error("Erro de validação - " + message);
-      }
+      const errors = parsed.error.flatten().fieldErrors;
+      const message = Object.entries(errors).map(
+        ([field, msgs]) => `${field}: ${msgs.join(', ')}`
+      ).join('; ');
+      throw new Error("Erro de validação - " + message);
+    }
 
-    return ReservationRepository.create(data);
+    const bedroom = await BedroomService.getById(data.id_bedroom);
+    if (!bedroom) {
+      throw new Error('Quarto não encontrado.');
+    }
+
+    if (bedroom.status !== 'Livre') {
+      throw new Error('Quarto não está disponível.');
+    }
+
+    // 2. Cria a reserva
+    const createdReservation = await ReservationRepository.create(data);
+
+    // vai atualizar   o status do quarto para "Ocupado"
+    await BedroomService.update(data.id_bedroom, { status: 'Ocupado' });
+
+    return createdReservation;
   },
 
-//testar o update
+  //testar o update
 
   update: (id, data) => {
     const parsed = ReservationSchema.safeParse(data);

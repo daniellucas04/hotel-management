@@ -3,9 +3,8 @@
 
 import { TaskRepository } from './tasks.repository.js';
 import { z } from 'zod';
-
-const TaskPriorityEnum = z.enum(['Baixa', 'Média', 'Alta']);
-const TaskStatusEnum = z.enum(['Pendente', 'Em andamento', 'Concluída']);
+const TaskPriorityEnum = z.enum(['Baixa', 'Normal', 'Alta', 'Urgente']);
+const TaskStatusEnum = z.enum(['Pendente', 'Em_andamento', 'Finalizado']);
 
 export const taskSchema = z.object({
     id_employee: z.number({
@@ -31,7 +30,7 @@ export const TaskService = {
     getAll: () => TaskRepository.findAll(),
     getById: (id) => TaskRepository.findById(id),
     create: (data) => {
-        const parsed = TaskRepository.safeParse(data);
+        const parsed = taskSchema.safeParse(data);
         if (!parsed.success) {
             throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
         }
@@ -40,7 +39,7 @@ export const TaskService = {
     },
     //testar update
     update: (id, data) => {
-        const parsed = TaskRepository.safeParse(data);
+        const parsed = taskSchema.safeParse(data);
         if (!parsed.success) {
             throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
         }
