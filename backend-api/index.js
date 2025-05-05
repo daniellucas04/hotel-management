@@ -6,7 +6,7 @@ import plansRoutes from './src/modules/plans/plans.routes.js';
 import reservationsRoutes from './src/modules/reservations/reservations.routes.js'
 import tasksRoutes from './src/modules/tasks/tasks.routes.js';
 import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
-
+import path from 'path';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +20,7 @@ app.use('/plans', plansRoutes);
 app.use('/reservations', reservationsRoutes);
 app.use('/tasks', tasksRoutes);
 app.use('/workgroups', workgroupsRoutes);
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 
 app.listen(PORT, () => {

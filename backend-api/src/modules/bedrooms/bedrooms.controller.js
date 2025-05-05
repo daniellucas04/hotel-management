@@ -17,8 +17,19 @@ export const BedroomController = {
     },
 
     create: async (req, res) => {
-        const bedroom = await BedroomService.create(req.body);
-        res.status(201).json(bedroom);
+        try {
+            const data = req.body;
+
+            // Se a foto foi enviada, adiciona ao objeto
+            if (req.file) {
+                data.photo = `/uploads/${req.file.filename}`;
+            }
+
+            const created = await GuestService.create(data);
+            res.status(201).json(created);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     },
 
     update: async (req, res) => {

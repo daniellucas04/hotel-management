@@ -6,6 +6,7 @@ import { BedroomController } from './bedrooms.controller.js';
 
 const router = express.Router();
 
+router.post('/bedrooms', upload.single('photo'), BedroomController.create);
 router.get('/', BedroomController.getAll);
 router.get('/:id', BedroomController.getById);
 router.post('/', BedroomController.create);
