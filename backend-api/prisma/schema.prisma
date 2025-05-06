@@ -10,8 +10,8 @@ datasource db {
 model workgroups {
   id         Int      @id @default(autoincrement())
   name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt @default(now())
 
   employees employees[]
 }
@@ -19,6 +19,7 @@ model workgroups {
 model employees {
   id           Int       @id @default(autoincrement())
   id_workgroup Int
+<<<<<<< HEAD
   name         String
   last_name    String
   document     String    @db.VarChar(14)
@@ -32,19 +33,34 @@ model employees {
   password     String
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
+=======
+  name       String
+  last_name  String
+  document   String    @db.VarChar(14)
+  birthday   DateTime? @db.Date
+  phone1     String    @db.VarChar(14)
+  phone2     String    @db.VarChar(14)
+  address    String
+  photo      String
+  login      String
+  email      String
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt @default(now())
+>>>>>>> 655ff184f4ddb95378e4dbfe762277c39c09bdeb
 
-  workgroup workgroups @relation(fields: [id_workgroup], references: [id])
-  tasks     tasks[]
-  logs      logs[]
+  workgroup  workgroups @relation(fields: [id_workgroup], references: [id])
+  tasks      tasks[]
+  logs       logs[]
 }
 
 model plans {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  price       Decimal  @db.Decimal(10, 2)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  price       Decimal   @db.Decimal(10, 2)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt @default(now())
 
   guests guests[]
 }
@@ -61,7 +77,7 @@ model guests {
   address    String
   photo      String
   created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  updated_at DateTime  @updatedAt @default(now())
 
   plan         plans                @relation(fields: [id_plan], references: [id])
   consumptions guest_consumptions[]
@@ -89,8 +105,8 @@ model bedrooms {
   short_description String
   status            BedroomStatus         @default(Livre)
   photo             String
-  created_at        DateTime              @default(now())
-  updated_at        DateTime              @updatedAt
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @updatedAt @default(now())
 
   reservations reservations[]
 }
@@ -116,10 +132,10 @@ model tasks {
   id_reservation Int
   priority       TaskPriority @default(Baixa)
   description    String
-  price          Decimal      @db.Decimal(10, 2)
-  status         TaskStatus   @default(Pendente)
-  created_at     DateTime     @default(now())
-  updated_at     DateTime     @updatedAt
+  price          Decimal              @db.Decimal(10, 2)
+  status         TaskStatus           @default(Pendente)
+  created_at     DateTime             @default(now())
+  updated_at     DateTime             @updatedAt @default(now())
 
   employee    employees    @relation(fields: [id_employee], references: [id])
   reservation reservations @relation(fields: [id_reservation], references: [id])

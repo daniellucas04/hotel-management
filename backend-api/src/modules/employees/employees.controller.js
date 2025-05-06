@@ -8,7 +8,8 @@ import { EmployeeService } from './employees.service.js';
 
 export const EmployeeController = {
     getAll: async (req, res) => {
-        const employees = await EmployeeService.getAll();
+        const {page, limit} = req.query;
+        const employees = await EmployeeService.getAll(page, limit);
         res.json(employees);
     },
 
@@ -36,6 +37,14 @@ export const EmployeeController = {
     update: async (req, res) => {
         const employee = await EmployeeService.update(Number(req.params.id), req.body);
         res.json(employee);
+    },
+
+    upload: async (req, res) => {
+        if (!req.file)
+            return res.status(400);
+
+        const image = await EmployeeService.upload(Number(req.params.id), req.file);
+        res.json(image);
     },
 
     remove: async (req, res) => {

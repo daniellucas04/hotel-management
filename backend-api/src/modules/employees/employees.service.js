@@ -14,7 +14,7 @@ const employeeSchema = z.object({
   birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de nascimento inválida",
   }),
-  phone1: z.string().min(10),
+  phone1: z.string().min(11),
   phone2: z.string().optional(),
   address: z.string().min(1),
   photo: z.string().optional(),
@@ -24,12 +24,13 @@ const employeeSchema = z.object({
 });
 
 export const EmployeeService = {
-  getAll: () => EmployeeRepository.findAll(),
+  getAll: (page, limit) => EmployeeRepository.findAll(page, limit),
 
   getById: (id) => EmployeeRepository.findById(id),
 
   create: async (data) => {
     // Validação
+    data = {...data, id_workgroup: Number(data.id_workgroup)}
     const parsed = employeeSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
@@ -54,6 +55,8 @@ export const EmployeeService = {
   
   //fazer o update
   update: (id, data) => EmployeeRepository.update(id, data),
+
+  upload: (id, data) => EmployeeRepository.upload(id, data),
 
   remove: (id) => EmployeeRepository.remove(id),
 };

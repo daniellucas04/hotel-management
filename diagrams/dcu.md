@@ -1,3 +1,3 @@
 ### Diagrama de caso de uso
 
-Mermaid não possui
+<img src="../brainstorm/images/diagrama_caso_de_uso.png" />
