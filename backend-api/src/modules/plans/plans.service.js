@@ -18,9 +18,11 @@ const plansSchema = z.object({
 });
 
 export const PlanService = {
-  getAll: () => PlanRepository.findAll(),
+  getAll: (page, limit) => PlanRepository.findAll(page, limit),
   getById: (id) => PlanRepository.findById(id),
   create: (data) => {
+    data = {...data, price: Number(data.price)}
+
     const parsed = plansSchema.safeParse(data);
     if (!parsed.success) {
       throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
@@ -30,6 +32,7 @@ export const PlanService = {
   },
   //testar update
   update: (id, data) => {
+    data = {...data, price: Number(data.price)}
     const parsed = plansSchema.safeParse(data);
     if (!parsed.success) {
       throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));

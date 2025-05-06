@@ -102,11 +102,11 @@ export async function savePhoto(id, photo) {
 }
 
 export async function deleteEmployee(id) {
-  try { 
+  try {
     const result = await fetch(`http://localhost:8000/employees/${id}`, {
       method: 'delete'
     });
-    
+
     console.log(await result);
   } catch (error) {
     console.log(error);
@@ -140,7 +140,7 @@ function validate(employee, error) {
     if (employee.password_confirm != employee.password) {
       error.push("- Senhas não conferem");
     }
-  
+
     if (employee.password.length < 6) {
       error.push("- A senha precisa conter pelo menos 6 caracteres");
     }

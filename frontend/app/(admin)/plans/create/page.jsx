@@ -13,21 +13,73 @@ import {
 } from "flowbite-react";
 import { useState } from "react";
 import Link from "next/link";
+import { createPlan, validateCreate } from "../actions";
+import Swal from "sweetalert2";
+import { redirect } from "next/navigation";
 
 export default function CreatePlan() {
-  const [planData, setPlanData] = useState({
+  const [plan, setPlan] = useState({
     title: '',
     description: "",
     price: "",
   });
 
   function handleData(event) {
-    setPlanData(p => ({...p, [event.target.name]: event.target.value}))
+    setPlan(p => ({...p, [event.target.name]: event.target.value}))
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(planData);
+
+    const error = validateCreate(plan);
+    if (error.length == 0) {
+          try {
+            const planData = await createPlan(plan);
+            if (planData.message) {
+              Swal.fire({
+                text: planData.message,
+                icon: "error",
+                timer: 3000,
+                toast: true,
+                position: "top-right",
+                showConfirmButton: false,
+              });
+              return;
+            }
+    
+            Swal.fire({
+              text: "Plano cadastrado com sucesso",
+              icon: "success",
+              timer: 3000,
+              toast: true,
+              position: "top-right",
+              showConfirmButton: false,
+            });
+    
+            setTimeout(() => {
+              redirect("/plans");
+            }, 3000);
+          } catch (error) {
+            console.log(error);
+            Swal.fire({
+              text: "Erro ao cadastrar o plano. Tente novamente!",
+              icon: "error",
+              timer: 3000,
+              toast: true,
+              position: "top-right",
+              showConfirmButton: false,
+            });
+          }
+        } else {
+          Swal.fire({
+            html: error.join("<br>"),
+            icon: "error",
+            timer: 0,
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+          });
+        }
   }
 
   return (
@@ -48,7 +100,7 @@ export default function CreatePlan() {
                 onChange={handleData}
                 name="title"
                 required
-                value={planData.title}
+                value={plan.title}
               />
               <TextInput
                 className="flex-auto"
@@ -57,7 +109,7 @@ export default function CreatePlan() {
                 onChange={handleData}
                 name="description"
                 required
-                value={planData.description}
+                value={plan.description}
               />
               <TextInput
                 className="flex-auto"
@@ -66,7 +118,7 @@ export default function CreatePlan() {
                 onChange={handleData}
                 name="price"
                 required
-                value={planData.price}
+                value={plan.price}
               />
             </div>
 
