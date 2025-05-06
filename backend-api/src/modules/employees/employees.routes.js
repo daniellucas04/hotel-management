@@ -6,7 +6,7 @@ import fs from 'fs';
 import { EmployeeController } from './employees.controller.js'
 import { upload } from '../../middlewares/upload.js';
 
-const uploadDir = path.resolve(process.cwd(), '..frontend/src/public/uploads');
+const uploadDir = path.resolve(process.cwd(), '../frontend/src/public/uploads');
 
 // Garante que o diretório existe
 if (!fs.existsSync(uploadDir)) {
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 const router = express.Router();
 
 router.post('/photo', upload.single('photo'), EmployeeController.create);
