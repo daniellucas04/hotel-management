@@ -11,7 +11,16 @@ import path from 'path';
 
 const app = express();
 app.use(express.json());
-const PORT = 3000;
+const PORT = 8000;
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+})
 
 app.use('/auth', AuthRoutes);
 app.use('/guests', guestRoutes);
