@@ -1,6 +1,6 @@
-import { prisma } from '../../lib/prisma.js';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
+import { EmployeeRepository } from '../employees/employees.repository.js';
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -17,9 +17,7 @@ export const AuthService = {
 
     const { email, password } = data;
 
-    const employee = await prisma.employees.findUnique({
-      where: { email },
-    });
+    const employee = await EmployeeRepository.findByEmail(email);
 
     if (!employee) {
       throw new Error('Email ou senha inválidos');

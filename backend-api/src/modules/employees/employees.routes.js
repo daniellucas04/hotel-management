@@ -6,7 +6,7 @@ import { upload } from '../../middlewares/upload.js';
 
 const router = express.Router();
 
-router.post('/employees', upload.single('photo'), EmployeeController.create);
+router.post('/photo', upload.single('photo'), EmployeeController.create);
 router.get('/', EmployeeController.getAll);
 router.get('/:id', EmployeeController.getById);
 router.post('/', EmployeeController.create);

@@ -3,6 +3,9 @@
 import prisma from '../../config/prisma.js';
 
 export const EmployeeRepository = {
+    findByEmail: (email) => {
+        return prisma.employees.findUnique({ where: { email } });
+      },
     findAll: () => prisma.employees.findMany(),
     findById: (id) => prisma.employees.findUnique({ where: { id } }),
     create: (data) => prisma.employees.create({ data }),
