@@ -54,6 +54,7 @@ export default function employee() {
 
   useEffect(() => {
     fetchAllEmployees(currentPage);
+    setDeleted(false);
   }, [currentPage, deleted]);
 
   return (

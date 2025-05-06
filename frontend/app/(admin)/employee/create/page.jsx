@@ -73,6 +73,17 @@ export default function CreateUser() {
     if (error.length == 0) {
       try {
         const employeeData = await createEmployee(employee);
+        if (employeeData.message) {
+          Swal.fire({
+            text: employeeData.message,
+            icon: "error",
+            timer: 3000,
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+          });
+          return;
+        }
 
         if (image) {
           await savePhoto(employeeData.id, image);

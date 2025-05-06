@@ -103,9 +103,11 @@ export async function savePhoto(id, photo) {
 
 export async function deleteEmployee(id) {
   try { 
-    await fetch(`http://localhost:8000/employees/${id}`, {
+    const result = await fetch(`http://localhost:8000/employees/${id}`, {
       method: 'delete'
     });
+    
+    console.log(await result);
   } catch (error) {
     console.log(error);
   }

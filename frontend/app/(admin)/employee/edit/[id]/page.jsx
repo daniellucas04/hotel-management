@@ -25,7 +25,7 @@ import {
 } from "flowbite-react";
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllWorkgroups, getEmployee, updateEmployee } from "../../actions";
+import { getAllWorkgroups, getEmployee, savePhoto, updateEmployee } from "../../actions";
 import Swal from "sweetalert2";
 
 export default function CreateEmployee({ params }) {
@@ -79,7 +79,23 @@ export default function CreateEmployee({ params }) {
     event.preventDefault();
 
     try {
-      await updateEmployee(id, employee);
+      const employeeData = await updateEmployee(id, employee);
+      console.log(employeeData);
+      if (employeeData.message) {
+        Swal.fire({
+          text: employeeData.message,
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+        return;
+      }
+
+      if (image) {
+        await savePhoto(id, image);
+      }
 
       Swal.fire({
         text: "Funcionário editado com sucesso.",

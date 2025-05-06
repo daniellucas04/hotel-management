@@ -57,7 +57,7 @@ export default function EmployeeDetails({ params }) {
           </div>
           <div>
             <Button color="light" size="sm">
-              <Link href="/employee/edit/1">Editar funcionário</Link>
+              <Link href={`/employee/edit/${employee.id}`}>Editar funcionário</Link>
             </Button>
           </div>
         </div>

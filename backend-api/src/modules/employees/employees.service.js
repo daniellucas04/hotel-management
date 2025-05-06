@@ -54,7 +54,7 @@ export const EmployeeService = {
   },
   
   //fazer o update
-  update: (id, data) => EmployeeRepository.update(id, {...data, birthday: new Date(data.birthday)}),
+  update: (id, data) => EmployeeRepository.update(id, data),
 
   upload: (id, data) => EmployeeRepository.upload(id, data),
 
