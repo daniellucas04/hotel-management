@@ -3,9 +3,11 @@
 
 import express from 'express';
 import { GuestController } from './guests.controller.js';
+import { upload } from '../../middlewares/upload.js';
 
 const router = express.Router();
 
+router.post('/guests', upload.single('photo'), GuestController.create);
 router.get('/', GuestController.getAll);
 router.get('/:id', GuestController.getById);
 router.post('/', GuestController.create);

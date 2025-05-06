@@ -15,8 +15,19 @@ export const GuestController = {
     },
 
     create: async (req, res) => {
-        const guest = await GuestService.create(req.body);
-        res.status(201).json(guest);
+        try {
+            const data = req.body;
+
+            // Se a foto foi enviada, adiciona ao objeto
+            if (req.file) {
+                data.photo = `/uploads/${req.file.filename}`;
+            }
+
+            const guest = await GuestService.create(data);
+            res.status(201).json(guest);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     },
 
     update: async (req, res) => {

@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { EmployeeController } from './employees.controller.js'
+import { upload } from '../../middlewares/upload.js';
 
 const uploadDir = path.resolve(process.cwd(), '..frontend/src/public/uploads');
 
@@ -26,6 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const router = express.Router();
 
+router.post('/employees', upload.single('photo'), EmployeeController.create);
 router.get('/', EmployeeController.getAll);
 router.get('/:id', EmployeeController.getById);
 router.post('/', EmployeeController.create);

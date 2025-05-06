@@ -8,16 +8,16 @@ datasource db {
 }
 
 model workgroups {
-  id         Int         @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt @default(now())
 
-  employees  employees[]
+  employees employees[]
 }
 
 model employees {
-  id         Int       @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   id_workgroup Int
   name       String
   last_name  String
@@ -39,14 +39,14 @@ model employees {
 }
 
 model plans {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   description String
   price       Decimal   @db.Decimal(10, 2)
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt @default(now())
 
-  guests      guests[]
+  guests guests[]
 }
 
 model guests {
@@ -63,77 +63,77 @@ model guests {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt @default(now())
 
-  plan       plans      @relation(fields: [id_plan], references: [id])
+  plan         plans                @relation(fields: [id_plan], references: [id])
   consumptions guest_consumptions[]
   reservations reservations[]
 }
 
 model guest_consumptions {
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   id_guest   Int
-  price      Decimal   @db.Decimal(10, 2)
-  created_at DateTime  @default(now())
+  price      Decimal  @db.Decimal(10, 2)
+  created_at DateTime @default(now())
 
-  guest      guests    @relation(fields: [id_guest], references: [id])
+  guest guests @relation(fields: [id_guest], references: [id])
 }
 
 model bedrooms {
-  id                Int                    @id @default(autoincrement())
+  id                Int                   @id @default(autoincrement())
   number            Int
   bathroom_quantity Int
   bed_quantity      Int
   tv_quantity       Int
-  category          BedroomCategory        @default(Solteiro)
-  classification    BedroomClassification  @default(Standard)
-  privileges        String?                // SET convertido em String
+  category          BedroomCategory       @default(Solteiro)
+  classification    BedroomClassification @default(Standard)
+  privileges        String? // SET convertido em String
   short_description String
-  status            BedroomStatus          @default(Livre)
+  status            BedroomStatus         @default(Livre)
   photo             String
   created_at        DateTime               @default(now())
   updated_at        DateTime               @updatedAt @default(now())
 
-  reservations      reservations[]
+  reservations reservations[]
 }
 
 model reservations {
-  id                  Int      @id @default(autoincrement())
+  id                  Int               @id @default(autoincrement())
   id_guest            Int
   id_bedroom          Int
   check_in            DateTime
   check_out           DateTime
   status              ReservationStatus @default(Reservado)
   created_at          DateTime          @default(now())
-  antecipated_payment Boolean?          // Enum 'T', 'F' convertido em booleano
+  antecipated_payment Boolean? // Enum 'T', 'F' convertido em booleano
 
-  guest               guests    @relation(fields: [id_guest], references: [id])
-  bedroom             bedrooms  @relation(fields: [id_bedroom], references: [id])
-  tasks               tasks[]
+  guest   guests   @relation(fields: [id_guest], references: [id])
+  bedroom bedrooms @relation(fields: [id_bedroom], references: [id])
+  tasks   tasks[]
 }
 
 model tasks {
-  id             Int       @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   id_employee    Int
   id_reservation Int
-  priority       TaskPriority         @default(Baixa)
+  priority       TaskPriority @default(Baixa)
   description    String
   price          Decimal              @db.Decimal(10, 2)
   status         TaskStatus           @default(Pendente)
   created_at     DateTime             @default(now())
   updated_at     DateTime             @updatedAt @default(now())
 
-  employee       employees    @relation(fields: [id_employee], references: [id])
-  reservation    reservations @relation(fields: [id_reservation], references: [id])
+  employee    employees    @relation(fields: [id_employee], references: [id])
+  reservation reservations @relation(fields: [id_reservation], references: [id])
 }
 
 model logs {
-  id           Int      @id @default(autoincrement())
-  id_employee  Int
-  error_code   String   @db.VarChar(10)
-  message      String
-  ip           String   @db.VarChar(12)
-  created_at   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  id_employee Int
+  error_code  String   @db.VarChar(10)
+  message     String
+  ip          String   @db.VarChar(12)
+  created_at  DateTime @default(now())
 
-  employee     employees @relation(fields: [id_employee], references: [id])
+  employee employees @relation(fields: [id_employee], references: [id])
 }
 
 enum BedroomCategory {
