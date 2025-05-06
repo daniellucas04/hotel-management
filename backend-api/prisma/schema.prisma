@@ -19,7 +19,6 @@ model workgroups {
 model employees {
   id           Int       @id @default(autoincrement())
   id_workgroup Int
-<<<<<<< HEAD
   name         String
   last_name    String
   document     String    @db.VarChar(14)
@@ -30,24 +29,8 @@ model employees {
   photo        String
   login        String
   email        String    @unique
-  password     String
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
-=======
-  name       String
-  last_name  String
-  document   String    @db.VarChar(14)
-  birthday   DateTime? @db.Date
-  phone1     String    @db.VarChar(14)
-  phone2     String    @db.VarChar(14)
-  address    String
-  photo      String
-  login      String
-  email      String
-  password   String
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt @default(now())
->>>>>>> 655ff184f4ddb95378e4dbfe762277c39c09bdeb
 
   workgroup  workgroups @relation(fields: [id_workgroup], references: [id])
   tasks      tasks[]
