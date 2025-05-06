@@ -11,7 +11,7 @@ import path from 'path';
 
 const app = express();
 app.use(express.json());
-const PORT = 3000;
+const PORT = 8000;
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.use('/auth', AuthRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
-app.use('/employees', employeesRoutes);
+app.use('/employees', employeesRoutes); 
 app.use('/plans', plansRoutes);
 app.use('/reservations', reservationsRoutes);
 app.use('/tasks', tasksRoutes);

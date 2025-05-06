@@ -3,8 +3,8 @@
 import prisma from '../../config/prisma.js';
 
 export const EmployeeRepository = {
-    findByEmail: (email) => {
-        return prisma.employees.findUnique({ where: { email } });
+    findByLogin: (login) => {
+        return prisma.employees.findUnique({ where: { login } });
       },
     findAll: async (page, limit) => {
         let offset = ( page - 1 ) * limit;

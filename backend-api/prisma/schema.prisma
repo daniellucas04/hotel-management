@@ -26,7 +26,7 @@ model employees {
   phone2       String     @db.VarChar(14)
   address      String
   photo        String
-  login        String
+  login        String     @unique
   email        String     @unique
   created_at   DateTime   @default(now())
   updated_at   DateTime   @default(now()) @updatedAt
