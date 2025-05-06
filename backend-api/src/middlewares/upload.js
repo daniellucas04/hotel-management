@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 // a pasta que as fotos vão ser armazenadas
-const uploadDir = path.resolve('uploads');
+const uploadDir = path.resolve(process.cwd(), '../frontend/src/public/uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }

@@ -7,10 +7,10 @@ const employeeSchema = z.object({
   id_workgroup: z.number(),
   name: z.string().min(1),
   last_name: z.string().min(1),
-  document: z.string()
-    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
-      message: "Documento deve estar no formato xxx.xxx.xxx-xx",
-    }),
+  document: z.string(),
+    // .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+    //   message: "Documento deve estar no formato xxx.xxx.xxx-xx",
+    // }),
   birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de nascimento inválida",
   }),
@@ -54,7 +54,7 @@ export const EmployeeService = {
   },
   
   //fazer o update
-  update: (id, data) => EmployeeRepository.update(id, data),
+  update: (id, data) => EmployeeRepository.update(id, {...data, birthday: new Date(data.birthday)}),
 
   upload: (id, data) => EmployeeRepository.upload(id, data),
 

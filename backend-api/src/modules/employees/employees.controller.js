@@ -27,7 +27,7 @@ export const EmployeeController = {
                 data.photo = `/uploads/${req.file.filename}`;
             }
 
-            const created = await GuestService.create(data);
+            const created = await EmployeeService.create(data);
             res.status(201).json(created);
         } catch (error) {
             res.status(400).json({ error: error.message });
