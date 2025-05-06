@@ -6,13 +6,14 @@ import plansRoutes from './src/modules/plans/plans.routes.js';
 import reservationsRoutes from './src/modules/reservations/reservations.routes.js'
 import tasksRoutes from './src/modules/tasks/tasks.routes.js';
 import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
+import  AuthRoutes  from './src/modules/auth/auth.controller.js';
 import path from 'path';
 
 const app = express();
 app.use(express.json());
 const PORT = 3000;
 
-
+app.use('/auth', AuthRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
 app.use('/employees', employeesRoutes);
