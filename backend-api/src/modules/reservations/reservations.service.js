@@ -25,6 +25,15 @@ const ReservationSchema = z.object({
   antecipated_payment: z.boolean().optional(),
 });
 
+class ValidationError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.name = 'ValidationError';
+    this.statusCode = 400;
+    this.details = details; // Objeto com os erros por campo
+  }
+}
+
 export const ReservationService = {
   getAll: () => ReservationRepository.findAll(),
   getById: (id) => ReservationRepository.findById(id),
@@ -33,22 +42,18 @@ export const ReservationService = {
     const parsed = ReservationSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      const message = Object.entries(errors).map(
-        ([field, msgs]) => `${field}: ${msgs.join(', ')}`
-      ).join('; ');
-      throw new Error("Erro de validação - " + message);
+      console.log(ValidationError('Error de validação,' + errors))
+      throw new ValidationError('Erro de validação', errors);
     }
 
     const bedroom = await BedroomService.getById(data.id_bedroom);
     if (!bedroom) {
-      throw new Error('Quarto não encontrado.');
+      throw new ValidationError('Erro de validação', { id_bedroom: ['Quarto não encontrado.'] });
     }
-
     if (bedroom.status !== 'Livre') {
-      throw new Error('Quarto não está disponível.');
+      throw new ValidationError('Erro de validação', { id_bedroom: ['Quarto não está disponível.'] });
     }
-
-    // 2. Cria a reserva
+    
     const createdReservation = await ReservationRepository.create(data);
 
     // vai atualizar   o status do quarto para "Ocupado"
@@ -62,10 +67,12 @@ export const ReservationService = {
   update: (id, data) => {
     const parsed = ReservationSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
+      const errors = parsed.error.flatten().fieldErrors;
+      throw new ValidationError('Erro de validação', errors);
     }
+  
     return ReservationRepository.update(id, data);
   },
-
+  
   remove: (id) => ReservationRepository.remove(id),
 };

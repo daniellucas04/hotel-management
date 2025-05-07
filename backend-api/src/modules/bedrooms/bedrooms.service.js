@@ -20,6 +20,15 @@ export const bedroomSchema = z.object({
     photo: z.string().url("Foto precisa ser uma URL válida"),
 });
 
+class ValidationError extends Error {
+    constructor(message, details) {
+      super(message);
+      this.name = 'ValidationError';
+      this.statusCode = 400;
+      this.details = details; // Objeto com os erros por campo
+    }
+  }
+
 const bedroomUpdateSchema = bedroomSchema.partial();
 
 export const BedroomService = {
@@ -30,8 +39,10 @@ export const BedroomService = {
     create: (data) => {
         const parsed = bedroomSchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
-        }
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
+          }
 
         return BedroomRepository.create(data);
     },
@@ -39,8 +50,10 @@ export const BedroomService = {
     update: (id, data) => {
         const parsed = bedroomUpdateSchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
-        }
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
+          }
 
         return BedroomRepository.update(id, data);
     },

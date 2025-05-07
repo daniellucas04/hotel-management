@@ -18,6 +18,16 @@ const GuestShchema = z.object({
   photo: z.string().optional(),
 });
 
+// Tratamento de erro para o front receber o erro
+class ValidationError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.name = 'ValidationError';
+    this.statusCode = 400;
+    this.details = details; // Objeto com os erros por campo
+  }
+}
+
 export const GuestService = {
   getAll: () => GuestRepository.findAll(),
   getById: (id) => GuestRepository.findById(id),
@@ -26,10 +36,8 @@ export const GuestService = {
     const parsed = GuestShchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      const message = Object.entries(errors).map(
-        ([field, msgs]) => `${field}: ${msgs.join(', ')}`
-      ).join('; ');
-      throw new Error("Erro de validação - " + message);
+      console.log(ValidationError('Error de validação,' + errors))
+      throw new ValidationError('Erro de validação', errors);
     }
 
     const validData = parsed.data;
@@ -41,6 +49,15 @@ export const GuestService = {
   },
 
   //fazer o update
-  update: (id, data) => GuestRepository.update(id, data),
+  update: (id, data) => {
+    const parsed = GuestShchema.safeParse(data);
+    if(!parsed.success){
+      const errors = parsed.error.flatten().fieldErrors
+      throw new ValidationError('Erro de validação', errors)
+    }
+
+    return GuestRepository.update(id, data)
+
+  },
   remove: (id) => GuestRepository.remove(id),
 };

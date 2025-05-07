@@ -17,13 +17,25 @@ const plansSchema = z.object({
     .max(10000, { message: 'O preço deve ser inferior a 10.000.' }),
 });
 
+// Tratamento de erro para o front receber o erro
+class ValidationError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.name = 'ValidationError';
+    this.statusCode = 400;
+    this.details = details; // Objeto com os erros por campo
+  }
+}
+
 export const PlanService = {
   getAll: () => PlanRepository.findAll(),
   getById: (id) => PlanRepository.findById(id),
   create: (data) => {
     const parsed = plansSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
+      const errors = parsed.error.flatten().fieldErrors;
+      console.log(ValidationError('Error de validação,' + errors))
+      throw new ValidationError('Erro de validação', errors);
     }
 
     return PlanRepository.create(data);
@@ -32,7 +44,9 @@ export const PlanService = {
   update: (id, data) => {
     const parsed = plansSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
+      const errors = parsed.error.flatten().fieldErrors;
+      console.log(ValidationError('Error de validação,' + errors))
+      throw new ValidationError('Erro de validação', errors);
     }
 
     return PlanRepository.update(id, data);
