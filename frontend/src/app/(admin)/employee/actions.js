@@ -88,7 +88,7 @@ export async function savePhoto(id, photo) {
     image.append("image", photo);
 
     const uploadedImage = await fetch(
-      `http://localhost:8000/employees/${id}/upload`,
+      `http://localhost:8000/employees/${id}/uploads`,
       {
         method: "post",
         body: image,
@@ -114,7 +114,7 @@ export function validate(employee) {
     error.push("- Senha inválida");
   }
 
-  if (employee.document.length != 11) {
+  if (employee.document.length != 14) {
     error.push("- Documento inválido");
   }
 

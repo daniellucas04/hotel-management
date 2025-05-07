@@ -73,6 +73,7 @@ export default function CreateUser() {
     if (error.length == 0) {
       try {
         const employeeData = await createEmployee(employee);
+        console.log(employeeData)
         if (image) {
           await savePhoto(employeeData.id, image);
         }
