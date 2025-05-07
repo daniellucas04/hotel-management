@@ -93,13 +93,13 @@ export default function Plans() {
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
                         <Link
-                          href="/plans/details/1"
+                          href={`/plans/details/${plan.id}`}
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Detalhes
                         </Link>
                         <Link
-                          href="/plans/edit/1"
+                          href={`/plans/edit/${plan.id}`}
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Editar

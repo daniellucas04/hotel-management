@@ -2,7 +2,7 @@
 
 import { Button, HR } from "flowbite-react";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   HiOutlineArrowLeft,
   HiOutlineClock,
@@ -10,21 +10,27 @@ import {
   HiOutlinePhone,
   HiOutlineUser,
   HiOutlineUsers,
+  HiUserCircle,
 } from "react-icons/hi";
+import { getGuest } from "../../actions";
 
-export default function GuestDetails() {
-  const [guestData, setGuestData] = useState({
-    id_plan: 1,
-    name: "Hóspede",
-    last_name: "Teste",
-    document: "123.123.123-23",
-    birthday: "2003-09-20",
-    phone1: "(12) 11231-2131",
-    phone2: "",
-    address: "Rua hóspede, 20",
-    photo: "https://placehold.co/50x50",
-  });
-
+export default function GuestDetails({ params }) {
+  const { id } = use(params);
+    const [guest, setGuest] = useState({});
+  
+    async function fetchGuest(id) {
+      try {
+        const result = await getGuest(id);
+        setGuest(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    useEffect(() => {
+      fetchGuest(id);
+    }, []);
+    console.log(guest)
   return (
     <>
       <section className="h-full mx-52 my-14">
@@ -37,15 +43,19 @@ export default function GuestDetails() {
         </Link>
         <div className="flex items-center justify-between gap-4 mt-4">
           <div className="flex items-center gap-4">
-            <img
-              src={guestData.name}
-              className="max-w-20 max-h-2max-w-20 rounded-full"
-            />
-            <span className="text-3xl font-medium">{guestData.name}</span>
+            {guest.photo ? (
+              <img
+                src={`http://localhost:3000/uploads/${guest.photo}`}
+                className="w-20 h-20 rounded-full"
+              />
+            ) : (
+              <HiUserCircle size={25} />
+            )}
+            <span className="text-3xl font-medium">{guest.name}</span>
           </div>
           <div>
             <Button color="light" size="sm">
-              <Link href="/employee/edit/1">Editar perfil</Link>
+              <Link href={`/guests/edit/${guest.id}`}>Editar perfil</Link>
             </Button>
           </div>
         </div>
@@ -57,107 +67,16 @@ export default function GuestDetails() {
                 <HiOutlineClock />
               </span>
               <span className="text-zinc-900 font-medium">Nome completo</span>
-              <span>{guestData.name}</span>
+              <span>{guest.name}</span>
             </div>
             <div className="flex items-center gap-4">
               <span>
                 <HiOutlinePhone />
               </span>
               <span className="text-zinc-900 font-medium">Telefone</span>
-              <span>{guestData.name}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineMail />
-              </span>
-              <span className="text-zinc-900 font-medium">E-mail</span>
-              <span>{guestData.name}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineUser />
-              </span>
-              <span className="text-zinc-900 font-medium">Nome completo</span>
-              <span>{guestData.name}</span>
+              <span>{guest.phone1}</span>
             </div>
           </section>
-          <section className="flex flex-col items-start gap-4 text-gray-500">
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineUsers />
-              </span>
-              <span className="text-zinc-900 font-medium">Acompanhantes</span>
-              <span>{guestData.name}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineClock />
-              </span>
-              <span className="text-zinc-900 font-medium">Cliente desde</span>
-              <span>{guestData.name.since}</span>
-            </div>
-          </section>
-        </div>
-
-        <HR />
-
-        <div className="flex flex-col items-center justify-center mt-14">
-          <h1 className="text-lg font-bold">Plano do hóspede</h1>
-          <div className="flex gap-8">
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">{guestData.name.plan}</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guestData.name.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
-            </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold hover-90 hover:scale-110 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Normal</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guestData.name.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <span className="text-sm border py-2 px-4 rounded-md text-gray-500 shadow">
-                  Plano atual
-                </span>
-              </div>
-            </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Premium</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {guestData.name.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </>

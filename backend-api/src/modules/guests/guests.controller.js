@@ -1,11 +1,13 @@
 // Aqui vai receber as requisições para usar o guests services
 
 
+import { GuestRepository } from './guests.repository.js';
 import { GuestService } from './guests.service.js';
 
 export const GuestController = {
     getAll: async (req, res) => {
-        const guests = await GuestService.getAll();
+        const {page, limit} = req.query;
+        const guests = await GuestService.getAll(page, limit);
         res.json(guests);
     },
 
@@ -33,6 +35,14 @@ export const GuestController = {
     update: async (req, res) => {
         const guest = await GuestService.update(Number(req.params.id), req.body);
         res.json(guest);
+    },
+
+    upload: async (req, res) => {
+        if (!req.file)
+            return res.status(400);
+
+        const image = await GuestService.upload(Number(req.params.id), req.file);
+        res.json(image);
     },
 
     remove: async (req, res) => {

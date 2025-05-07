@@ -6,6 +6,7 @@ import {
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
   HiOutlineCash,
+  HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlinePhone,
   HiOutlineViewGrid,
@@ -17,14 +18,18 @@ import {
   HR,
   Label,
   Radio,
+  Select,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { createGuest, getAllPlans, savePhoto, validateCreate } from "../actions";
+import { redirect } from "next/dist/server/api-utils";
+import Swal from "sweetalert2";
 
 export default function CreateUser() {
-  const [guestData, setGuestData] = useState({
-    id_plan: 1,
+  const [guest, setGuest] = useState({
+    id_plan: "",
     name: "",
     last_name: "",
     document: "",
@@ -34,19 +39,89 @@ export default function CreateUser() {
     address: "",
     photo: "",
   });
-
-  function handleImageSubmit(event) {
-    console.log(event.target.files[0].name);
+  const [plans, setPlans] = useState([]);
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+  
+  function handleFileChange(event) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   }
-
-   function handleData(event) {
-    setGuestData(p => ({...p, [event.target.name]: event.target.value}))
+  
+  function handleData(event) {
+    setGuest((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
-
-  function handleSubmit(event) {
+  
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(guestData)
+    let error = validateCreate(guest);
+
+    if (error.length == 0) {
+      try {
+        const guestData = await createGuest(guest);
+        if (guestData.message) {
+          Swal.fire({
+            text: guestData.message,
+            icon: "error",
+            timer: 3000,
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+          });
+          return;
+        }
+
+        if (image) {
+          await savePhoto(guestData.id, image);
+        }
+
+        Swal.fire({
+          text: "Hóspede cadastrado com sucesso",
+          icon: "success",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+
+        // setTimeout(() => {
+        //   redirect("/guests");
+        // }, 3000);
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          text: "Erro ao cadastrar o hópede. Tente novamente!",
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+      }
+    } else {
+      Swal.fire({
+        html: error.join("<br>"),
+        icon: "error",
+        timer: 0,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
+  
+  async function fetchAllPlans() {
+    const results = await getAllPlans();
+    setPlans(results ?? []);
+  }
+
+  useEffect(() => {
+    fetchAllPlans();
+  }, []);
 
   return (
     <>
@@ -129,17 +204,27 @@ export default function CreateUser() {
               >
                 <div className="flex flex-col items-center justify-center pb-6 pt-5">
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="flex items-center justify-center m-2">
-                      <HiCloudUpload size={35} />
-                    </span>
-                    <span className="font-semibold">Selecione uma imagem</span>{" "}
-                    ou arraste e solte
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG ou JPG (MAX. 800x400px)
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        className="w-32 h-32 object-cover rounded shadow mx-auto"
+                      />
+                    ) : (
+                      <span className="flex flex-col items-center justify-center">
+                        <HiCloudUpload size={35} />
+                        <span className="font-semibold">
+                          Selecione uma imagem
+                        </span>
+                      </span>
+                    )}
                   </p>
                 </div>
-                <FileInput id="dropzone-file" name="photo" onChange={handleImageSubmit} className="hidden" />
+                <FileInput
+                  id="dropzone-file"
+                  name="photo"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </Label>
             </div>
 
@@ -148,19 +233,24 @@ export default function CreateUser() {
               <HiOutlineCash /> Plano de hospedagem
             </h1>
             <div className="flex gap-8 justify-center">
-              {/* Alteração: Receber os planos do banco de dados */}
-              {/* <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Básico</span>{" "}
-                <Radio name="plan" onChange={handleData} />
-              </div>
-              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Premium</span>{" "}
-                <Radio name="plan" onChange={handleData} />
-              </div>
-              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Deluxe</span>{" "}
-                <Radio name="plan" onChange={handleData} />
-              </div> */}
+              <Select
+                className="flex-1"
+                icon={HiOutlineCollection}
+                placeholder="Cargo *"
+                name="id_plan"
+                onChange={handleData}
+                required
+                defaultValue={""}
+              >
+                <option key={0} value="" disabled>
+                  Selecione o plano
+                </option>
+                {plans.map((plan) => (
+                  <option key={plan.id} value={plan.id}>
+                    {plan.title}
+                  </option>
+                ))}
+              </Select>
             </div>
 
             <HR />

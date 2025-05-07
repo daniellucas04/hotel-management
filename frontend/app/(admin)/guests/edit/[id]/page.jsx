@@ -19,11 +19,13 @@ import {
   Radio,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { getAllPlans, updateGuest } from "../../actions";
 
-export default function CreateUser() {
-  const [guestData, setGuestData] = useState({
+export default function CreateUser({ params }) {
+  const { id } = use(params);
+  const [guest, setGuest] = useState({
     id_plan: 1,
     name: "",
     last_name: "",
@@ -35,23 +37,93 @@ export default function CreateUser() {
     photo: "",
   });
 
-  function handleImageSubmit(event) {
-    console.log(event.target.files[0].name);
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [workgroups, setWorkgroups] = useState([]);
+
+  async function fetchGuest(id) {
+    try {
+      const result = await getEmployee(id);
+      setGuest(result);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-   function handleData(event) {
-    setGuestData(p => ({...p, [event.target.name]: event.target.value}))
+  useEffect(() => {
+    fetchGuest(id);
+    fetchAllPlans();
+  }, []);
+  
+  function handleFileChange(event) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   }
 
-  function handleSubmit(event) {
+  function handleData(event) {
+    setGuest((p) => ({ ...p, [event.target.name]: event.target.value }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(guestData)
+
+    try {
+      const guestData = await updateGuest(id, guest);
+
+      if (guestData.message) {
+        Swal.fire({
+          text: guestData.message,
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+        return;
+      }
+
+      if (image) {
+        await savePhoto(id, image);
+      }
+
+      Swal.fire({
+        text: "Funcionário editado com sucesso.",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      Swal.fire({
+        text: "Erro ao editar o funcionário. Tente novamente!",
+        icon: "error",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
+
+  async function fetchAllPlans() {
+    const results = await getAllPlans();
+    setWorkgroups(results ?? []);
+  }
+  
+  let data = new Date(guest.birthday);
+  const dia = String(data.getUTCDate()).padStart(2, '0'); // Garante que o dia tenha 2 dígitos
+  const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do zero (0 = Janeiro)
+  const ano = data.getUTCFullYear();
+  guest.birthday = `${dia}/${mes}/${ano}`;
 
   return (
     <>
       <section className="overflow-x-auto m-10">
-        <h1 className="text-2xl mb-4">Criar novo hóspede</h1>
+        <h1 className="text-2xl mb-4">Editar hóspede</h1>
         <Card>
           <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" className="flex flex-col gap-4">
             <h1 className="text-xl font-bold flex items-center gap-2">
@@ -64,7 +136,7 @@ export default function CreateUser() {
                 placeholder="Nome *"
                 onChange={handleData}
                 name="name"
-                value={guestData.name}
+                value={guest.name}
               />
               <TextInput
                 className="flex-auto"
@@ -72,7 +144,7 @@ export default function CreateUser() {
                 placeholder="Sobrenome *"
                 onChange={handleData}
                 name="last_name"
-                value={guestData.last_name}
+                value={guest.last_name}
               />
               <TextInput
                 className="flex-auto"
@@ -80,7 +152,7 @@ export default function CreateUser() {
                 placeholder="Documento *"
                 onChange={handleData}
                 name="document"
-                value={guestData.document}
+                value={guest.document}
               />
               <TextInput
                 className="flex-auto"
@@ -88,7 +160,7 @@ export default function CreateUser() {
                 placeholder="Data de nascimento *"
                 onChange={handleData}
                 name="birthday"
-                value={guestData.birthday}
+                value={guest.birthday}
               />
             </div>
             <div className="flex gap-4">
@@ -98,7 +170,7 @@ export default function CreateUser() {
                 placeholder="Telefone 1 *"
                 onChange={handleData}
                 name="phone1"
-                value={guestData.phone1}
+                value={guest.phone1}
               />
               <TextInput
                 className="flex-1"
@@ -106,7 +178,7 @@ export default function CreateUser() {
                 placeholder="Telefone 2"
                 onChange={handleData}
                 name="phone2"
-                value={guestData.phone2}
+                value={guest.phone2}
               />
             </div>
             <div className="flex gap-4">
@@ -116,7 +188,7 @@ export default function CreateUser() {
                 placeholder="Endereço *"
                 onChange={handleData}
                 name="address"
-                value={guestData.address}
+                value={guest.address}
               />
             </div>
             <div>
@@ -154,7 +226,7 @@ export default function CreateUser() {
                 <Radio
                   name="plan"
                   value={1}
-                  checked={guestData.id_plan == 1 ? true : false}
+                  checked={guest.id_plan == 1 ? true : false}
                 />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
@@ -162,7 +234,7 @@ export default function CreateUser() {
                 <Radio
                   name="plan"
                   value={2}
-                  checked={guestData.id_plan == 2 ? true : false}
+                  checked={guest.id_plan == 2 ? true : false}
                 />
               </div>
               <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
@@ -170,7 +242,7 @@ export default function CreateUser() {
                 <Radio
                   name="plan"
                   value={3}
-                  checked={guestData.id_plan == 3 ? true : false}
+                  checked={guest.id_plan == 3 ? true : false}
                 />
               </div> */}
             </div>
