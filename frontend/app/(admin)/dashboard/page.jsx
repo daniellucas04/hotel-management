@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { faker } from "@faker-js/faker";
-import { Line } from "react-chartjs-2";
+import { HiOutlineBan, HiOutlineCurrencyDollar, HiOutlineIdentification, HiOutlineLightBulb } from "react-icons/hi";
 
 ChartJS.register(
   CategoryScale,
@@ -63,44 +63,37 @@ export default function Dashboard() {
       
       <div className="m-10">
         <h1 className="text-4xl font-medium mb-10">Seja bem-vindo!</h1>
-        <span className="text text-gray-600">
-          Essas são as últimas atividades recentes do hotel
+        <span className="text-2xl text-gray-600">
+          Atividades do hotel hoje
         </span>
-        <section className="flex items-center gap-8 mt-4">
-          <Card className="w-1/3">
-            <h1 className="text-2xl font-bold">Algum relatório breve</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-              cupiditate quidem, dolor eveniet placeat maiores suscipit fuga
-              delectus officia pariatur inventore ullam natus, consequuntur quo
-              dolorem tempora? Voluptatum, nulla esse!
-            </p>
+        <section className="grid grid-cols-4 gap-8 mt-4">
+          <Card className="bg-green-400 shadow-lg text-white font-bold">
+            <div className="flex justify-between items-center text-2xl">
+              Hóspedes cadastrados
+              <HiOutlineIdentification className="text-white" size={40} />
+            </div>
+            <span className="text-6xl">10</span>
           </Card>
-
-          <Card className="h-48 flex-1">
-            <h1 className="text-2xl font-bold">Outro relatório breve</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-              sapiente ipsum architecto! Maxime tempora, eos unde earum enim
-              consectetur sint ratione delectus, deserunt magni cum dignissimos
-              ullam totam aliquid natus.
-            </p>
+          <Card className="bg-yellow-400 shadow-lg text-white font-bold">
+            <div className="flex justify-between items-center text-2xl">
+              Reservas ativas
+              <HiOutlineLightBulb className="text-white" size={40} />
+            </div>
+            <span className="text-6xl">10</span>
           </Card>
-        </section>
-        <section className="flex items-center gap-10 mt-32">
-          <Line
-            className="border p-4 rounded max-h-[300px] max-w-[1000px]"
-            options={options}
-            data={data}
-          />
-          <Card className="h-[300px]">
-            <h1 className="text-2xl font-bold">Alguma outra informação</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Temporibus dolorum ad ex magnam alias rerum beatae delectus
-              consequatur vero earum? Hic voluptate doloremque eligendi esse
-              beatae veniam nesciunt laborum nam?
-            </p>
+          <Card className="bg-orange-400 shadow-lg text-white font-bold">
+            <div className="flex justify-between items-center text-2xl">
+              Quartos ocupados
+              <HiOutlineBan className="text-white" size={40} />
+            </div>
+            <span className="text-6xl">10</span>
+          </Card>
+          <Card className="bg-rose-400 shadow-lg text-white font-bold">
+            <div className="flex justify-between items-center text-2xl">
+              Total em check-outs hoje
+              <HiOutlineCurrencyDollar className="text-white" size={40} />
+            </div>
+            <span className="text-6xl">10</span>
           </Card>
         </section>
       </div>
