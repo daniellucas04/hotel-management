@@ -4,6 +4,7 @@ import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteGuest, getAll } from "./actions";
+import Swal from "sweetalert2";
 
 export default function Guests() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,66 +66,76 @@ export default function Guests() {
             <Link href="/guests/create">Novo hóspede</Link>
           </Button>
         </div>
-        <Table striped>
-          <Table.Head>
-            <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Telefone</Table.HeadCell>
-            <Table.HeadCell>Plano</Table.HeadCell>
-            <Table.HeadCell>Ações</Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {guests.map((guest) => {
-              return (
-                <Table.Row
-                  key={guest.id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {guest.photo ? (
-                      <img
-                        src={`http://localhost:3000/uploads/${guest.photo}`}
-                        className="rounded-md w-10 h-10"
-                      />
-                    ) : (
-                      <HiUserCircle size={35} />
-                    )}
-                    <span>{guest.name}</span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Badge className="w-fit">{guest.phone1}</Badge>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Badge color="blue" className="w-fit">
-                      {guest.plan.title}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell className="flex items-center gap-4">
-                    <Link
-                      href={`/guests/details/${guest.id}`}
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+        {guests.length > 0 ? (
+          <>
+            <Table striped>
+              <Table.Head>
+                <Table.HeadCell>Nome</Table.HeadCell>
+                <Table.HeadCell>Telefone</Table.HeadCell>
+                <Table.HeadCell>Plano</Table.HeadCell>
+                <Table.HeadCell>Ações</Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {guests.map((guest) => {
+                  return (
+                    <Table.Row
+                      key={guest.id}
+                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
                     >
-                      Detalhes
-                    </Link>
-                    <Link
-                      href={`/guests/edit/${guest.id}`}
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Editar
-                    </Link>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
-        <div className="flex justify-end">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-          showIcons
-        />
-        </div>
+                      <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                        {guest.photo ? (
+                          <img
+                            src={`http://localhost:3000/uploads/${guest.photo}`}
+                            className="rounded-md w-10 h-10"
+                          />
+                        ) : (
+                          <HiUserCircle size={35} />
+                        )}
+                        <span>{guest.name}</span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Badge className="w-fit">{guest.phone1}</Badge>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Badge color="blue" className="w-fit">
+                          {guest.plan.title}
+                        </Badge>
+                      </Table.Cell>
+                      <Table.Cell className="flex items-center gap-4">
+                        <Link
+                          href={`/guests/details/${guest.id}`}
+                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        >
+                          Detalhes
+                        </Link>
+                        <Link
+                          href={`/guests/edit/${guest.id}`}
+                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        >
+                          Editar
+                        </Link>
+                        <button className="text-cyan-600 font-semibold hover:underline" onClick={() => handleDelete(guest.id)}>Deletar</button>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+            <div className="flex justify-end">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+              showIcons
+            />
+            </div>
+          </>
+        ): (
+          <div className="text-center bg-cyan-600 text-white font-bold rounded-lg p-4">
+            Não existem hóspedes cadastrados.
+          </div>
+        )}
+        
       </section>
     </>
   );

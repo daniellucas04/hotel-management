@@ -221,7 +221,6 @@ export default function CreateEmployee({ params }) {
                 ))}
               </Select>
             </div>
-            {/* Condição para mostrar a foto do funcionário caso exista */}
             <div>
               <Label className="text-lg" htmlFor="dropzone-file">
                 Foto do funcionário

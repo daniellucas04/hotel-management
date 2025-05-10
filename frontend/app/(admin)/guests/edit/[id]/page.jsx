@@ -6,6 +6,7 @@ import {
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
   HiOutlineCash,
+  HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlinePhone,
   HiOutlineViewGrid,
@@ -16,12 +17,13 @@ import {
   FileInput,
   HR,
   Label,
-  Radio,
+  Select,
   TextInput,
 } from "flowbite-react";
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllPlans, updateGuest } from "../../actions";
+import { getAllPlans, getGuest, savePhoto, updateGuest } from "../../actions";
+import Swal from "sweetalert2";
 
 export default function CreateUser({ params }) {
   const { id } = use(params);
@@ -39,11 +41,11 @@ export default function CreateUser({ params }) {
 
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [workgroups, setWorkgroups] = useState([]);
+  const [plans, setPlans] = useState([]);
 
   async function fetchGuest(id) {
     try {
-      const result = await getEmployee(id);
+      const result = await getGuest(id);
       setGuest(result);
     } catch (error) {
       console.log(error);
@@ -111,7 +113,7 @@ export default function CreateUser({ params }) {
 
   async function fetchAllPlans() {
     const results = await getAllPlans();
-    setWorkgroups(results ?? []);
+    setPlans(results ?? []);
   }
   
   let data = new Date(guest.birthday);
@@ -201,17 +203,22 @@ export default function CreateUser({ params }) {
               >
                 <div className="flex flex-col items-center justify-center pb-6 pt-5">
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="flex items-center justify-center m-2">
-                      <HiCloudUpload size={35} />
-                    </span>
-                    <span className="font-semibold">Selecione uma imagem</span>{" "}
-                    ou arraste e solte
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG ou JPG (MAX. 800x400px)
+                    {guest.photo ? (
+                      <img
+                        src={previewUrl ? previewUrl : `http://localhost:3000/uploads/${guest.photo}`}
+                        className="w-32 h-32 object-cover rounded shadow mx-auto"
+                      />
+                    ) : (
+                      <span className="flex flex-col items-center justify-center">
+                        <HiCloudUpload size={35} />
+                        <span className="font-semibold">
+                          Selecione uma imagem
+                        </span>
+                      </span>
+                    )}
                   </p>
                 </div>
-                <FileInput id="dropzone-file" name="photo" onChange={handleImageSubmit} className="hidden" />
+                <FileInput id="dropzone-file" name="photo" onChange={handleFileChange} className="hidden" />
               </Label>
             </div>
 
@@ -220,31 +227,23 @@ export default function CreateUser({ params }) {
               <HiOutlineCash /> Plano de hospedagem
             </h1>
             <div className="flex gap-8 justify-center">
-              {/* Alteração: buscar planos do banco de dados */}
-              {/* <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Básico</span>{" "}
-                <Radio
-                  name="plan"
-                  value={1}
-                  checked={guest.id_plan == 1 ? true : false}
-                />
-              </div>
-              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Premium</span>{" "}
-                <Radio
-                  name="plan"
-                  value={2}
-                  checked={guest.id_plan == 2 ? true : false}
-                />
-              </div>
-              <div className="flex items-center gap-8 border py-2 px-8 rounded-md shadow-sm cursor-default transition-all">
-                <span className="font-medium">Deluxe</span>{" "}
-                <Radio
-                  name="plan"
-                  value={3}
-                  checked={guest.id_plan == 3 ? true : false}
-                />
-              </div> */}
+              <Select
+                className="flex-1"
+                icon={HiOutlineCollection}
+                placeholder="Planos *"
+                name="id_plan"
+                onChange={handleData}
+                required
+              >
+                <option key={0} value="" disabled>
+                  Selecione o plano
+                </option>
+                {plans.map((plan) => (
+                  <option key={plan.id} value={plan.id}>
+                    {plan.title}
+                  </option>
+                ))}
+              </Select>
             </div>
 
             <HR />

@@ -36,7 +36,6 @@ export default function CreateBedroom() {
   });
 
   function handleImageSubmit(event) {
-    console.log(event.target.files[0].name);
   }
 
    function handleData(event) {
@@ -47,7 +46,6 @@ export default function CreateBedroom() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(bedroomData);
   }
 
   return (

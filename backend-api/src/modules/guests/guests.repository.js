@@ -25,9 +25,8 @@ export const GuestRepository = {
 
         return await prisma.guests.create({ data })
     },
-    update: (id, data) => prisma.guests.update({ where: { id }, data }),
+    update: async (id, data) => await prisma.guests.update({ where: { id }, data }),
     upload: async (id, data) => {
-        console.log(data);
         data = {
             photo: data.filename
         };

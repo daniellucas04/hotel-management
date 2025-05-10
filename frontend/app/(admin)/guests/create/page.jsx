@@ -88,9 +88,9 @@ export default function CreateUser() {
           showConfirmButton: false,
         });
 
-        // setTimeout(() => {
-        //   redirect("/guests");
-        // }, 3000);
+        setTimeout(() => {
+          redirect("/guests");
+        }, 3000);
       } catch (error) {
         console.log(error);
         Swal.fire({
@@ -236,7 +236,7 @@ export default function CreateUser() {
               <Select
                 className="flex-1"
                 icon={HiOutlineCollection}
-                placeholder="Cargo *"
+                placeholder="Planos *"
                 name="id_plan"
                 onChange={handleData}
                 required

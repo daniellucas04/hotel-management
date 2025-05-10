@@ -44,7 +44,15 @@ export const GuestService = {
   },
 
   //fazer o update
-  update: (id, data) => GuestRepository.update(id, data),
+  update: (id, data) => {
+    let split = String(data.birthday).split('/');
+    let year = split[2];
+    let month = split[1];
+    let day = split[0];
+    data.birthday = new Date(year, month, day);
+
+    return GuestRepository.update(id, data)
+  },
 
   upload: (id, data) => GuestRepository.upload(id, data),
 
