@@ -11,7 +11,7 @@ model workgroups {
   id         Int         @id @default(autoincrement())
   name       String
   created_at DateTime    @default(now())
-  updated_at DateTime    @default(now()) @updatedAt
+  updated_at DateTime    @updatedAt
   employees  employees[]
 }
 
@@ -26,11 +26,11 @@ model employees {
   phone2       String     @db.VarChar(14)
   address      String
   photo        String
-  login        String     @unique
-  email        String     @unique
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now()) @updatedAt
+  login        String
+  email        String
   password     String
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
   workgroup    workgroups @relation(fields: [id_workgroup], references: [id])
   logs         logs[]
   tasks        tasks[]
@@ -44,7 +44,7 @@ model plans {
   description String
   price       Decimal  @db.Decimal(10, 2)
   created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  updated_at  DateTime @updatedAt
   guests      guests[]
 }
 
@@ -60,7 +60,7 @@ model guests {
   address      String
   photo        String
   created_at   DateTime             @default(now())
-  updated_at   DateTime             @default(now()) @updatedAt
+  updated_at   DateTime             @updatedAt
   consumptions guest_consumptions[]
   plan         plans                @relation(fields: [id_plan], references: [id])
   reservations reservations[]
@@ -84,14 +84,14 @@ model bedrooms {
   bathroom_quantity Int
   bed_quantity      Int
   tv_quantity       Int
-  category          BedroomCategory       @default(Solteiro)
+  category          bedrooms_category     @default(Solteiro)
   classification    BedroomClassification @default(Standard)
   privileges        String?
   short_description String
-  status            BedroomStatus         @default(Livre)
+  status            bedrooms_status       @default(Livre)
   photo             String
   created_at        DateTime              @default(now())
-  updated_at        DateTime              @default(now()) @updatedAt
+  updated_at        DateTime              @updatedAt
   reservations      reservations[]
 }
 
@@ -121,7 +121,7 @@ model tasks {
   price          Decimal      @db.Decimal(10, 2)
   status         TaskStatus   @default(Pendente)
   created_at     DateTime     @default(now())
-  updated_at     DateTime     @default(now()) @updatedAt
+  updated_at     DateTime     @updatedAt
   employee       employees    @relation(fields: [id_employee], references: [id])
   reservation    reservations @relation(fields: [id_reservation], references: [id])
 
@@ -141,24 +141,10 @@ model logs {
   @@index([id_employee], map: "logs_id_employee_fkey")
 }
 
-enum BedroomCategory {
-  Solteiro
-  Duplo_solteiro
-  Quarto_casal
-  // Dormitório
-  Apartamento
-}
-
 enum BedroomClassification {
   Standard
   Master
   Deluxe
-}
-
-enum BedroomStatus {
-  Livre
-  Ocupado
-  // Manutenção
 }
 
 enum ReservationStatus {
@@ -178,4 +164,18 @@ enum TaskStatus {
   Pendente
   Em_andamento
   Finalizado
+}
+
+enum bedrooms_category {
+  Solteiro
+  Duplo_solteiro
+  Quarto_casal
+  Dormit_rio     @map("Dormitório")
+  Apartamento
+}
+
+enum bedrooms_status {
+  Livre
+  Ocupado
+  Manuten__o @map("Manutenção")
 }

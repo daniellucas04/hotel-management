@@ -32,7 +32,7 @@ class ValidationError extends Error {
 const bedroomUpdateSchema = bedroomSchema.partial();
 
 export const BedroomService = {
-  getAll: (page, limit) => EmployeeRepository.findAll(page, limit),
+  getAll: (page, limit) => BedroomRepository.findAll(page, limit),
 
   getById: (id) => BedroomRepository.findById(id),
 
