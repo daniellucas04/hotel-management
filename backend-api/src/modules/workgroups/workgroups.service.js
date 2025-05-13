@@ -7,14 +7,26 @@ const WorkShchema = z.object({
     name: z.string().min(3),
 });
 
+
+class ValidationError extends Error {
+    constructor(message, details) {
+      super(message);
+      this.name = 'ValidationError';
+      this.statusCode = 400;
+      this.details = details; // Objeto com os erros por campo
+    }
+  }
+
 export const WorkService = {
     getAll: () => WorkRepository.findAll(),
     getById: (id) => WorkRepository.findById(id),
     create: (data) => {
         const parsed = WorkShchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
-        }
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
+          }
 
         return WorkRepository.create(data);
     },
@@ -22,7 +34,9 @@ export const WorkService = {
     update: (id, data) => {
         const parsed = WorkShchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
         }
 
         return WorkRepository.update(id, data);

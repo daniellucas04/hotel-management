@@ -87,7 +87,7 @@ export default function employee() {
                       <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {employee.photo ? (
                           <img
-                            src={`http://localhost:3000/uploads/${employee.photo}`}
+                            src={`http://localhost:8000/uploads/${employee.photo}`}
                             className="rounded-md w-10 h-10"
                           />
                         ) : (
