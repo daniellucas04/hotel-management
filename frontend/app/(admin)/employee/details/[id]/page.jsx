@@ -45,7 +45,7 @@ export default function EmployeeDetails({ params }) {
           <div className="flex items-center gap-4">
             {employee.photo ? (
               <img
-                src={`http://localhost:3000/uploads/${employee.photo}`}
+                src={`http://localhost:8000/uploads/${employee.photo}`}
                 className="w-20 h-20 rounded-full"
               />
             ) : (

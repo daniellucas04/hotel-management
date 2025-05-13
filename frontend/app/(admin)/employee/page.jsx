@@ -42,7 +42,6 @@ export default function employee() {
           setDeleted(true);
         } catch (error) {
           setDeleted(false);
-          console.log(error);
         }
       }
     });

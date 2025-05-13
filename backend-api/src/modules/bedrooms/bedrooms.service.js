@@ -8,16 +8,15 @@ const BedroomClassification = z.enum(['Standard', 'Master', 'Deluxe']);
 const BedroomStatus = z.enum(['Livre', 'Ocupado', 'Manutenção']);
 
 export const bedroomSchema = z.object({
-  number: z.number().int().positive(),
-  bathroom_quantity: z.number().gte(0),
-  bed_quantity: z.number().gte(0),
-  tv_quantity: z.number().gte(0),
+  number: z.number(),
+  bathroom_quantity: z.number(),
+  bed_quantity: z.number(),
+  tv_quantity: z.number(),
   category: BedroomCategory.optional(),
   classification: BedroomClassification.optional(),
-  privileges: z.string().optional().nullable(),
+  privileges: z.array().optional().nullable(),
   short_description: z.string().min(5, "Descrição muito curta"),
   status: BedroomStatus.optional(),
-  photo: z.string().url("Foto precisa ser uma URL válida"),
 });
 
 class ValidationError extends Error {
@@ -37,13 +36,22 @@ export const BedroomService = {
   getById: (id) => BedroomRepository.findById(id),
 
   create: (data) => {
-    const parsed = bedroomSchema.safeParse(data);
-    if (!parsed.success) {
-      const errors = parsed.error.flatten().fieldErrors;
-      console.log(ValidationError('Error de validação,' + errors))
-      throw new ValidationError('Erro de validação', errors);
-    }
+    // const parsed = bedroomSchema.safeParse(data);
+    // console.log(parsed);
+    // if (!parsed.success) {
+    //   const errors = parsed.error.flatten().fieldErrors;
+    //   console.log(errors);
+    //   throw new ValidationError('Erro de validação', errors);
+    // }
 
+    data = {
+      ...data, 
+      number: Number(data.number),
+      bathroom_quantity: Number(data.bathroom_quantity),
+      bed_quantity: Number(data.bed_quantity),
+      tv_quantity: Number(data.tv_quantity),
+    
+    }
     return BedroomRepository.create(data);
   },
 
@@ -51,7 +59,7 @@ export const BedroomService = {
     const parsed = bedroomUpdateSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      console.log(ValidationError('Error de validação,' + errors))
+      
       throw new ValidationError('Erro de validação', errors);
     }
 

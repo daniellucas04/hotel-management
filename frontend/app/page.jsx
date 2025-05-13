@@ -18,12 +18,12 @@ export default function Login() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        const login = await loginEmployee(data);
-        if (login) {
-            alert('login feito com sucesso');
+        // const login = await loginEmployee(data);
+        // if (login) {
+        //     alert('login feito com sucesso');
             redirect('/dashboard', 'replace');
             
-        }
+        // }
 
     }
 

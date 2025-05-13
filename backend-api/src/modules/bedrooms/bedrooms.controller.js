@@ -39,12 +39,12 @@ export const BedroomController = {
     },
 
     upload: async (req, res) => {
-            if (!req.file)
-                return res.status(400);
-    
-            const image = await BedroomService.upload(Number(req.params.id), req.file);
-            res.json(image);
-        },
+        if (!req.file)
+            return res.status(400);
+  
+        const image = await BedroomService.upload(Number(req.params.id), req.file);
+        res.json(image);
+    },
 
     remove: async (req, res) => {
         await BedroomService.remove(Number(req.params.id));

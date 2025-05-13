@@ -46,7 +46,7 @@ export async function getAll(page, limit) {
     }
 }
 
-export async function getBedrooms(id) {
+export async function getBedroom(id) {
     try {
         const data = await fetch(`http://localhost:8000/bedrooms/${id}`, {
             method: "get",
@@ -96,8 +96,7 @@ export async function savePhoto(id, photo) {
         const image = new FormData();
         image.append("image", photo);
 
-        const uploadedImage = await fetch(
-            `http://localhost:8000/bedrooms/${id}/uploads`,
+        const uploadedImage = await fetch(`http://localhost:8000/bedrooms/${id}/uploads`,
             {
                 method: "post",
                 body: image,
@@ -110,3 +109,14 @@ export async function savePhoto(id, photo) {
     }
 }
 
+export async function deleteBedrooms(id) {
+    try {
+      const result = await fetch(`http://localhost:8000/bedrooms/${id}`, {
+        method: 'delete'
+      });
+  
+      return await result;
+    } catch (error) {
+      console.log(error);
+    }
+  }

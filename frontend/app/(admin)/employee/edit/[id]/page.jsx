@@ -233,7 +233,7 @@ export default function CreateEmployee({ params }) {
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                     {employee.photo ? (
                       <img
-                        src={previewUrl ? previewUrl : `http://localhost:3000/uploads/${employee.photo}`}
+                        src={previewUrl ? previewUrl : `http://localhost:8000/uploads/${employee.photo}`}
                         className="w-32 h-32 object-cover rounded shadow mx-auto"
                       />
                     ) : (

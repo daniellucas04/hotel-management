@@ -45,7 +45,7 @@ export default function GuestDetails({ params }) {
           <div className="flex items-center gap-4">
             {guest.photo ? (
               <img
-                src={`http://localhost:3000/uploads/${guest.photo}`}
+                src={`http://localhost:8000/uploads/${guest.photo}`}
                 className="w-20 h-20 rounded-full"
               />
             ) : (

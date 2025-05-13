@@ -71,6 +71,7 @@ export default function CreateBedroom() {
     if (errors.length === 0) {
       try {
         const bedroomData = await createBedroom(bedroom);
+
         if (image) {
           await savePhoto(bedroomData.id, image);
         }

@@ -45,7 +45,7 @@ export const EmployeeService = {
     const parsed = employeeSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      console.log(ValidationError('Error de validação,' + errors))
+      
       throw new ValidationError('Erro de validação', errors);
     }
     

@@ -24,7 +24,7 @@ export const WorkService = {
         const parsed = WorkShchema.safeParse(data);
         if (!parsed.success) {
             const errors = parsed.error.flatten().fieldErrors;
-            console.log(ValidationError('Error de validação,' + errors))
+            
             throw new ValidationError('Erro de validação', errors);
           }
 
@@ -35,7 +35,7 @@ export const WorkService = {
         const parsed = WorkShchema.safeParse(data);
         if (!parsed.success) {
             const errors = parsed.error.flatten().fieldErrors;
-            console.log(ValidationError('Error de validação,' + errors))
+            
             throw new ValidationError('Erro de validação', errors);
         }
 

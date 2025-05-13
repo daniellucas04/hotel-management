@@ -4,12 +4,14 @@ import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAll } from "./actions";
+import { LuBedDouble } from 'react-icons/lu'
 
 export default function Bedrooms() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [bedrooms, setBedrooms] = useState([]);
+  const [deleted, setDeleted] = useState(false);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   async function fetchAllBedrooms(page) {
@@ -21,6 +23,28 @@ export default function Bedrooms() {
       console.log(error);
     }
   }
+
+  function handleDelete(id) {
+      Swal.fire({
+        title: 'Atenção!',
+        text: 'Tem certeza que deseja deletar este quarto?',
+        icon: 'warning',
+        confirmButtonText: 'Deletar',
+        confirmButtonColor: '#ff0000',
+        cancelButtonText: 'Cancelar',
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await deleteBedroom(id);
+            setDeleted(true);
+          } catch (error) {
+            setDeleted(false);
+          }
+        }
+      });
+    }
 
   const onPageChange = (page) => {
     setCurrentPage(page);
@@ -42,6 +66,7 @@ export default function Bedrooms() {
         <>
           <Table striped>
             <Table.Head>
+              <Table.HeadCell></Table.HeadCell>
               <Table.HeadCell>Número</Table.HeadCell>
               <Table.HeadCell>Descrição</Table.HeadCell>
               <Table.HeadCell>Situação</Table.HeadCell>
@@ -53,28 +78,26 @@ export default function Bedrooms() {
               {bedrooms.map((bedroom) => (
                 <Table.Row
                   key={bedroom.id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  className="bg-white"
                 >
-                  <Table.Cell className="relative overflow-hidden gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    <span className="relative z-10 text-xl font-extrabold pl-16">
-                      {bedroom.number || "N/A"} {/* Número do quarto */}
-                    </span>
+                  <Table.Cell className="relative overflow-hidden gap-4 whitespace-nowrap font-medium text-gray-900">
                     <div className="absolute inset-0 flex items-center z-0">
                       {bedroom.photo ? (
-                        <img
-                          src={`http://localhost:8000/uploads/${bedroom.photo}`}
-                          className="object-cover rounded mask-image"
-                          alt="Imagem do quarto"
-                        />
+                        <>
+                          <img
+                            src={`http://localhost:8000/uploads/${bedroom.photo}`}
+                            className="object-cover max-w-52 rounded mask-image"
+                            alt="Imagem do quarto"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+                        </>
                       ) : (
-                        <img
-                          src="https://placehold.co/200x200"
-                          className="object-cover rounded mask-image"
-                          alt="Imagem placeholder"
-                        />
+                        <LuBedDouble className="ml-10" size={35} />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
                     </div>
+                  </Table.Cell>
+                  <Table.Cell className="relative overflow-hidden gap-4 whitespace-nowrap font-medium text-gray-900">
+                      {bedroom.number}
                   </Table.Cell>
                   <Table.Cell>
                     <span>

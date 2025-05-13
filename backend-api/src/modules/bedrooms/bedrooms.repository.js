@@ -14,14 +14,20 @@ export const BedroomRepository = {
         }
     },
     findById: (id) => prisma.bedrooms.findUnique({ where: { id } }),
-    create: (data) => prisma.bedrooms.create({ data }),
+    create: async (data) => {
+        data = {
+            ...data,
+            privileges: data.privileges.join(",")
+        }
+
+        return await prisma.bedrooms.create({ data })
+    },
     update: (id, data) => prisma.bedrooms.update({ where: { id }, data }),
     upload: async (id, data) => {
         data = {
             photo: data.filename
         };
 
-        console.log(id, data);
         await prisma.bedrooms.update({ where: { id }, data })
     },
     remove: (id) => prisma.bedrooms.delete({ where: { id } }),

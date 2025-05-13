@@ -85,7 +85,7 @@ export default function Guests() {
                       <Table.Cell className="flex items-center gap-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {guest.photo ? (
                           <img
-                            src={`http://localhost:3000/uploads/${guest.photo}`}
+                            src={`http://localhost:8000/uploads/${guest.photo}`}
                             className="rounded-md w-10 h-10"
                           />
                         ) : (

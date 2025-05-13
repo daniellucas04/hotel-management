@@ -18,42 +18,115 @@ import {
   Textarea,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getBedroom, savePhoto, updateBedroom } from "../../actions";
+import Swal from "sweetalert2";
+import { useParams } from "next/navigation";
 
-export default function EditRoom() {
-  const [bedroomData, setBedroomData] = useState({
-    number: 202,
-    bathroom_quantity: 1,
-    bed_quantity: 2,
-    tv_quantity: 1,
+export default function EditBedroom({ params }) {
+  const { id } = useParams(params);
+  const [bedroom, setBedroom] = useState({
+    number: "",
+    bathroom_quantity: "",
+    bed_quantity: "",
+    tv_quantity: "",
     category: "",
     classification: "",
     privileges: "",
     short_description: "",
     status: "",
-    photo: "https://placehold.co/2000x300",
+    photo: "",
   });
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+
 
   function handleImageSubmit(event) {
     console.log(event.target.files[0].name);
     String().split(', ')
   }
 
+  async function fetchBedroom(id) {
+    try {
+      let result = await getBedroom(id);
+
+      setBedroom(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleFileChange(event) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  }
+
   function handleData(event) {
-    const valor = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-
-    setBedroomData((p) => ({ ...p, [event.target.name]: valor }));
+    const { name, type, value, checked } = event.target;
+    if (type === "checkbox") {
+      setBedroom((prev) => {
+        const privileges = checked
+          ? [...prev.privileges, name]
+          : prev.privileges.filter((priv) => priv !== name);
+        return { ...prev, privileges };
+      });
+    } else {
+      setBedroom((prev) => ({ ...prev, [name]: value }));
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(bedroomData);
+
+    try {
+      const bedroom = await updateBedroom(id, employee);
+
+      if (bedroom.message) {
+        Swal.fire({
+          text: bedroom.message,
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+        return;
+      }
+
+      if (image) {
+        await savePhoto(id, image);
+      }
+
+      Swal.fire({
+        text: "Quarto editado com sucesso.",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      Swal.fire({
+        text: "Erro ao editar o quarto. Tente novamente!",
+        icon: "error",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
+
+  useEffect(() => {
+    fetchBedroom(id);
+  }, []);
 
   return (
     <>
-      
       <section className="overflow-x-auto m-10">
         <h1 className="text-2xl mb-4">Editar quarto</h1>
         <Card>
@@ -69,7 +142,7 @@ export default function EditRoom() {
                 name="number"
                 placeholder="Número / Identificação *"
                 required
-                value={bedroomData.number}
+                value={bedroom.number}
               />
               <TextInput
                 className="flex-auto"
@@ -78,7 +151,7 @@ export default function EditRoom() {
                 name="bathroom_quantity"
                 placeholder="Quantidade de banheiros *"
                 required
-                value={bedroomData.bathroom_quantity}
+                value={bedroom.bathroom_quantity}
               />
               <TextInput
                 className="flex-auto"
@@ -87,7 +160,7 @@ export default function EditRoom() {
                 name="bed_quantity"
                 placeholder="Quantidade de camas *"
                 required
-                value={bedroomData.bed_quantity}
+                value={bedroom.bed_quantity}
               />
               <TextInput
                 className="flex-auto"
@@ -96,13 +169,13 @@ export default function EditRoom() {
                 name="tv_quantity"
                 placeholder="Quantidade de TVs *"
                 required
-                value={bedroomData.tv_quantity}
+                value={bedroom.tv_quantity}
               />
             </div>
             <div className="flex gap-4">
               <div className="flex-auto">
                 <Label htmlFor="category">Categoria *</Label>
-                <Select id="category"name="category" onChange={handleData} value={bedroomData.category}>
+                <Select id="category" name="category" onChange={handleData} value={bedroom.category}>
                   <option value="">Escolha uma opção</option>
                   <option>Solteiro</option>
                   <option>Duplo solteiro</option>
@@ -114,7 +187,7 @@ export default function EditRoom() {
 
               <div className="flex-auto">
                 <Label htmlFor="classification">Classificação *</Label>
-                <Select id="classification" name="classification" onChange={handleData} value={bedroomData.classification}>
+                <Select id="classification" name="classification" onChange={handleData} value={bedroom.classification}>
                   <option value="">Escolha uma opção</option>
                   <option>Standard</option>
                   <option>Master</option>
@@ -128,31 +201,31 @@ export default function EditRoom() {
               </h1>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
                 <div className="flex items-center gap-2">
-                  <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('free_wifi')} />
                   <Label htmlFor="free_wifi">Wifi gratuito</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="air_conditioner" name="air_conditioner" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="air_conditioner" name="air_conditioner" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('air_conditioner')} />
                   <Label htmlFor="air_conditioner">Ar-condicionado</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="frigobar" name="frigobar" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="frigobar" name="frigobar" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('frigobar')} />
                   <Label htmlFor="frigobar">Frigobar</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="breakfast" name="breakfast" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="breakfast" name="breakfast" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('breakfast')} />
                   <Label htmlFor="breakfast">Café da manhã</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="bedroom_bathroom" name="bedroom_bathroom" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="bedroom_bathroom" name="bedroom_bathroom" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('bedroom_bathroom')} />
                   <Label htmlFor="bedroom_bathroom">Banheiro no quarto</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="fan" name="fan" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="fan" name="fan" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('fan')} />
                   <Label htmlFor="fan">Ventilador</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="garage" name="garage" onChange={handleData} value={bedroomData.privileges} />
+                  <Checkbox id="garage" name="garage" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('garage')} />
                   <Label htmlFor="garage">Vaga de estacinonamento</Label>
                 </div>
               </div>
@@ -165,16 +238,16 @@ export default function EditRoom() {
                 maxLength={250}
                 onChange={handleData}
                 name="short_description"
-                value={bedroomData.short_description}
+                value={bedroom.short_description}
               ></Textarea>
             </div>
             <div>
               <Label htmlFor="status">Status</Label>
-              <Select id="status" name="status" onChange={handleData} value={bedroomData.status}>
+              <Select id="status" name="status" onChange={handleData} value={bedroom.status}>
                 <option value="">Escolha uma opção</option>
-                <option value="">Livre</option>
-                <option value="">Ocupado</option>
-                <option value="">Em manutenção</option>
+                <option value="Livre">Livre</option>
+                <option value="Ocupado">Ocupado</option>
+                <option value="Manutenção">Em manutenção</option>
               </Select>
             </div>
             <div>
@@ -187,14 +260,19 @@ export default function EditRoom() {
               >
                 <div className="flex flex-col items-center justify-center pb-6 pt-5">
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="flex items-center justify-center m-2">
-                      <HiCloudUpload size={35} />
-                    </span>
-                    <span className="font-semibold">Selecione uma imagem</span>{" "}
-                    ou arraste e solte
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG ou JPG (MAX. 800x400px)
+                    {bedroom.photo ? (
+                      <img
+                        src={previewUrl ? previewUrl : `http://localhost:8000/uploads/${bedroom.photo}`}
+                        className="w-32 h-32 object-cover rounded shadow mx-auto"
+                      />
+                    ) : (
+                      <span className="flex flex-col items-center justify-center">
+                        <HiCloudUpload size={35} />
+                        <span className="font-semibold">
+                          Selecione uma imagem
+                        </span>
+                      </span>
+                    )}
                   </p>
                 </div>
                 <FileInput id="dropzone-file" name="photo" onChange={handleData} className="hidden" />

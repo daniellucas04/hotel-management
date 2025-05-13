@@ -13,6 +13,4 @@ router.post('/:id/uploads', upload.single('image'), BedroomController.upload);
 router.put('/:id', BedroomController.update);
 router.delete('/:id', BedroomController.remove);
 
-
-
 export default router;
