@@ -21,7 +21,7 @@ model employees {
   id_workgroup Int
   name       String
   last_name  String
-  document   String    @db.VarChar(14)
+  document   String    @db.VarChar(14) @unique
   birthday   DateTime? @db.Date
   phone1     String    @db.VarChar(14)
   phone2     String    @db.VarChar(14)
@@ -54,7 +54,7 @@ model guests {
   id_plan    Int
   name       String
   last_name  String
-  document   String    @db.VarChar(14)
+  document   String    @db.VarChar(14) @unique
   birthday   DateTime? @db.Date
   phone1     String    @db.VarChar(14)
   phone2     String    @db.VarChar(14)

@@ -1,6 +1,7 @@
-import { prisma } from '../../lib/prisma.js';
-import bcrypt from 'bcrypt';
+import prisma from '../../config/prisma.js';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+
 
 const LoginSchema = z.object({
   email: z.string().email(),

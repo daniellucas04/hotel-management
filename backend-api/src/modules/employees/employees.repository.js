@@ -14,18 +14,37 @@ export const EmployeeRepository = {
         }
     },
     findById: (id) => prisma.employees.findUnique({ where: { id } }),
-    create: (data) => prisma.employees.create({ data }),
-    update: (id, data) => {
+    create: async (data) => {
+        let employee = await prisma.employees.findUnique({ where: {document: data.document }});
+
+        if (employee) {
+            return {
+                message: 'Documento já cadastrado.',
+            }
+        }
+
+        return await prisma.employees.create({ data })
+    },
+    update: async (id, data) => {
         data.id_workgroup = Number(data.id_workgroup);
-        prisma.employees.update({ where: { id }, data })
+        data.birthday = new Date(data.birthday);
+
+        let employee = await prisma.employees.findUnique({ where: { document: data.document, NOT: { id: id } }});
+
+        if (employee) {
+            return {
+                message: 'Documento já cadastrado.',
+            }
+        }
+
+        return await prisma.employees.update({ where: { id }, data })
     },
     upload: async (id, data) => {
         data = {
             photo: data.filename
         };
 
-        console.log(id, data);
-        await prisma.employees.update({ where: { id }, data })
+        return await prisma.employees.update({ where: { id }, data })
     },
     remove: (id) => prisma.employees.delete({ where: { id } }),
 };

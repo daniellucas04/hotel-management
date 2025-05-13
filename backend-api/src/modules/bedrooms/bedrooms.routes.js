@@ -3,6 +3,7 @@
 
 import express from 'express';
 import { BedroomController } from './bedrooms.controller.js';
+import { upload } from '../../middlewares/upload.js';
 
 const router = express.Router();
 

@@ -7,13 +7,13 @@ const employeeSchema = z.object({
   id_workgroup: z.number(),
   name: z.string().min(1),
   last_name: z.string().min(1),
-  document: z.string()
-    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
-      message: "Documento deve estar no formato xxx.xxx.xxx-xx",
-    }),
-  birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Data de nascimento inválida",
-  }),
+  document: z.string(),
+    // .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+    //   message: "Documento deve estar no formato xxx.xxx.xxx-xx",
+    // }),
+  // birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
+  //   message: "Data de nascimento inválida",
+  // }),
   phone1: z.string().min(11),
   phone2: z.string().optional(),
   address: z.string().min(1),
@@ -31,6 +31,7 @@ export const EmployeeService = {
   create: async (data) => {
     // Validação
     data = {...data, id_workgroup: Number(data.id_workgroup)}
+
     const parsed = employeeSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
@@ -49,7 +50,6 @@ export const EmployeeService = {
     return EmployeeRepository.create({
       ...validData,
       password: hashedPassword,
-      birthday: new Date(validData.birthday),
     });
   },
   
