@@ -3,6 +3,9 @@
 import prisma from '../../config/prisma.js';
 
 export const EmployeeRepository = {
+    findByLogin: (login) => {
+        return prisma.employees.findUnique({ where: { login } });
+      },
     findAll: async (page, limit) => {
         let offset = ( page - 1 ) * limit;
         const items = await prisma.employees.findMany({ take: parseInt(limit), skip: offset })
@@ -13,6 +16,7 @@ export const EmployeeRepository = {
             total: totalItems
         }
     },
+    // findAll: ()=>prisma.employees.findMany(), buscar todos os employess
     findById: (id) => prisma.employees.findUnique({ where: { id } }),
     create: async (data) => {
         let employee = await prisma.employees.findUnique({ where: {document: data.document }});

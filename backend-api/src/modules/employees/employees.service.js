@@ -23,9 +23,19 @@ const employeeSchema = z.object({
   password: z.string().min(6),
 });
 
+class ValidationError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.name = 'ValidationError';
+    this.statusCode = 400;
+    this.details = details; // Objeto com os erros por campo
+  }
+}
+
 export const EmployeeService = {
   getAll: (page, limit) => EmployeeRepository.findAll(page, limit),
-
+  // getAll:() => EmployeeRepository.findAll(),
+  
   getById: (id) => EmployeeRepository.findById(id),
 
   create: async (data) => {
@@ -35,11 +45,10 @@ export const EmployeeService = {
     const parsed = employeeSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      const message = Object.entries(errors).map(
-        ([field, msgs]) => `${field}: ${msgs.join(', ')}`
-      ).join('; ');
-      throw new Error("Erro de validação - " + message);
+      console.log(ValidationError('Error de validação,' + errors))
+      throw new ValidationError('Erro de validação', errors);
     }
+    
 
     const validData = parsed.data;
 
@@ -54,7 +63,15 @@ export const EmployeeService = {
   },
   
   //fazer o update
-  update: (id, data) => EmployeeRepository.update(id, data),
+  update: (id, data) =>{
+    const parsed = employeeSchema.safeParse(data);
+    if(!parsed.success){
+      const errors = parsed.error.flatten().fieldErrors;
+      throw new ValidationError('Erro de validação', errors)
+    }
+
+    return EmployeeRepository.update(id, data)
+  },
 
   upload: (id, data) => EmployeeRepository.upload(id, data),
 

@@ -8,17 +8,16 @@ datasource db {
 }
 
 model workgroups {
-  id         Int      @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   name       String
   created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt @default(now())
-
-  employees employees[]
+  updated_at DateTime    @updatedAt
+  employees  employees[]
 }
 
 model employees {
-  id           Int       @id @default(autoincrement())
-  id_workgroup Int
+  id           Int        @id @default(autoincrement())
+  id_workgroup Intw
   name       String
   last_name  String
   document   String    @db.VarChar(14) @unique
@@ -33,20 +32,17 @@ model employees {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt @default(now())
 
-  workgroup  workgroups @relation(fields: [id_workgroup], references: [id])
-  tasks      tasks[]
-  logs       logs[]
+  @@index([id_workgroup], map: "employees_id_workgroup_fkey")
 }
 
 model plans {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  price       Decimal   @db.Decimal(10, 2)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt @default(now())
-
-  guests guests[]
+  price       Decimal  @db.Decimal(10, 2)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  guests      guests[]
 }
 
 model guests {
@@ -65,7 +61,10 @@ model guests {
 
   plan         plans                @relation(fields: [id_plan], references: [id])
   consumptions guest_consumptions[]
+  plan         plans                @relation(fields: [id_plan], references: [id])
   reservations reservations[]
+
+  @@index([id_plan], map: "guests_id_plan_fkey")
 }
 
 model guest_consumptions {
@@ -73,8 +72,9 @@ model guest_consumptions {
   id_guest   Int
   price      Decimal  @db.Decimal(10, 2)
   created_at DateTime @default(now())
+  guest      guests   @relation(fields: [id_guest], references: [id])
 
-  guest guests @relation(fields: [id_guest], references: [id])
+  @@index([id_guest], map: "guest_consumptions_id_guest_fkey")
 }
 
 model bedrooms {
@@ -83,16 +83,15 @@ model bedrooms {
   bathroom_quantity Int
   bed_quantity      Int
   tv_quantity       Int
-  category          BedroomCategory       @default(Solteiro)
+  category          bedrooms_category     @default(Solteiro)
   classification    BedroomClassification @default(Standard)
-  privileges        String? // SET convertido em String
+  privileges        String?
   short_description String
-  status            BedroomStatus         @default(Livre)
+  status            bedrooms_status       @default(Livre)
   photo             String
-  created_at        DateTime               @default(now())
-  updated_at        DateTime               @updatedAt @default(now())
-
-  reservations reservations[]
+  created_at        DateTime              @default(now())
+  updated_at        DateTime              @updatedAt
+  reservations      reservations[]
 }
 
 model reservations {
@@ -103,11 +102,13 @@ model reservations {
   check_out           DateTime
   status              ReservationStatus @default(Reservado)
   created_at          DateTime          @default(now())
-  antecipated_payment Boolean? // Enum 'T', 'F' convertido em booleano
+  antecipated_payment Boolean?
+  bedroom             bedrooms          @relation(fields: [id_bedroom], references: [id])
+  guest               guests            @relation(fields: [id_guest], references: [id])
+  tasks               tasks[]
 
-  guest   guests   @relation(fields: [id_guest], references: [id])
-  bedroom bedrooms @relation(fields: [id_bedroom], references: [id])
-  tasks   tasks[]
+  @@index([id_bedroom], map: "reservations_id_bedroom_fkey")
+  @@index([id_guest], map: "reservations_id_guest_fkey")
 }
 
 model tasks {
@@ -116,44 +117,33 @@ model tasks {
   id_reservation Int
   priority       TaskPriority @default(Baixa)
   description    String
-  price          Decimal              @db.Decimal(10, 2)
-  status         TaskStatus           @default(Pendente)
-  created_at     DateTime             @default(now())
-  updated_at     DateTime             @updatedAt @default(now())
+  price          Decimal      @db.Decimal(10, 2)
+  status         TaskStatus   @default(Pendente)
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+  employee       employees    @relation(fields: [id_employee], references: [id])
+  reservation    reservations @relation(fields: [id_reservation], references: [id])
 
-  employee    employees    @relation(fields: [id_employee], references: [id])
-  reservation reservations @relation(fields: [id_reservation], references: [id])
+  @@index([id_employee], map: "tasks_id_employee_fkey")
+  @@index([id_reservation], map: "tasks_id_reservation_fkey")
 }
 
 model logs {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   id_employee Int
-  error_code  String   @db.VarChar(10)
+  error_code  String    @db.VarChar(10)
   message     String
-  ip          String   @db.VarChar(12)
-  created_at  DateTime @default(now())
+  ip          String    @db.VarChar(12)
+  created_at  DateTime  @default(now())
+  employee    employees @relation(fields: [id_employee], references: [id])
 
-  employee employees @relation(fields: [id_employee], references: [id])
-}
-
-enum BedroomCategory {
-  Solteiro
-  Duplo_solteiro
-  Quarto_casal
-  Dormitório
-  Apartamento
+  @@index([id_employee], map: "logs_id_employee_fkey")
 }
 
 enum BedroomClassification {
   Standard
   Master
   Deluxe
-}
-
-enum BedroomStatus {
-  Livre
-  Ocupado
-  Manutenção
 }
 
 enum ReservationStatus {
@@ -173,4 +163,18 @@ enum TaskStatus {
   Pendente
   Em_andamento
   Finalizado
+}
+
+enum bedrooms_category {
+  Solteiro
+  Duplo_solteiro
+  Quarto_casal
+  Dormit_rio     @map("Dormitório")
+  Apartamento
+}
+
+enum bedrooms_status {
+  Livre
+  Ocupado
+  Manuten__o @map("Manutenção")
 }

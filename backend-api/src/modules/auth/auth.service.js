@@ -1,10 +1,10 @@
-import prisma from '../../config/prisma.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import { z } from 'zod';
+import { EmployeeRepository } from '../employees/employees.repository.js';
 
 
 const LoginSchema = z.object({
-  email: z.string().email(),
+  login: z.string(),
   password: z.string().min(6),
 });
 
@@ -16,19 +16,17 @@ export const AuthService = {
       throw new Error(Object.values(errors).flat().join(', '));
     }
 
-    const { email, password } = data;
+    const { login, password } = data;
 
-    const employee = await prisma.employees.findUnique({
-      where: { email },
-    });
+    const employee = await EmployeeRepository.findByLogin(login);
 
     if (!employee) {
-      throw new Error('Email ou senha inválidos');
+      throw new Error('login ou senha inválidos');
     }
 
     const passwordIsValid = await bcrypt.compare(password, employee.password);
     if (!passwordIsValid) {
-      throw new Error('Email ou senha inválidos');
+      throw new Error('login ou senha inválidos');
     }
 
     return {
@@ -36,7 +34,7 @@ export const AuthService = {
       user: {
         id: employee.id,
         name: employee.name,
-        email: employee.email,
+        login: employee.login,
         photo: employee.photo,
       }
     };

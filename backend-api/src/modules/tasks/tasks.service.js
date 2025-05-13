@@ -26,14 +26,25 @@ export const taskSchema = z.object({
     status: TaskStatusEnum.default('Pendente'),
 });
 
+class ValidationError extends Error {
+    constructor(message, details) {
+      super(message);
+      this.name = 'ValidationError';
+      this.statusCode = 400;
+      this.details = details; // Objeto com os erros por campo
+    }
+  }
+
 export const TaskService = {
     getAll: () => TaskRepository.findAll(),
     getById: (id) => TaskRepository.findById(id),
     create: (data) => {
         const parsed = taskSchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
-        }
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
+          }
 
         return TaskRepository.create(data);
     },
@@ -41,8 +52,10 @@ export const TaskService = {
     update: (id, data) => {
         const parsed = taskSchema.safeParse(data);
         if (!parsed.success) {
-            throw new Error('Validação falhou: ' + parsed.error.errors.map(e => e.message).join(', '));
-        }
+            const errors = parsed.error.flatten().fieldErrors;
+            console.log(ValidationError('Error de validação,' + errors))
+            throw new ValidationError('Erro de validação', errors);
+          }
 
         return TaskRepository.update(id, data);
     },
