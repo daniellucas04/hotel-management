@@ -58,7 +58,7 @@ export const BedroomService = {
     return BedroomRepository.update(id, data);
   },
 
-  upload: (id, data) => EmployeeRepository.upload(id, data),
+  upload: (id, data) => BedroomRepository.upload(id, data),
 
   remove: (id) => BedroomRepository.remove(id),
 };

@@ -11,9 +11,10 @@ const router = express.Router();
 router.get('/', BedroomController.getAll);
 router.get('/:id', BedroomController.getById);
 router.post('/', BedroomController.create);
+router.post('/:id/uploads', upload.single('image'), BedroomController.upload);
 router.put('/:id', BedroomController.update);
 router.delete('/:id', BedroomController.remove);
-router.post('/:id/uploads', upload.single('image'), BedroomController.upload);
+
 
 
 export default router;
