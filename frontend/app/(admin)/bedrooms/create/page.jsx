@@ -53,10 +53,18 @@ export default function CreateBedroom() {
     const { name, type, value, checked } = event.target;
     if (type === "checkbox") {
       setBedroom((prev) => {
-        const privileges = checked
-          ? [...prev.privileges, name]
-          : prev.privileges.filter((priv) => priv !== name);
-        return { ...prev, privileges };
+        const privilegesSet = new Set(prev.privileges);
+
+        if (checked) {
+          privilegesSet.add(name);
+        } else {
+          privilegesSet.delete(name);
+        }
+
+        return {
+          ...prev,
+          privileges: Array.from(privilegesSet),
+        };
       });
     } else {
       setBedroom((prev) => ({ ...prev, [name]: value }));
@@ -166,11 +174,11 @@ export default function CreateBedroom() {
               <Label htmlFor="category">Categoria *</Label>
               <Select id="category" name="category" onChange={handleData} required>
                 <option value="">Escolha uma opção</option>
-                <option value="Solteiro">Solteiro</option>
-                <option value="Duplo_Solteiro">Duplo solteiro</option>
-                <option value="Quarto_casal">Quarto casal</option>
-                <option value="Dormitório">Dormitórios</option>
-                <option value="Apartamento">Apartamentos</option>
+                <option>Solteiro</option>
+                <option>Duplo solteiro</option>
+                <option>Quarto casal</option>
+                <option>Dormitório</option>
+                <option>Apartamentos</option>
               </Select>
             </div>
             <div className="flex-auto">
@@ -182,9 +190,9 @@ export default function CreateBedroom() {
                 required
               >
                 <option value="">Escolha uma opção</option>
-                <option value="Standard">Standard</option>
-                <option value="Master">Master</option>
-                <option value="Deluxe">Deluxe</option>
+                <option>Standard</option>
+                <option>Master</option>
+                <option>Deluxe</option>
               </Select>
             </div>
           </div>
@@ -195,6 +203,7 @@ export default function CreateBedroom() {
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
               <div className="flex items-center gap-2">
                 <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} />
+                {console.log(bedroom)}
                 <Label htmlFor="free_wifi">Wifi gratuito</Label>
               </div>
               <div className="flex items-center gap-2">
@@ -246,9 +255,9 @@ export default function CreateBedroom() {
             <Label htmlFor="status">Status *</Label>
             <Select id="status" name="status" onChange={handleData} required>
               <option value="">Escolha uma opção</option>
-              <option value="Livre">Livre</option>
-              <option value="Ocupado">Ocupado</option>
-              <option value="Manuntenção">Em manutenção</option>
+              <option>Livre</option>
+              <option>Ocupado</option>
+              <option>Manutenção</option>
             </Select>
           </div>
           <div>

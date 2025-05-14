@@ -68,7 +68,7 @@ export async function updateBedroom(id, bedroom) {
             },
             body: JSON.stringify(bedroom),
         });
-
+        
         return await data.json();
     } catch (error) {
         console.log(error);
@@ -109,13 +109,13 @@ export async function savePhoto(id, photo) {
     }
 }
 
-export async function deleteBedrooms(id) {
+export async function deleteBedroom(id) {
     try {
       const result = await fetch(`http://localhost:8000/bedrooms/${id}`, {
         method: 'delete'
       });
   
-      return await result;
+      console.log(await result);
     } catch (error) {
       console.log(error);
     }

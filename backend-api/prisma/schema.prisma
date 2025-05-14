@@ -169,14 +169,14 @@ enum TaskStatus {
 
 enum bedrooms_category {
   Solteiro
-  Duplo_solteiro
-  Quarto_casal
-  Dormit_rio     @map("Dormitório")
+  Duplo_solteiro @map("Duplo solteiro")
+  Quarto_casal @map("Quarto casal")
+  Dormitório
   Apartamento
 }
 
 enum bedrooms_status {
   Livre
   Ocupado
-  Manuten__o @map("Manutenção")
+  Manutenção
 }

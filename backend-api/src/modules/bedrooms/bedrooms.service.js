@@ -45,22 +45,32 @@ export const BedroomService = {
     // }
 
     data = {
-      ...data, 
+      ...data,
+      category: data.category.replace(' ', '_'),
       number: Number(data.number),
       bathroom_quantity: Number(data.bathroom_quantity),
       bed_quantity: Number(data.bed_quantity),
       tv_quantity: Number(data.tv_quantity),
-    
     }
     return BedroomRepository.create(data);
   },
 
   update: (id, data) => {
-    const parsed = bedroomUpdateSchema.safeParse(data);
-    if (!parsed.success) {
-      const errors = parsed.error.flatten().fieldErrors;
-      
-      throw new ValidationError('Erro de validação', errors);
+    // const parsed = bedroomUpdateSchema.safeParse(data);
+    // console.log(parsed);
+    // if (!parsed.success) {
+    //   const errors = parsed.error.flatten().fieldErrors;
+    //   console.log(errors);
+    //   throw new ValidationError('Erro de validação', errors);
+    // }
+
+    data = {
+      ...data, 
+      category: data.category.replace(' ', '_'),
+      number: Number(data.number),
+      bathroom_quantity: Number(data.bathroom_quantity),
+      bed_quantity: Number(data.bed_quantity),
+      tv_quantity: Number(data.tv_quantity),
     }
 
     return BedroomRepository.update(id, data);

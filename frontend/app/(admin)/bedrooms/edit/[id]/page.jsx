@@ -20,9 +20,9 @@ import {
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getBedroom, savePhoto, updateBedroom } from "../../actions";
 import Swal from "sweetalert2";
 import { useParams } from "next/navigation";
+import { getBedroom, savePhoto, updateBedroom } from "../../actions";
 
 export default function EditBedroom({ params }) {
   const { id } = useParams(params);
@@ -33,7 +33,7 @@ export default function EditBedroom({ params }) {
     tv_quantity: "",
     category: "",
     classification: "",
-    privileges: "",
+    privileges: [],
     short_description: "",
     status: "",
     photo: "",
@@ -42,15 +42,13 @@ export default function EditBedroom({ params }) {
   const [previewUrl, setPreviewUrl] = useState("");
 
 
-  function handleImageSubmit(event) {
-    console.log(event.target.files[0].name);
-    String().split(', ')
-  }
-
   async function fetchBedroom(id) {
     try {
       let result = await getBedroom(id);
-
+      result = {
+        ...result,
+        privileges: result.privileges.split(','),
+      }
       setBedroom(result);
     } catch (error) {
       console.log(error);
@@ -69,10 +67,18 @@ export default function EditBedroom({ params }) {
     const { name, type, value, checked } = event.target;
     if (type === "checkbox") {
       setBedroom((prev) => {
-        const privileges = checked
-          ? [...prev.privileges, name]
-          : prev.privileges.filter((priv) => priv !== name);
-        return { ...prev, privileges };
+        const privilegesSet = new Set(prev.privileges);
+
+        if (checked) {
+          privilegesSet.add(name);
+        } else {
+          privilegesSet.delete(name);
+        }
+
+        return {
+          ...prev,
+          privileges: Array.from(privilegesSet),
+        };
       });
     } else {
       setBedroom((prev) => ({ ...prev, [name]: value }));
@@ -83,11 +89,11 @@ export default function EditBedroom({ params }) {
     event.preventDefault();
 
     try {
-      const bedroom = await updateBedroom(id, employee);
+      const bedroomData = await updateBedroom(id, bedroom);
 
-      if (bedroom.message) {
+      if (bedroomData.message) {
         Swal.fire({
-          text: bedroom.message,
+          text: bedroomData.message,
           icon: "error",
           timer: 3000,
           toast: true,
@@ -130,7 +136,7 @@ export default function EditBedroom({ params }) {
       <section className="overflow-x-auto m-10">
         <h1 className="text-2xl mb-4">Editar quarto</h1>
         <Card>
-          <form className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <h1 className="text-xl font-bold flex items-center gap-2">
               <HiOutlineViewGrid /> Informações gerais
             </h1>
@@ -180,7 +186,7 @@ export default function EditBedroom({ params }) {
                   <option>Solteiro</option>
                   <option>Duplo solteiro</option>
                   <option>Quarto casal</option>
-                  <option>Dormitórios</option>
+                  <option>Dormitório</option>
                   <option>Apartamentos</option>
                 </Select>
               </div>
@@ -201,31 +207,31 @@ export default function EditBedroom({ params }) {
               </h1>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
                 <div className="flex items-center gap-2">
-                  <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('free_wifi')} />
+                  <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} checked={bedroom.privileges.includes('free_wifi')} />
                   <Label htmlFor="free_wifi">Wifi gratuito</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="air_conditioner" name="air_conditioner" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('air_conditioner')} />
+                  <Checkbox id="air_conditioner" name="air_conditioner" onChange={handleData} checked={bedroom.privileges.includes('air_conditioner')} />
                   <Label htmlFor="air_conditioner">Ar-condicionado</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="frigobar" name="frigobar" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('frigobar')} />
+                  <Checkbox id="frigobar" name="frigobar" onChange={handleData} checked={bedroom.privileges.includes('frigobar')} />
                   <Label htmlFor="frigobar">Frigobar</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="breakfast" name="breakfast" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('breakfast')} />
+                  <Checkbox id="breakfast" name="breakfast" onChange={handleData} checked={bedroom.privileges.includes('breakfast')} />
                   <Label htmlFor="breakfast">Café da manhã</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="bedroom_bathroom" name="bedroom_bathroom" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('bedroom_bathroom')} />
+                  <Checkbox id="bedroom_bathroom" name="bedroom_bathroom" onChange={handleData} checked={bedroom.privileges.includes('bedroom_bathroom')} />
                   <Label htmlFor="bedroom_bathroom">Banheiro no quarto</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="fan" name="fan" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('fan')} />
+                  <Checkbox id="fan" name="fan" onChange={handleData} checked={bedroom.privileges.includes('fan')? true : false} />
                   <Label htmlFor="fan">Ventilador</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="garage" name="garage" onChange={handleData} value={bedroom.privileges} checked={bedroom.privileges.includes('garage')} />
+                  <Checkbox id="garage" name="garage" onChange={handleData} checked={bedroom.privileges.includes('garage')} />
                   <Label htmlFor="garage">Vaga de estacinonamento</Label>
                 </div>
               </div>
@@ -243,11 +249,12 @@ export default function EditBedroom({ params }) {
             </div>
             <div>
               <Label htmlFor="status">Status</Label>
+              {console.log(bedroom.status)}
               <Select id="status" name="status" onChange={handleData} value={bedroom.status}>
                 <option value="">Escolha uma opção</option>
-                <option value="Livre">Livre</option>
-                <option value="Ocupado">Ocupado</option>
-                <option value="Manutenção">Em manutenção</option>
+                <option>Livre</option>
+                <option>Ocupado</option>
+                <option>Manutenção</option>
               </Select>
             </div>
             <div>
@@ -275,7 +282,7 @@ export default function EditBedroom({ params }) {
                     )}
                   </p>
                 </div>
-                <FileInput id="dropzone-file" name="photo" onChange={handleData} className="hidden" />
+                <FileInput id="dropzone-file" name="photo" onChange={handleFileChange} className="hidden" />
               </Label>
             </div>
 

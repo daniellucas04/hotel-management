@@ -15,7 +15,6 @@ import { getEmployee } from "../../actions";
 
 export default function EmployeeDetails({ params }) {
   const { id } = use(params);
-
   const [employee, setEmployee] = useState({});
 
   async function fetchEmployee(id) {

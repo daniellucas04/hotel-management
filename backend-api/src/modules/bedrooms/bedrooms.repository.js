@@ -22,7 +22,13 @@ export const BedroomRepository = {
 
         return await prisma.bedrooms.create({ data })
     },
-    update: (id, data) => prisma.bedrooms.update({ where: { id }, data }),
+    update: async (id, data) => {
+        data = {
+            ...data,
+            privileges: data.privileges.join(",")
+        }
+        return await prisma.bedrooms.update({ where: { id }, data })
+    },
     upload: async (id, data) => {
         data = {
             photo: data.filename

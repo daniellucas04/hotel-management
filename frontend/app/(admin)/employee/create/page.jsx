@@ -73,7 +73,6 @@ export default function CreateUser() {
     if (error.length == 0) {
       try {
         const employeeData = await createEmployee(employee);
-<<<<<<< HEAD:frontend/app/(admin)/employee/create/page.jsx
         if (employeeData.message) {
           Swal.fire({
             text: employeeData.message,
@@ -86,9 +85,6 @@ export default function CreateUser() {
           return;
         }
 
-=======
-        console.log(employeeData)
->>>>>>> 736abc76f7c633f53769987de85ca7469f750e2f:frontend/src/app/(admin)/employee/create/page.jsx
         if (image) {
           await savePhoto(employeeData.id, image);
         }

@@ -3,8 +3,9 @@
 import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getAll } from "./actions";
+import { deleteBedroom, getAll } from "./actions";
 import { LuBedDouble } from 'react-icons/lu'
+import Swal from "sweetalert2";
 
 export default function Bedrooms() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,6 +41,7 @@ export default function Bedrooms() {
             await deleteBedroom(id);
             setDeleted(true);
           } catch (error) {
+            console.log(error);
             setDeleted(false);
           }
         }
@@ -52,7 +54,8 @@ export default function Bedrooms() {
 
   useEffect(() => {
     fetchAllBedrooms(currentPage);
-  }, [currentPage]);
+    setDeleted(false);
+  }, [currentPage, deleted]);
 
   return (
     <section className="overflow-x-auto m-10">
@@ -105,11 +108,12 @@ export default function Bedrooms() {
                     </span>
                   </Table.Cell>
                   <Table.Cell>
+                    {console.log(bedroom)}
                     <Badge
-                      color={bedroom.status === "occupied" ? "red" : "green"}
+                      color={bedroom.status === "Ocupado" ? "red" : "green"}
                       className="w-fit"
                     >
-                      {bedroom.status === "occupied" ? "Ocupado" : "Disponível"}
+                      {bedroom.status === "Ocupado" ? "Ocupado" : bedroom.status == "Manutenção" ? "Manutenção" : "Disponível"}
                     </Badge>
                   </Table.Cell>
                   <Table.Cell className="flex items-center gap-4">
@@ -125,6 +129,7 @@ export default function Bedrooms() {
                     >
                       Editar
                     </Link>
+                    <button className="text-cyan-600 font-semibold hover:underline" onClick={() => handleDelete(bedroom.id)}>Deletar</button>
                   </Table.Cell>
                 </Table.Row>
               ))}
