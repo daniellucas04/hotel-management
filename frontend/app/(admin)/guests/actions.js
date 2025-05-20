@@ -1,5 +1,4 @@
 const requiredCreateFields = {
-	id_plan: "O plano é obrigatório",
 	name: "O nome é obrigatório",
 	last_name: "O sobrenome é obrigatório",
 	document: "O documento é obrigatório",

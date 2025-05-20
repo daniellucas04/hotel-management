@@ -8,7 +8,7 @@ export default function Tasks() {
 
   return (
     <>
-      <section className="overflow-x-auto m-10">
+      <section className="overflow-x-auto p-10">
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos as tarefas</h1>
           <Button color="light">

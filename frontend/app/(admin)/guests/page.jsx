@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteGuest, getAll } from "./actions";
 import Swal from "sweetalert2";
+import { HiUserCircle } from "react-icons/hi";
 
 export default function Guests() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,7 +60,7 @@ export default function Guests() {
   return (
     <>
       
-      <section className="overflow-x-auto m-10">
+      <section className="overflow-x-auto p-10">
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os hóspedes</h1>
           <Button color="light">
@@ -72,7 +73,6 @@ export default function Guests() {
               <Table.Head>
                 <Table.HeadCell>Nome</Table.HeadCell>
                 <Table.HeadCell>Telefone</Table.HeadCell>
-                <Table.HeadCell>Plano</Table.HeadCell>
                 <Table.HeadCell>Ações</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
@@ -86,7 +86,7 @@ export default function Guests() {
                         {guest.photo ? (
                           <img
                             src={`http://localhost:8000/uploads/${guest.photo}`}
-                            className="rounded-md w-10 h-10"
+                            className="rounded-md w-10 h-10 object-cover"
                           />
                         ) : (
                           <HiUserCircle size={35} />
@@ -95,11 +95,6 @@ export default function Guests() {
                       </Table.Cell>
                       <Table.Cell>
                         <Badge className="w-fit">{guest.phone1}</Badge>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Badge color="blue" className="w-fit">
-                          {guest.plan.title}
-                        </Badge>
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
                         <Link
@@ -114,7 +109,7 @@ export default function Guests() {
                         >
                           Editar
                         </Link>
-                        <button className="text-cyan-600 font-semibold hover:underline" onClick={() => handleDelete(guest.id)}>Deletar</button>
+                        <button className="text-cyan-600 font-medium hover:underline" onClick={() => handleDelete(guest.id)}>Deletar</button>
                       </Table.Cell>
                     </Table.Row>
                   );

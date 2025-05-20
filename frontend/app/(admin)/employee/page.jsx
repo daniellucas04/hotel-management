@@ -58,7 +58,7 @@ export default function employee() {
 
   return (
     <>
-      <section className="overflow-x-auto m-10">
+      <section className="overflow-x-auto p-10">
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os funcionários</h1>
           <Button color="light">
@@ -109,7 +109,7 @@ export default function employee() {
                         >
                           Editar
                         </Link>
-                        <button className="text-cyan-600 font-semibold hover:underline" onClick={() => handleDelete(employee.id)}>Deletar</button>
+                        <button className="text-cyan-600 font-medium hover:underline" onClick={() => handleDelete(employee.id)}>Deletar</button>
                       </Table.Cell>
                     </Table.Row>
                   );

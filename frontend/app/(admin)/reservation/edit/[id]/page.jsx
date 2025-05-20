@@ -29,7 +29,7 @@ export default function EditReservation() {
 
   return (
     <>
-      <section className="overflow-x-auto m-10 h-screen">
+      <section className="overflow-x-auto p-10 h-screen">
         <h1 className="text-2xl mb-4">Editar reserva</h1>
         <Card>
           <form

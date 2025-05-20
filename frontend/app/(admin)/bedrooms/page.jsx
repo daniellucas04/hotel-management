@@ -58,7 +58,7 @@ export default function Bedrooms() {
   }, [currentPage, deleted]);
 
   return (
-    <section className="overflow-x-auto m-10">
+    <section className="overflow-x-auto p-10">
       <div className="flex justify-between items-center my-8 gap-2">
         <h1 className="text-2xl mb-4">Todos os quartos</h1>
         <Button color="light">
@@ -129,7 +129,7 @@ export default function Bedrooms() {
                     >
                       Editar
                     </Link>
-                    <button className="text-cyan-600 font-semibold hover:underline" onClick={() => handleDelete(bedroom.id)}>Deletar</button>
+                    <button className="text-cyan-600 font-medium hover:underline" onClick={() => handleDelete(bedroom.id)}>Deletar</button>
                   </Table.Cell>
                 </Table.Row>
               ))}

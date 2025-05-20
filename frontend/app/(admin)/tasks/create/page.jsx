@@ -8,6 +8,7 @@ import {
   Textarea,
   TextInput,
 } from "flowbite-react";
+import Link from "next/link";
 import { useState } from "react";
 import { HiOutlineExclamationCircle, HiOutlineUser } from "react-icons/hi";
 

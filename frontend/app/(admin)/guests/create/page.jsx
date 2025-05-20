@@ -5,8 +5,6 @@ import {
   HiLocationMarker,
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
-  HiOutlineCash,
-  HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlinePhone,
   HiOutlineViewGrid,
@@ -17,19 +15,16 @@ import {
   FileInput,
   HR,
   Label,
-  Radio,
-  Select,
   TextInput,
 } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { createGuest, getAllPlans, savePhoto, validateCreate } from "../actions";
-import { redirect } from "next/dist/server/api-utils";
+import { createGuest, savePhoto, validateCreate } from "../actions";
+import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function CreateUser() {
   const [guest, setGuest] = useState({
-    id_plan: "",
     name: "",
     last_name: "",
     document: "",
@@ -39,11 +34,10 @@ export default function CreateUser() {
     address: "",
     photo: "",
   });
-  const [plans, setPlans] = useState([]);
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [uploading, setUploading] = useState(false);
-  
+
   function handleFileChange(event) {
     const file = event.target.files?.[0];
     if (file) {
@@ -51,11 +45,11 @@ export default function CreateUser() {
       setPreviewUrl(URL.createObjectURL(file));
     }
   }
-  
+
   function handleData(event) {
     setGuest((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
-  
+
   async function handleSubmit(event) {
     event.preventDefault();
     let error = validateCreate(guest);
@@ -113,19 +107,10 @@ export default function CreateUser() {
       });
     }
   }
-  
-  async function fetchAllPlans() {
-    const results = await getAllPlans();
-    setPlans(results ?? []);
-  }
-
-  useEffect(() => {
-    fetchAllPlans();
-  }, []);
 
   return (
     <>
-      <section className="overflow-x-auto m-10">
+      <section className="overflow-x-auto p-10">
         <h1 className="text-2xl mb-4">Criar novo hóspede</h1>
         <Card>
           <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" className="flex flex-col gap-4">
@@ -226,31 +211,6 @@ export default function CreateUser() {
                   className="hidden"
                 />
               </Label>
-            </div>
-
-            <HR />
-            <h1 className="text-xl font-bold flex items-center gap-2">
-              <HiOutlineCash /> Plano de hospedagem
-            </h1>
-            <div className="flex gap-8 justify-center">
-              <Select
-                className="flex-1"
-                icon={HiOutlineCollection}
-                placeholder="Planos *"
-                name="id_plan"
-                onChange={handleData}
-                required
-                defaultValue={""}
-              >
-                <option key={0} value="" disabled>
-                  Selecione o plano
-                </option>
-                {plans.map((plan) => (
-                  <option key={plan.id} value={plan.id}>
-                    {plan.title}
-                  </option>
-                ))}
-              </Select>
             </div>
 
             <HR />

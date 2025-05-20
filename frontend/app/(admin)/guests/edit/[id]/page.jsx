@@ -5,8 +5,6 @@ import {
   HiLocationMarker,
   HiOutlineBadgeCheck,
   HiOutlineCalendar,
-  HiOutlineCash,
-  HiOutlineCollection,
   HiOutlineIdentification,
   HiOutlinePhone,
   HiOutlineViewGrid,
@@ -17,18 +15,16 @@ import {
   FileInput,
   HR,
   Label,
-  Select,
   TextInput,
 } from "flowbite-react";
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllPlans, getGuest, savePhoto, updateGuest } from "../../actions";
+import { getGuest, savePhoto, updateGuest } from "../../actions";
 import Swal from "sweetalert2";
 
 export default function CreateUser({ params }) {
   const { id } = use(params);
   const [guest, setGuest] = useState({
-    id_plan: 1,
     name: "",
     last_name: "",
     document: "",
@@ -41,7 +37,6 @@ export default function CreateUser({ params }) {
 
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [plans, setPlans] = useState([]);
 
   async function fetchGuest(id) {
     try {
@@ -54,9 +49,8 @@ export default function CreateUser({ params }) {
 
   useEffect(() => {
     fetchGuest(id);
-    fetchAllPlans();
   }, []);
-  
+
   function handleFileChange(event) {
     const file = event.target.files?.[0];
     if (file) {
@@ -111,20 +105,15 @@ export default function CreateUser({ params }) {
     }
   }
 
-  async function fetchAllPlans() {
-    const results = await getAllPlans();
-    setPlans(results ?? []);
-  }
-  
   let data = new Date(guest.birthday);
   const dia = String(data.getUTCDate()).padStart(2, '0'); // Garante que o dia tenha 2 dígitos
   const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do zero (0 = Janeiro)
   const ano = data.getUTCFullYear();
   guest.birthday = `${dia}/${mes}/${ano}`;
-
+  console.log(previewUrl)
   return (
     <>
-      <section className="overflow-x-auto m-10">
+      <section className="overflow-x-auto p-10">
         <h1 className="text-2xl mb-4">Editar hóspede</h1>
         <Card>
           <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" className="flex flex-col gap-4">
@@ -210,7 +199,14 @@ export default function CreateUser({ params }) {
                       />
                     ) : (
                       <span className="flex flex-col items-center justify-center">
-                        <HiCloudUpload size={35} />
+                        {previewUrl ? (
+                          <img
+                            src={previewUrl ? previewUrl : `http://localhost:8000/uploads/${guest.photo}`}
+                            className="w-32 h-32 object-cover rounded shadow mx-auto"
+                          />
+                        ) : (
+                          <HiCloudUpload size={35} />
+                        )}
                         <span className="font-semibold">
                           Selecione uma imagem
                         </span>
@@ -220,30 +216,6 @@ export default function CreateUser({ params }) {
                 </div>
                 <FileInput id="dropzone-file" name="photo" onChange={handleFileChange} className="hidden" />
               </Label>
-            </div>
-
-            <HR />
-            <h1 className="text-xl font-bold flex items-center gap-2">
-              <HiOutlineCash /> Plano de hospedagem
-            </h1>
-            <div className="flex gap-8 justify-center">
-              <Select
-                className="flex-1"
-                icon={HiOutlineCollection}
-                placeholder="Planos *"
-                name="id_plan"
-                onChange={handleData}
-                required
-              >
-                <option key={0} value="" disabled>
-                  Selecione o plano
-                </option>
-                {plans.map((plan) => (
-                  <option key={plan.id} value={plan.id}>
-                    {plan.title}
-                  </option>
-                ))}
-              </Select>
             </div>
 
             <HR />

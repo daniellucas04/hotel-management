@@ -66,7 +66,7 @@ export default function Dashboard() {
         <span className="text-2xl text-gray-600">
           Atividades do hotel hoje
         </span>
-        <section className="grid grid-cols-4 gap-8 mt-4">
+        <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4">
           <Card className="bg-green-400 shadow-lg text-white font-bold">
             <div className="flex justify-between items-center text-2xl">
               Hóspedes cadastrados

@@ -2,7 +2,6 @@ import { GuestRepository } from './guests.repository.js';
 import { z } from 'zod';
 
 const GuestShchema = z.object({
-  id_plan: z.number(),
   name: z.string().min(1),
   last_name: z.string().min(1),
   // document: z.string()
@@ -33,11 +32,10 @@ export const GuestService = {
   getById: (id) => GuestRepository.findById(id),
   create: async (data) => {
     // Validação
-    data = {...data, id_plan: Number(data.id_plan)}
     const parsed = GuestShchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
-      
+
       throw new ValidationError('Erro de validação', errors);
     }
 
@@ -54,13 +52,18 @@ export const GuestService = {
   //fazer o update
   update: (id, data) => {
     const parsed = GuestShchema.safeParse(data);
-    if(!parsed.success){
+    if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors
       throw new ValidationError('Erro de validação', errors)
     }
 
-    return GuestRepository.update(id, data)
+    let split = String(data.birthday).split('/');
+    let year = split[2];
+    let month = split[1];
+    let day = split[0];
+    data.birthday = new Date(year, month, day);
 
+    return GuestRepository.update(id, data)
   },
 
   upload: (id, data) => GuestRepository.upload(id, data),

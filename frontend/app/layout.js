@@ -1,16 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lexend } from "next/font/google";
 import "./globals.css";
-import Header from "./(admin)/component/header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const lexend = Lexend({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Create Next App",
@@ -20,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html>
-      <body>{children}</body>
+      <body className={`${lexend.className} antialiased bg-gray-100`}>{children}</body>
     </html>
   );
 }

@@ -28,11 +28,6 @@ export default function Header() {
         <span className="font-bold">Hotel name</span>
       </Navbar.Brand>
       <div className="flex items-center gap-4 md:order-2">
-        <img
-          src="https://placehold.co/400x400"
-          className="rounded-full h-14"
-          alt=""
-        />
         <Button as={Link} href="/" color="red" size="sm">
           Log out
         </Button>
