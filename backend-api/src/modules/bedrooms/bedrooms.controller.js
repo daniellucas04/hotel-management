@@ -7,7 +7,8 @@ import { BedroomService } from './bedrooms.service.js';
 
 export const BedroomController = {
     getAll: async (req, res) => {
-        const bedrooms = await BedroomService.getAll();
+        const { page, limit } = req.query;
+        const bedrooms = await BedroomService.getAll(page, limit);
         res.json(bedrooms);
     },
 
@@ -17,13 +18,32 @@ export const BedroomController = {
     },
 
     create: async (req, res) => {
-        const bedroom = await BedroomService.create(req.body);
-        res.status(201).json(bedroom);
+        try {
+            const data = req.body;
+
+            // Se a foto foi enviada, adiciona ao objeto
+            if (req.file) {
+                data.photo = `/uploads/${req.file.filename}`;
+            }
+
+            const created = await BedroomService.create(data);
+            res.status(201).json(created);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     },
 
     update: async (req, res) => {
         const bedroom = await BedroomService.update(Number(req.params.id), req.body);
         res.json(bedroom);
+    },
+
+    upload: async (req, res) => {
+        if (!req.file)
+            return res.status(400);
+
+        const image = await BedroomService.upload(Number(req.params.id), req.file);
+        res.json(image);
     },
 
     remove: async (req, res) => {

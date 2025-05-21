@@ -3,9 +3,44 @@
 import prisma from '../../config/prisma.js';
 
 export const BedroomRepository = {
-    findAll: () => prisma.bedrooms.findMany(),
+    findAll: async (page, limit) => {
+        if (!page || !limit)
+            return await prisma.bedrooms.findMany();
+
+        let offset = ( page - 1 ) * limit;
+        const items = await prisma.bedrooms.findMany({ take: parseInt(limit), skip: offset })
+        const totalItems = await prisma.bedrooms.count()
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    },
     findById: (id) => prisma.bedrooms.findUnique({ where: { id } }),
-    create: (data) => prisma.bedrooms.create({ data }),
-    update: (id, data) => prisma.bedrooms.update({ where: { id }, data }),
+    create: async (data) => {
+        data = {
+            ...data,
+            privileges: data.privileges.join(",")
+        }
+
+        return await prisma.bedrooms.create({ data })
+    },
+    update: async (id, data) => {
+        data = {
+            ...data,
+            privileges: data.privileges.join(",")
+        }
+        return await prisma.bedrooms.update({ where: { id }, data })
+    },
+    updateBedroomStatus: async (id, data) => {
+        return await prisma.bedrooms.update({ where: { id }, data })
+    },
+    upload: async (id, data) => {
+        data = {
+            photo: data.filename
+        };
+
+        await prisma.bedrooms.update({ where: { id }, data })
+    },
     remove: (id) => prisma.bedrooms.delete({ where: { id } }),
 };

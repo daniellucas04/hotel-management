@@ -7,7 +7,8 @@ import {PlanService} from './plans.service.js';
 
 export const PlanController = {
     getAll: async (req, res) => {
-        const plans = await PlanService.getAll();
+        const {page, limit} = req.query;
+        const plans = await PlanService.getAll(page, limit);
         res.json(plans);
     },
 

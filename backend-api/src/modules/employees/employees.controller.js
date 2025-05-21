@@ -1,10 +1,5 @@
 
-import {EmployeeService} from './employees.service.js';
-
-// const getAll = async (req, res) => {
-//     const plans = await PlanService.getAll();
-//     res.json(plans);
-// };
+import { EmployeeService } from './employees.service.js';
 
 export const EmployeeController = {
     getAll: async (req, res) => {
@@ -19,8 +14,19 @@ export const EmployeeController = {
     },
 
     create: async (req, res) => {
-        const employee = await EmployeeService.create(req.body);
-        res.status(201).json(employee);
+        try {
+            const data = req.body;
+
+            // Se a foto foi enviada, adiciona ao objeto
+            if (req.file) {
+                data.photo = `/uploads/${req.file.filename}`;
+            }
+
+            const created = await EmployeeService.create(data);
+            res.status(201).json(created);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     },
 
     update: async (req, res) => {

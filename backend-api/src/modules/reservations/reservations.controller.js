@@ -7,7 +7,8 @@ import {ReservationService} from './reservations.service.js';
 
 export const ReservationController = {
     getAll: async (req, res) => {
-        const reservations = await ReservationService.getAll();
+        const { page, limit } = req.query;
+        const reservations = await ReservationService.getAll(page, limit);
         res.json(reservations);
     },
 
