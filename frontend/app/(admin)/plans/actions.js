@@ -15,7 +15,7 @@ export async function getAll(page, limit) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -27,7 +27,7 @@ export async function getPlan(id) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -43,7 +43,7 @@ export async function updatePlan(id, plan) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -59,7 +59,7 @@ export async function createPlan(plan) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -71,7 +71,7 @@ export async function deletePlan(id) {
 
 		console.log(await result);
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 

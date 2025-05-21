@@ -7,7 +7,8 @@ import {TaskService} from './tasks.service.js';
 
 export const TaskController = {
     getAll: async (req, res) => {
-        const tasks = await TaskService.getAll();
+        const {page, limit} = req.query;
+        const tasks = await TaskService.getAll(page, limit);
         res.json(tasks);
     },
 

@@ -43,7 +43,7 @@ export default function CreateUser({ params }) {
       const result = await getGuest(id);
       setGuest(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

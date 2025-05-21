@@ -8,26 +8,84 @@ import {
   Textarea,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { use, useEffect, useState } from "react";
 import { HiOutlineExclamationCircle, HiOutlineUser } from "react-icons/hi";
+import Swal from "sweetalert2";
+import { getAllEmployees, getAllReservations, getTask, updateTask, validateCreate } from "../../actions";
 
-export default function TaskEdit() {
-  const [taskData, setTaskData] = useState({
-    id_employee: 0,
-    id_reservation: 0,
-    priority: "Baixa",
-    description: "",
-    price: 0.0,
-  });
+export default function TaskEdit({ params }) {
+  const { id } = use(params);
+  const [task, setTask] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   function handleData(event) {
-    setTaskData((p) => ({ ...p, [event.target.name]: event.target.value }));
+    setTask((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(taskData);
+
+    try {
+      const taskData = await updateTask(id, task);
+      if (taskData.message) {
+        Swal.fire({
+          text: taskData.message,
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+        return;
+      }
+
+      Swal.fire({
+        text: "Tarefa editada com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        redirect("/tasks");
+      }, 3000);
+    } catch (error) {
+      Swal.fire({
+        text: "Erro ao editar a tarefa. Tente novamente!",
+        icon: "error",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
+
+  async function fetchTask() {
+    const result = await getTask(id);
+    setTask(result);
+  }
+
+  async function fetchAllEmployees() {
+    const results = await getAllEmployees();
+    setEmployees(results ?? []);
+  }
+
+  async function fetchAllReservations() {
+    const results = await getAllReservations();
+    setReservations(results ?? []);
+  }
+
+  useEffect(() => {
+    fetchTask();
+    fetchAllEmployees();
+    fetchAllReservations();
+  }, []);
 
   return (
     <>
@@ -46,11 +104,14 @@ export default function TaskEdit() {
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_employee"
-                    value={taskData.id_employee}
+                    defaultValue={task.id_employee}
                   >
-                    <option value="">Funcionário 1</option>
-                    <option value="">Funcionário 2</option>
-                    <option value="">Funcionário 3</option>
+                    <option value="" disabled>Selecione um responsável</option>
+                    {employees.map((employee) => (
+                      <option key={employee.id} value={employee.id} >
+                        {employee.name}
+                      </option>
+                    ))}
                   </Select>
                 </div>
 
@@ -61,11 +122,14 @@ export default function TaskEdit() {
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_reservation"
-                    value={taskData.id_reservation}
+                    defaultValue={task.id_reservation}
                   >
-                    <option value="">Reserva 1</option>
-                    <option value="">Reserva 2</option>
-                    <option value="">Reserva 3</option>
+                    <option value="" disabled>Selecione uma reserva</option>
+                    {reservations.map((reservation) => (
+                      <option key={reservation.id} value={reservation.id} >
+                        {reservation.bedroom.number} - {reservation.guest.name}
+                      </option>
+                    ))}
                   </Select>
                 </div>
               </div>
@@ -76,8 +140,8 @@ export default function TaskEdit() {
                     id="priority"
                     icon={HiOutlineExclamationCircle}
                     onChange={handleData}
+                    defaultValue={task.priority}
                     name="priority"
-                    value={taskData.priority}
                   >
                     <option>Baixa</option>
                     <option>Normal</option>
@@ -88,7 +152,7 @@ export default function TaskEdit() {
 
                 <div className="flex-auto">
                   <Label htmlFor="priority">Preço</Label>
-                  <TextInput type="number" name="price" onChange={handleData} />
+                  <TextInput type="number" name="price" defaultValue={task.price} min={0} max={1000} step={0.01} onChange={handleData} />
                 </div>
               </div>
               <div>
@@ -98,7 +162,7 @@ export default function TaskEdit() {
                   placeholder="Mais informações do produto / serviço"
                   onChange={handleData}
                   name="description"
-                  value={taskData.description}
+                  value={task.description}
                   rows={4}
                 />
               </div>
@@ -106,7 +170,7 @@ export default function TaskEdit() {
                 <Button color="light">
                   <Link href="/tasks">Cancelar</Link>
                 </Button>
-                <Button type="submit">Cadastrar</Button>
+                <Button type="submit">Editar</Button>
               </div>
             </form>
           </div>

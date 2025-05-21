@@ -14,7 +14,7 @@ export default function GuestDetails({ params }) {
       const result = await getGuest(id);
       setGuest(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

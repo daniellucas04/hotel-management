@@ -22,7 +22,7 @@ export async function getAll(page, limit) {
 
     return await data.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -34,7 +34,7 @@ export async function getEmployee(id) {
 
     return await data.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -46,7 +46,7 @@ export async function getAllWorkgroups() {
 
     return await data.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -62,7 +62,7 @@ export async function updateEmployee(id, employee) {
 
     return await data.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -78,7 +78,7 @@ export async function createEmployee(employee) {
 
     return await data.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -97,7 +97,7 @@ export async function savePhoto(id, photo) {
 
     return await uploadedImage.json();
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -109,7 +109,7 @@ export async function deleteEmployee(id) {
 
     console.log(await result);
   } catch (error) {
-    console.log(error);
+    
   }
 }
 

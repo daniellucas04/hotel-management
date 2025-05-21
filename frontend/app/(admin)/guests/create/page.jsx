@@ -86,7 +86,7 @@ export default function CreateUser() {
           redirect("/guests");
         }, 3000);
       } catch (error) {
-        console.log(error);
+        
         Swal.fire({
           text: "Erro ao cadastrar o hópede. Tente novamente!",
           icon: "error",

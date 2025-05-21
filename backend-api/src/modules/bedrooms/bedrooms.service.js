@@ -76,6 +76,8 @@ export const BedroomService = {
     return BedroomRepository.update(id, data);
   },
 
+  updateBedroomStatus: (id, data) => BedroomRepository.updateBedroomStatus(id, data),
+
   upload: (id, data) => BedroomRepository.upload(id, data),
 
   remove: (id) => BedroomRepository.remove(id),

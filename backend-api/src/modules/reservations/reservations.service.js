@@ -12,11 +12,11 @@ const ReservationSchema = z.object({
   id_bedroom: z.number()
     .gte(0, { message: "O id do quarto tem que ser existente" }),
 
-  check_in: z.string().refine((val) => !isNaN(Date.parse(val)), {
+  check_in: z.date().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de check-in inválida",
   }),
 
-  check_out: z.string().refine((val) => !isNaN(Date.parse(val)), {
+  check_out: z.date().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data de check-out inválida",
   }),
 
@@ -35,10 +35,18 @@ class ValidationError extends Error {
 }
 
 export const ReservationService = {
-  getAll: () => ReservationRepository.findAll(),
+  getAll: (page, limit) => ReservationRepository.findAll(page, limit),
   getById: (id) => ReservationRepository.findById(id),
 
   create: async (data) => {
+    data = {
+      id_plan: Number(data.id_plan),
+      id_bedroom: Number(data.id_bedroom),
+      id_guest: Number(data.id_guest),
+      check_in: new Date(data.check_in),
+      check_out: new Date(data.check_out),
+    }
+    
     const parsed = ReservationSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
@@ -53,11 +61,11 @@ export const ReservationService = {
     if (bedroom.status !== 'Livre') {
       throw new ValidationError('Erro de validação', { id_bedroom: ['Quarto não está disponível.'] });
     }
-    
+
     const createdReservation = await ReservationRepository.create(data);
 
     // vai atualizar   o status do quarto para "Ocupado"
-    await BedroomService.update(data.id_bedroom, { status: 'Ocupado' });
+    await BedroomService.updateBedroomStatus(data.id_bedroom, { status: 'Ocupado' });
 
     return createdReservation;
   },

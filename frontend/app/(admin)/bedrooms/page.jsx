@@ -21,7 +21,7 @@ export default function Bedrooms() {
       setBedrooms(result.data);
       setTotalItems(result.total);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
@@ -41,7 +41,7 @@ export default function Bedrooms() {
             await deleteBedroom(id);
             setDeleted(true);
           } catch (error) {
-            console.log(error);
+            
             setDeleted(false);
           }
         }

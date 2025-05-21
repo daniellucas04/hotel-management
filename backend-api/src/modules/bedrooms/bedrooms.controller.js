@@ -7,10 +7,10 @@ import { BedroomService } from './bedrooms.service.js';
 
 export const BedroomController = {
     getAll: async (req, res) => {
-            const {page, limit} = req.query;
-            const bedrooms = await BedroomService.getAll(page, limit);
-            res.json(bedrooms);
-        },
+        const { page, limit } = req.query;
+        const bedrooms = await BedroomService.getAll(page, limit);
+        res.json(bedrooms);
+    },
 
     getById: async (req, res) => {
         const bedroom = await BedroomService.getById(Number(req.params.id));
@@ -41,7 +41,7 @@ export const BedroomController = {
     upload: async (req, res) => {
         if (!req.file)
             return res.status(400);
-  
+
         const image = await BedroomService.upload(Number(req.params.id), req.file);
         res.json(image);
     },

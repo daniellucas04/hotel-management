@@ -102,7 +102,7 @@ export default function CreateUser() {
           redirect("/employee");
         }, 3000);
       } catch (error) {
-        console.log(error);
+        
         Swal.fire({
           text: "Erro ao cadastrar o funcionário. Tente novamente!",
           icon: "error",

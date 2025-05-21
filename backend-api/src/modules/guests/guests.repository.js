@@ -4,6 +4,10 @@ import prisma from '../../config/prisma.js';
 
 export const GuestRepository = {
     findAll: async (page, limit) => {
+        if (!page || !limit){
+            return await prisma.guests.findMany();
+        }
+
         let offset = (page - 1) * limit;
         const items = await prisma.guests.findMany({ take: parseInt(limit), skip: offset })
         const totalItems = await prisma.guests.count()

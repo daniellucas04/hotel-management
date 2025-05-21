@@ -54,7 +54,7 @@ export default function CreateEmployee({ params }) {
       const result = await getEmployee(id);
       setEmployee(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
@@ -80,7 +80,6 @@ export default function CreateEmployee({ params }) {
 
     try {
       const employeeData = await updateEmployee(id, employee);
-      console.log(employeeData);
       if (employeeData.message) {
         Swal.fire({
           text: employeeData.message,

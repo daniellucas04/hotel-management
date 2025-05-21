@@ -7,6 +7,9 @@ export const EmployeeRepository = {
         return prisma.employees.findUnique({ where: { login } });
       },
     findAll: async (page, limit) => {
+        if (!page || !limit)
+            return await prisma.employees.findMany();
+
         let offset = ( page - 1 ) * limit;
         const items = await prisma.employees.findMany({ take: parseInt(limit), skip: offset })
         const totalItems = await prisma.employees.count()

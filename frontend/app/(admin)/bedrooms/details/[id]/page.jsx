@@ -14,7 +14,7 @@ export default function BedroomsDetails({ params }) {
       const result = await getBedroom(id);
       setBedroom(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

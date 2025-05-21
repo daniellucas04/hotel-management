@@ -21,7 +21,7 @@ export default function employee() {
       setEmployees(result.data);
       setTotalItems(result.total);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

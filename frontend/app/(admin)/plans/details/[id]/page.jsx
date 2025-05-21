@@ -19,7 +19,7 @@ export default function PlanDetails({ params }) {
         const result = await getPlan(id);
         setPlan(result);
       } catch (error) {
-        console.log(error);
+        
       }
     }
   

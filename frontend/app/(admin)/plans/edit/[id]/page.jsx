@@ -29,7 +29,7 @@ export default function EditPlan({ params }) {
       const result = await getPlan(id);
       setPlan(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

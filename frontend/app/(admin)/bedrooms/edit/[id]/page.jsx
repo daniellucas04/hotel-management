@@ -51,7 +51,7 @@ export default function EditBedroom({ params }) {
       }
       setBedroom(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

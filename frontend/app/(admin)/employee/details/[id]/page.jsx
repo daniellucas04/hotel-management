@@ -22,7 +22,7 @@ export default function EmployeeDetails({ params }) {
       const result = await getEmployee(id);
       setEmployee(result);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 

@@ -4,6 +4,9 @@ import prisma from '../../config/prisma.js';
 
 export const BedroomRepository = {
     findAll: async (page, limit) => {
+        if (!page || !limit)
+            return await prisma.bedrooms.findMany();
+
         let offset = ( page - 1 ) * limit;
         const items = await prisma.bedrooms.findMany({ take: parseInt(limit), skip: offset })
         const totalItems = await prisma.bedrooms.count()
@@ -27,6 +30,9 @@ export const BedroomRepository = {
             ...data,
             privileges: data.privileges.join(",")
         }
+        return await prisma.bedrooms.update({ where: { id }, data })
+    },
+    updateBedroomStatus: async (id, data) => {
         return await prisma.bedrooms.update({ where: { id }, data })
     },
     upload: async (id, data) => {

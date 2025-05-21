@@ -17,7 +17,7 @@ export async function getAll(page, limit) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -29,7 +29,7 @@ export async function getGuest(id) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -41,7 +41,7 @@ export async function getAllPlans() {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -57,7 +57,7 @@ export async function updateGuest(id, guest) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -73,7 +73,7 @@ export async function createGuest(guest) {
 
 		return await data.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -92,7 +92,7 @@ export async function savePhoto(id, photo) {
 
 		return await uploadedImage.json();
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 
@@ -104,7 +104,7 @@ export async function deleteGuest(id) {
 
 		console.log(await result);
 	} catch (error) {
-		console.log(error);
+		
 	}
 }
 

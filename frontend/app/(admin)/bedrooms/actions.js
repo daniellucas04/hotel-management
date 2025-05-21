@@ -42,7 +42,7 @@ export async function getAll(page, limit) {
 
         return await data.json();
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -54,7 +54,7 @@ export async function getBedroom(id) {
 
         return await data.json();
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -71,7 +71,7 @@ export async function updateBedroom(id, bedroom) {
         
         return await data.json();
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -87,7 +87,7 @@ export async function createBedroom(bedroom) {
 
         return await data.json();
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -105,7 +105,7 @@ export async function savePhoto(id, photo) {
 
         return await uploadedImage.json();
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -117,6 +117,6 @@ export async function deleteBedroom(id) {
   
       console.log(await result);
     } catch (error) {
-      console.log(error);
+      
     }
   }

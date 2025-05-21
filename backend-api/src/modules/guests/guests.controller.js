@@ -1,7 +1,6 @@
 // Aqui vai receber as requisições para usar o guests services
 
 
-import { GuestRepository } from './guests.repository.js';
 import { GuestService } from './guests.service.js';
 
 export const GuestController = {

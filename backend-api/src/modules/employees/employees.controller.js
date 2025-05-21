@@ -1,11 +1,6 @@
 
 import { EmployeeService } from './employees.service.js';
 
-// const getAll = async (req, res) => {
-//     const plans = await PlanService.getAll();
-//     res.json(plans);
-// };
-
 export const EmployeeController = {
     getAll: async (req, res) => {
         const {page, limit} = req.query;

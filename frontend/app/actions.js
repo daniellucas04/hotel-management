@@ -14,7 +14,6 @@ export async function loginEmployee(data) {
 
         return await response.json();
     } catch (error) {
-        console.error(error);
         throw error;  
     }
 }

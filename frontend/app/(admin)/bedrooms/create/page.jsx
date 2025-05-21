@@ -97,7 +97,7 @@ export default function CreateBedroom() {
           redirect("/bedrooms");
         }, 3000);
       } catch (error) {
-        console.log(error);
+        
         Swal.fire({
           text: "Erro ao cadastrar o quarto. Tente novamente!",
           icon: "error",

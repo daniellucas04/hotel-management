@@ -9,26 +9,94 @@ import {
   TextInput,
 } from "flowbite-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle, HiOutlineUser } from "react-icons/hi";
+import { createTask, getAllEmployees, getAllReservations, validateCreate } from "../actions";
+import Swal from "sweetalert2";
+import { redirect } from "next/navigation";
 
 export default function TaskCreate() {
-  const [taskData, setTaskData] = useState({
-    id_employee: 0,
-    id_reservation: 0,
-    priority: "Baixa",
-    description: "",
-    price: 0.0,
+  const [task, setTask] = useState({
+    id_employee: '',
+    id_reservation: '',
+    priority: 'Baixa',
+    description: '',
+    price: 0.00,
   });
+  const [employees, setEmployees] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   function handleData(event) {
-    setTaskData((p) => ({ ...p, [event.target.name]: event.target.value }));
+    setTask((p) => ({ ...p, [event.target.name]: event.target.value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(taskData);
+
+    const error = validateCreate(task);
+    if (error.length == 0) {
+      try {
+        const taskData = await createTask(task);
+        if (taskData.message) {
+          Swal.fire({
+            text: taskData.message,
+            icon: "error",
+            timer: 3000,
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+          });
+          return;
+        }
+
+        Swal.fire({
+          text: "Tarefa cadastrada com sucesso",
+          icon: "success",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+
+        setTimeout(() => {
+          redirect("/tasks");
+        }, 3000);
+      } catch (error) {
+        Swal.fire({
+          text: "Erro ao cadastrar a tarefa. Tente novamente!",
+          icon: "error",
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+      }
+    } else {
+      Swal.fire({
+        html: error.join("<br>"),
+        icon: "error",
+        timer: 0,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
+
+  async function fetchAllEmployees() {
+    const results = await getAllEmployees();
+    setEmployees(results ?? []);
+  }
+
+  async function fetchAllReservations() {
+    const results = await getAllReservations();
+    setReservations(results ?? []);
+  }
+
+  useEffect(() => {
+    fetchAllEmployees();
+    fetchAllReservations();
+  }, []);
 
   return (
     <>
@@ -47,11 +115,13 @@ export default function TaskCreate() {
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_employee"
-                    value={taskData.id_employee}
                   >
-                    <option value="">Funcionário 1</option>
-                    <option value="">Funcionário 2</option>
-                    <option value="">Funcionário 3</option>
+                    <option value="">Selecione um funcionário</option>
+                    {employees.map((employee) => (
+                      <option key={employee.id} value={employee.id}>
+                        {employee.name}
+                      </option>
+                    ))}
                   </Select>
                 </div>
 
@@ -62,11 +132,13 @@ export default function TaskCreate() {
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_reservation"
-                    value={taskData.id_reservation}
                   >
-                    <option value="">Reserva 1</option>
-                    <option value="">Reserva 2</option>
-                    <option value="">Reserva 3</option>
+                    <option value="">Selecione uma reserva</option>
+                    {reservations.map((reservation) => (
+                      <option key={reservation.id} value={reservation.id}>
+                        {reservation.bedroom.number} ({reservation.guest.name})
+                      </option>
+                    ))}
                   </Select>
                 </div>
               </div>
@@ -78,7 +150,6 @@ export default function TaskCreate() {
                     icon={HiOutlineExclamationCircle}
                     onChange={handleData}
                     name="priority"
-                    value={taskData.priority}
                   >
                     <option>Baixa</option>
                     <option>Normal</option>
@@ -99,7 +170,6 @@ export default function TaskCreate() {
                   placeholder="Mais informações do produto / serviço"
                   onChange={handleData}
                   name="description"
-                  value={taskData.description}
                   rows={4}
                 />
               </div>

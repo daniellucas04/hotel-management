@@ -20,7 +20,7 @@ export default function Plans() {
       setPlans(result.data);
       setTotalItems(result.total);
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
@@ -41,7 +41,7 @@ export default function Plans() {
           setDeleted(true);
         } catch (error) {
           setDeleted(false);
-          console.log(error);
+          
         }
       }
     });

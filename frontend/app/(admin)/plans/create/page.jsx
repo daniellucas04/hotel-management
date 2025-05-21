@@ -60,7 +60,7 @@ export default function CreatePlan() {
               redirect("/plans");
             }, 3000);
           } catch (error) {
-            console.log(error);
+            
             Swal.fire({
               text: "Erro ao cadastrar o plano. Tente novamente!",
               icon: "error",

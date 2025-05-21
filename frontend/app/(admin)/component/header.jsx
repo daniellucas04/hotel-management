@@ -77,8 +77,8 @@ export default function Header() {
         <Navbar.Link
           as={Link}
           className="flex items-center gap-2"
-          href="/reservation"
-          active={pathName.includes("reservation") ? true : false}
+          href="/reservations"
+          active={pathName.includes("reservations") ? true : false}
         >
           <HiOutlineClipboardCheck size={20} /> Reservas
         </Navbar.Link>
@@ -89,14 +89,6 @@ export default function Header() {
           active={pathName.includes("tasks") ? true : false}
         >
           <HiOutlineBookmark size={20} /> Tarefas
-        </Navbar.Link>
-        <Navbar.Link
-          as={Link}
-          className="flex items-center gap-2"
-          href="/reports"
-          active={pathName.includes("reports") ? true : false}
-        >
-          <HiOutlineClipboardList size={20} /> Relatórios
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
