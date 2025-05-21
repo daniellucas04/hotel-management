@@ -63,7 +63,7 @@ export default function Reservations() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos as reservas</h1>
           <Button color="light">
-            <Link href="/reservation/create">Nova reserva</Link>
+            <Link href="/reservations/create">Nova reserva</Link>
           </Button>
         </div>
         {reservations.length > 0 ? (

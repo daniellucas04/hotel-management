@@ -1,11 +1,3 @@
-const requiredCreateFields = {
-	id_employee: "O funcionário é obrigatório",
-	id_reservation: "A reserva é obrigatória",
-	priority: "A prioridade é obrigatória",
-	price: "O preço é obrigatório",
-    description: 'A descrição é obrigatória',
-};
-
 export async function getAll(page, limit) {
 	try {
 		const data = await fetch(
@@ -101,17 +93,4 @@ export async function deleteTask(id) {
 	} catch (error) {
 		
 	}
-}
-
-export function validateCreate(tasks) {
-	let error = [];
-
-	Object.entries(requiredCreateFields).forEach(([field, message]) => {
-		if (!tasks[field]) {
-			error.push(message);
-		}
-	});
-
-	console.log(tasks);
-	return error;
 }

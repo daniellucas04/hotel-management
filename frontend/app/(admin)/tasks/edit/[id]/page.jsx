@@ -127,7 +127,7 @@ export default function TaskEdit({ params }) {
                     <option value="" disabled>Selecione uma reserva</option>
                     {reservations.map((reservation) => (
                       <option key={reservation.id} value={reservation.id} >
-                        {reservation.bedroom.number} - {reservation.guest.name}
+                        {reservation.bedroom.number} ({reservation.guest.name})
                       </option>
                     ))}
                   </Select>
