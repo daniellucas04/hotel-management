@@ -36,6 +36,7 @@ class ValidationError extends Error {
 
 export const ReservationService = {
   getAll: (page, limit) => ReservationRepository.findAll(page, limit),
+
   getById: (id) => ReservationRepository.findById(id),
 
   create: async (data) => {

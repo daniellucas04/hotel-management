@@ -1,66 +1,24 @@
 "use client";
 
 import { Card } from "flowbite-react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { faker } from "@faker-js/faker";
+import { useEffect, useState } from "react";
 import { HiOutlineBan, HiOutlineCurrencyDollar, HiOutlineIdentification, HiOutlineLightBulb } from "react-icons/hi";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Demo chart",
-    },
-  },
-};
-
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: labels.map(() => faker.number.int({ min: -1000, max: 1000 })),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: labels.map(() => faker.number.int({ min: -1000, max: 1000 })),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
+import { getGuestsRegistred } from "./actions";
 
 export default function Dashboard() {
+  const [guestsRegistred, setGuestsRegistred] = useState(0);
+
+  async function fetchGuestsRegistred() {
+    const result = await getGuestsRegistred();
+    setGuestsRegistred(result.count);
+  }
+
+  useEffect(() => {
+    fetchGuestsRegistred();
+  }, [])
+
   return (
     <>
-      
       <div className="m-10">
         <h1 className="text-4xl font-medium mb-10">Seja bem-vindo!</h1>
         <span className="text-2xl text-gray-600">
@@ -72,7 +30,7 @@ export default function Dashboard() {
               Hóspedes cadastrados
               <HiOutlineIdentification className="text-white" size={40} />
             </div>
-            <span className="text-6xl">10</span>
+            <span className="text-6xl">{guestsRegistred}</span>
           </Card>
           <Card className="bg-yellow-400 shadow-lg text-white font-bold">
             <div className="flex justify-between items-center text-2xl">

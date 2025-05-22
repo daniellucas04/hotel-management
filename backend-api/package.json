@@ -15,8 +15,10 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "express": "^4.21.2",
+    "moment-timezone": "^0.5.48",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.0",
+    "tzdata": "^1.0.44",
     "zod": "^3.24.3"
   },
   "devDependencies": {
