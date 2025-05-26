@@ -1,11 +1,12 @@
 export async function loginEmployee(data) {
     try {
         const response = await fetch('http://localhost:8000/auth/login', {
-            method: "POST",  
+            method: "POST",
             headers: {
-                "Content-Type": "application/json",  
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),  
+            body: JSON.stringify(data),
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -14,6 +15,6 @@ export async function loginEmployee(data) {
 
         return await response.json();
     } catch (error) {
-        throw error;  
+        throw error;
     }
 }
