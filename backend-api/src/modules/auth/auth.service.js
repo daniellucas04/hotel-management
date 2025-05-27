@@ -1,7 +1,12 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { z } from 'zod';
+import jwt from 'jsonwebtoken';
 import { EmployeeRepository } from '../employees/employees.repository.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const SECRET = process.env.JWT_SECRET;
 
 const LoginSchema = z.object({
   login: z.string(),
@@ -19,24 +24,30 @@ export const AuthService = {
     const { login, password } = data;
 
     const employee = await EmployeeRepository.findByLogin(login);
+
     if (!employee) {
-      throw new Error('Login ou senha inválidos');
+      throw new Error('login ou senha inválidos');
     }
 
     const passwordIsValid = await bcrypt.compare(password, employee.password);
     if (!passwordIsValid) {
-      throw new Error('Login ou senha inválidos');
+      throw new Error('login ou senha inválidos');
     }
 
+    // onde vai se gerado o token
     const token = jwt.sign(
-      { userId: employee.id, login: employee.login }, // Ajustado para usar login
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      {
+        userId: employee.id,
+        name: employee.name,
+        login: employee.login,
+      },
+      SECRET,
+      { expiresIn: '8h' } 
     );
 
     return {
-      token, // Retorna o token para o controlador configurar o cookie
       message: 'Login realizado com sucesso',
+      token,
       user: {
         id: employee.id,
         name: employee.name,
