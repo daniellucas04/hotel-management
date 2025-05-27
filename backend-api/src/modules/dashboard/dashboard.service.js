@@ -7,7 +7,9 @@ export const DashboardService = {
   
   getBedroomsOcuppied: () => DashboardRepository.getBedroomsOcuppied(),
   
-  getTotalCheckouts: () => DashboardRepository.getTotalCheckouts(),
+  getTotalCheckins: () => DashboardRepository.getTotalCheckins(),
 
   getTotalMoneyInTasks: () => DashboardRepository.getTotalMoneyInTasks(),
+
+  getTotalMoneyInReservations: () => DashboardRepository.getTotalMoneyInReservations(),
 };

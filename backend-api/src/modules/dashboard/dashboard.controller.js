@@ -6,23 +6,28 @@ export const DashboardController = {
         res.json(guestsRegistred);
     },
     
-    getReservationsActive: (req, res) =>  {
-        const reservationsActive = DashboardService.getReservationsActive();
+    getReservationsActive: async (req, res) =>  {
+        const reservationsActive = await DashboardService.getReservationsActive();
         res.json(reservationsActive);
     },
 
-    getBedroomsOcuppied: (req, res) =>  {
-        const bedroomsOcuppied = DashboardService.getBedroomsOcuppied();
+    getBedroomsOcuppied: async (req, res) =>  {
+        const bedroomsOcuppied = await DashboardService.getBedroomsOcuppied();
         res.json(bedroomsOcuppied);
     },
 
-    getTotalCheckouts: (req, res) => {
-        const totalCheckouts = DashboardService.getTotalCheckouts();
+    getTotalCheckins: async (req, res) => {
+        const totalCheckouts = await DashboardService.getTotalCheckins();
         res.json(totalCheckouts);
     },
 
-    getTotalMoneyInTasks: (req, res) =>  {
-        const totalMoneyInTasks = DashboardService.getTotalMoneyInTasks();
+    getTotalMoneyInTasks: async (req, res) =>  {
+        const totalMoneyInTasks = await DashboardService.getTotalMoneyInTasks();
         res.json(totalMoneyInTasks);
+    },
+
+    getTotalMoneyInReservations: async (req, res) =>  {
+        const totalMoneyInReservations = await DashboardService.getTotalMoneyInReservations();
+        res.json(totalMoneyInReservations);
     },
 };

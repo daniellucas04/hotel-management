@@ -5,7 +5,7 @@ import prisma from '../../config/prisma.js';
 export const DashboardRepository = {
     getGuestsRegistred: async () => {
         const results = await prisma.$queryRaw`
-            SELECT COUNT(*) as total FROM guests WHERE DATE(created_at) = CURDATE()
+            SELECT COUNT(*) as total FROM guests WHERE DATE(created_at) = CURDATE();
         `;
         return {
             count: Number(results[0].total)
@@ -13,18 +13,49 @@ export const DashboardRepository = {
     },
 
     getReservationsActive: async () => {
-        return await prisma;
+        const results = await prisma.$queryRaw`
+            SELECT COUNT(*) as total FROM reservations WHERE status IN ('Reservado', 'Confirmado');
+        `;
+        return {
+            count: Number(results[0].total)
+        };
     },
     
     getBedroomsOcuppied: async () => {
-        return await prisma;
+        const results = await prisma.$queryRaw`
+            SELECT COUNT(*) as total FROM bedrooms WHERE status = 'Ocupado';
+        `;
+        return {
+            count: Number(results[0].total) 
+        };
     },
     
-    getTotalCheckouts: async () => {
-        return await prisma;
+    getTotalCheckins: async () => {
+        const results = await prisma.$queryRaw`
+            SELECT COUNT(*) as total FROM reservations WHERE Date(check_in) = DATE(NOW());
+        `;
+        return {
+            count: Number(results[0].total) 
+        };
     },
     
     getTotalMoneyInTasks: async () => {
-        return await prisma;
+        const results = await prisma.$queryRaw`
+            SELECT SUM(price) as total FROM tasks WHERE price > 0;
+        `;
+
+        return {
+            sum: Number(results[0].total) 
+        };
     },
+
+    getTotalMoneyInReservations: async() => {
+        const results = await prisma.$queryRaw`
+            SELECT SUM(plans.price) as total FROM reservations INNER JOIN plans ON reservations.id_plan = plans.id WHERE reservations.check_out >= CURDATE() - INTERVAL 1 MONTH AND reservations.check_out <  CURDATE() + INTERVAL 1 DAY;
+        `;
+
+        return {
+            sum: Number(results[0].total) 
+        };
+    }
 };
