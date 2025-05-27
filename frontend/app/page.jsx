@@ -1,15 +1,14 @@
-'use client'
+'use client';
 
 import { Button, Card, Label, TextInput } from "flowbite-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { loginEmployee } from "./actions";
 
 export default function Login() {
-    const [data, setData] = useState({
-        login: '',
-        password: '',
-    })
+    const [data, setData] = useState({ login: '', password: '' });
+    const [error, setError] = useState('');
+    const router = useRouter();
 
     function handleData(event) {
         setData(p => ({ ...p, [event.target.name]: event.target.value }));
@@ -17,14 +16,18 @@ export default function Login() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        setError('');
 
-        const login = await loginEmployee(data);
-        if (login) {
-            alert('login feito com sucesso');
-            redirect('/dashboard', 'replace');
-
+        try {
+            const login = await loginEmployee(data);
+            if (login.token) {
+                localStorage.setItem('token', login.token);
+                localStorage.setItem('user', JSON.stringify(login.user));
+                router.replace('/dashboard');
+            }
+        } catch (error) {
+            setError('Login inválido. Verifique suas credenciais.');
         }
-
     }
 
     return (
@@ -33,20 +36,17 @@ export default function Login() {
                 <div className="flex justify-center">
                     <img className="rounded-md" src="https://placehold.co/100x100" />
                 </div>
-                <form onSubmit={handleSubmit} method="post" className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="login">Login</Label>
-                        </div>
-                        <TextInput id="login" type="text" onChange={handleData} name="login" />
+                        <Label htmlFor="login">Login</Label>
+                        <TextInput id="login" type="text" onChange={handleData} name="login" required />
                     </div>
                     <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="password1">Senha</Label>
-                        </div>
-                        <TextInput id="password1" type="password" onChange={handleData} name="password" />
+                        <Label htmlFor="password">Senha</Label>
+                        <TextInput id="password" type="password" onChange={handleData} name="password" required />
                     </div>
-                    <Button type="submit">Submit</Button>
+                    {error && <p className="text-red-500">{error}</p>}
+                    <Button type="submit">Entrar</Button>
                 </form>
             </Card>
         </main>
