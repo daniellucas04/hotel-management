@@ -93,7 +93,7 @@ export default function Reservations() {
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
                         <Link
-                          href="/reservation/details/1"
+                          href="/reservations/details/1"
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Detalhes

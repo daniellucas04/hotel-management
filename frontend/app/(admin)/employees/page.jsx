@@ -62,7 +62,7 @@ export default function employee() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos os funcionários</h1>
           <Button color="light">
-            <Link href="/employee/create">Novo funcionário</Link>
+            <Link href="/employees/create">Novo funcionário</Link>
           </Button>
         </div>
         {employees.length > 0 ? (
@@ -98,13 +98,13 @@ export default function employee() {
                       <Table.Cell>{employee.phone1}</Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
                         <Link
-                          href={`/employee/details/${employee.id}`}
+                          href={`/employees/details/${employee.id}`}
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Detalhes
                         </Link>
                         <Link
-                          href={`/employee/edit/${employee.id}`}
+                          href={`/employees/edit/${employee.id}`}
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Editar

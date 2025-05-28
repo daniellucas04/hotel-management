@@ -108,7 +108,6 @@ export default function Bedrooms() {
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    {console.log(bedroom)}
                     <Badge
                       color={bedroom.status === "Ocupado" ? "red" : "green"}
                       className="w-fit"

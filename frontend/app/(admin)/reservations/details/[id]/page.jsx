@@ -1,67 +1,59 @@
 "use client";
 
-import { Button, HR } from "flowbite-react";
+import { Card, HR } from "flowbite-react";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
+  HiOutlineArrowCircleLeft,
   HiOutlineArrowLeft,
 } from "react-icons/hi";
+import { getReservation } from "../../actions";
 
-export default function ReservationDetails() {
-  const [reservationData, setReservationData] = useState({
-    id_guest: 0,
-    id_plan: 0,
-    id_bedroom: 0,
-    check_in: new Date(),
-    check_out: new Date(),
-  });
+export default function ReservationDetails({ params }) {
+  const [reservation, setReservation] = useState();
+  const { id } = use(params);
+  
+  async function fetchReservation(id) {
+    try {
+      const result = await getReservation(id);
+      console.log(result);
+      setReservation(result);
+    } catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    fetchReservation(id);
+  }, []);
 
   return (
     <>
-      <section className="h-full mx-52 my-14">
-        <Link
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-400 transition-all"
-          href="/reservation"
-        >
-          <HiOutlineArrowLeft size={"16px"} />
-          Reservas
-        </Link>
-        <div className="flex items-center justify-between gap-4 mt-4">
-          <div className="flex items-center gap-4">
-            <img
-              src={reservationData.title}
-              className="max-w-20 max-h-2max-w-20 rounded-full"
-            />
-            <span className="text-3xl font-medium">{reservationData.description}</span>
-          </div>
-          <div>
-            <Button color="light" size="sm">
-              <Link href="/reservation/edit/1">Editar reserva</Link>
-            </Button>
-          </div>
-        </div>
-        <HR />
-        <div className="flex justify-evenly">
-          <section className="flex flex-col items-start gap-4 text-gray-500">
-            <div className="flex items-center gap-4">
-              <span className="text-zinc-900 font-medium">Hóspede: </span>
-              <span>{reservationData.title}</span>
+      <section className="overflow-x-auto p-10">
+        <Link href={'/plans'} className="text-2xl flex items-center gap-4 font-medium text-zinc-600"><HiOutlineArrowCircleLeft /> Voltar</Link>
+
+        <div className="flex gap-12 justify-center mt-12">
+          <Card className="w-[44rem]">
+            <div className="">
+              <h2 className="font-bold text-zinc-800">Informações do plano</h2>
+
+              <span className="flex justify-between mt-8">
+                <span className="font-medium text-gray-700">Título</span> <span className="text-gray-600">{}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Descrição</span> <span className="text-gray-600">{}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Preço</span> <span className="text-gray-600">{}</span>
+              </span>
             </div>
-          </section>
-          <section className="flex flex-col items-start gap-4 text-gray-500">
-            <div className="flex items-center gap-4">
-              <span className="text-zinc-900 font-medium">Plano: </span>
-              <span>{reservationData.description}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-zinc-900 font-medium">Data de check-in</span>
-              <span>{reservationData.check_in.toLocaleDateString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-zinc-900 font-medium">Data de check-out</span>
-              <span>{reservationData.check_out.toLocaleDateString()}</span>
-            </div>
-          </section>
+          </Card>
         </div>
       </section>
     </>

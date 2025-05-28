@@ -21,6 +21,21 @@ export async function getAll(page, limit) {
 	}
 }
 
+export async function getReservation(id) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/reservations/${id}`,
+			{
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+
+	}
+}
+
 export async function getAllGuests() {
 	try {
 		const data = await fetch(`http://localhost:8000/guests`, {

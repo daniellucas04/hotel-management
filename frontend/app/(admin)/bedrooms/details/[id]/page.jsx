@@ -1,9 +1,31 @@
 'use client'
 
-import { Card } from "flowbite-react";
+import { Card, HR } from "flowbite-react";
 import { getBedroom } from "../../actions";
 import { use, useEffect, useState } from "react";
 import { LuBedDouble } from "react-icons/lu";
+import Link from "next/link";
+import { HiOutlineArrowCircleLeft } from "react-icons/hi";
+
+let listOfPrivileges = {
+  free_wifi: 'Wifi gratuito',
+  bedroom_bathroom: "Banheiro no quarto",
+  breakfast: "Café da manhã",
+  air_conditioner: "Ar condicionado",
+  fan: "Ventilador",
+  frigobar: "Frigobar",
+  garage: "Estacionamento"
+}
+
+function translatePrivileges(privileges) {
+  let privilegesList = String(privileges).split(','); 
+  let privilegesTranslated = [];
+  privilegesList.forEach((item) => {
+      privilegesTranslated.push(listOfPrivileges[item]);
+  });
+
+  return privilegesTranslated.join(", ");
+}
 
 export default function BedroomsDetails({ params }) {
   const [bedroom, setBedroom] = useState({});
@@ -14,7 +36,7 @@ export default function BedroomsDetails({ params }) {
       const result = await getBedroom(id);
       setBedroom(result);
     } catch (error) {
-      
+
     }
   }
 
@@ -24,50 +46,78 @@ export default function BedroomsDetails({ params }) {
 
   return (
     <>
-      <section className="h-full m-10">
-        <Card className="p-4 mt-12">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-center w-full h-96">
-              {bedroom.photo ? (
-                <img
-                  className="w-max max-h-96"
-                  src={`http://localhost:8000/uploads/${bedroom.photo}`}
-                  alt={bedroom.number}
-                />
-              ) : (
-                  <LuBedDouble size={100} />
-              )}
+      <section className="overflow-x-auto p-10">
+        <Link href={'/bedrooms'} className="text-2xl flex items-center gap-4 font-medium text-zinc-600"><HiOutlineArrowCircleLeft /> Voltar</Link>
+
+        <div className="flex gap-12 mt-12">
+          <div className="font-bold text-zinc-700">
+            {bedroom.photo ? (
+              <img className="w-full rounded-md shadow-lg" src={`http://localhost:8000/uploads/${bedroom.photo}`} alt="Imagem do hóspedde" />
+            ) : (
+              <div className="flex items-center justify-center">
+                <LuBedDouble size={330} className="" />
+              </div>
+            )}
+          </div>
+
+          <Card className="w-full">
+            <div className="">
+              <h2 className="font-bold text-zinc-800">Informações do quarto</h2>
+
+              <span className="flex justify-between mt-8">
+                <span className="font-medium text-gray-700">Número</span> <span className="text-gray-600">{bedroom.number}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Banheiros</span> <span className="text-gray-600">{bedroom.bathroom_quantity}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Camas</span> <span className="text-gray-600">{bedroom.bed_quantity}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">TVs</span> <span className="text-gray-600">{bedroom.tv_quantity}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between mt-8">
+                <span className="font-medium text-gray-700">Status</span> <span className="text-gray-600">{bedroom.status}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Categoria</span> <span className="text-gray-600">{bedroom.category}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Classificação</span> <span className="text-gray-600">{bedroom.classification}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Privilégios</span> <span className="text-gray-600">{translatePrivileges(bedroom.privileges)}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Descrição curta</span> <span className="text-gray-600">{bedroom.short_description}</span>
+              </span>
             </div>
-          </div>
-          <div className="grid grid-cols-4 gap-2 justify-items-center mt-14">
-            <p>
-              <span className="font-bold">Quarto:</span> {bedroom.number}
-            </p>
-            <p>
-              <span className="font-bold">Banheiros:</span>{" "}
-              {bedroom.bathroom_quantity}
-            </p>
-            <p>
-              <span className="font-bold">Camas:</span>{" "}
-              {bedroom.bed_quantity}
-            </p>
-            <p>
-              <span className="font-bold">Categoria:</span>{" "}
-              {bedroom.category ? "Sim" : "Não"}
-            </p>
-            <p>
-              <span className="font-bold">Classificação:</span>{" "}
-              {bedroom.classification ? "Sim" : "Não"}
-            </p>
-            <p>
-              <span className="font-bold">Descrição curta:</span>{" "}
-              {bedroom.short_description}
-            </p>
-            <p>
-              <span className="font-bold">Status:</span> {bedroom.status}
-            </p>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </section>
     </>
   );
