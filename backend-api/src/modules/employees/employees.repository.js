@@ -19,10 +19,9 @@ export const EmployeeRepository = {
             total: totalItems
         }
     },
-    // findAll: ()=>prisma.employees.findMany(), buscar todos os employess
     findById: (id) => prisma.employees.findUnique({ where: { id } }),
     create: async (data) => {
-        let employee = await prisma.employees.findUnique({ where: {document: data.document }});
+        let employee = await prisma.employees.findUnique({ where: {document: data.document } });
 
         if (employee) {
             return {

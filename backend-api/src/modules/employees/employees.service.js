@@ -64,6 +64,7 @@ export const EmployeeService = {
   
   //fazer o update
   update: (id, data) =>{
+     data = {...data, id_workgroup: Number(data.id_workgroup)}
     const parsed = employeeSchema.safeParse(data);
     if(!parsed.success){
       const errors = parsed.error.flatten().fieldErrors;

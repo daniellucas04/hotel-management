@@ -12,7 +12,8 @@ model workgroups {
   name       String
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt @default(now())
-  employees  employees[]
+
+  employees employees[]
 }
 
 model employees {
@@ -31,9 +32,10 @@ model employees {
   password   String
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt @default(now())
+  workgroup workgroups   @relation(fields: [id_workgroup], references: [id])
+
 
   @@index([id_workgroup], map: "employees_id_workgroup_fkey")
-  workgroups workgroups[]
   tasks tasks[]
   logs logs[]
 }
@@ -84,7 +86,7 @@ model bedrooms {
   category          bedrooms_category     @default(Solteiro)
   classification    BedroomClassification @default(Standard)
   privileges        String?
-  short_description String
+  short_description String                @db.VarChar(150)
   status            bedrooms_status       @default(Livre)
   photo             String?
   created_at        DateTime              @default(now())
