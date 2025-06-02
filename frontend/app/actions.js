@@ -2,11 +2,12 @@
 
 export async function loginEmployee(data) {
     const response = await fetch('http://localhost:8000/auth/login', {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+        credentials: 'include', // Ensure this is present
     });
 
     if (!response.ok) {
@@ -14,6 +15,5 @@ export async function loginEmployee(data) {
         throw new Error(errorData.error || 'Erro ao fazer login');
     }
 
-    const result = await response.json();
-    return result;  // 🔥 Somente retorna os dados
+    return await response.json();
 }
