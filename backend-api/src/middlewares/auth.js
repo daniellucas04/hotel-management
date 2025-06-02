@@ -6,33 +6,30 @@ dotenv.config();
 const SECRET = process.env.JWT_SECRET;
 
 export const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  let token = null;
 
-  // vai verifica se existe o header Authorization
-  if (!authHeader) {
+  // Check for token in Authorization header
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  }
+
+  // Fallback to cookie if Authorization header is not present
+  if (!token && req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token) {
     return res.status(401).json({ error: 'Token não fornecido.' });
   }
 
-  // vai espera receber assim: "Bearer token_aqui"
-  const parts = authHeader.split(' ');
-
-  if (parts.length !== 2) {
-    return res.status(401).json({ error: 'Token mal formatado.' });
-  }
-
-  const [scheme, token] = parts;
-
-  if (!/^Bearer$/i.test(scheme)) {
-    return res.status(401).json({ error: 'Token mal formatado.' });
-  }
-
-  // vai verifica se o token é válido
+  // Verify the token
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: 'Token inválido ou expirado.' });
     }
 
-    // Se tudo estiver OK, salva os dados do usuário no request
+    // Attach user data to request
     req.user = {
       id: decoded.userId,
       name: decoded.name,
