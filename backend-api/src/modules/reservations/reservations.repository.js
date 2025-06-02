@@ -16,7 +16,7 @@ export const ReservationRepository = {
             total: totalItems
         }
     },
-    findById: (id) => prisma.reservations.findUnique({ where: { id } }),
+    findById: (id) => prisma.reservations.findUnique({ where: { id }, include: { bedroom: true, guest: true, plan: true } }),
     create: (data) => prisma.reservations.create({ data }),
     update: (id, data) => prisma.reservations.update({ where: { id }, data }),
     remove: async (id) => {

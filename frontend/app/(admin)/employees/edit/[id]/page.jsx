@@ -28,7 +28,7 @@ import Link from "next/link";
 import { getAllWorkgroups, getEmployee, savePhoto, updateEmployee } from "../../actions";
 import Swal from "sweetalert2";
 
-export default function CreateEmployee({ params }) {
+export default function EditEmployee({ params }) {
   const { id } = use(params);
   const [employee, setEmployee] = useState({
     id_workgroup: "",
@@ -54,7 +54,7 @@ export default function CreateEmployee({ params }) {
       const result = await getEmployee(id);
       setEmployee(result);
     } catch (error) {
-      
+      console.log(error);
     }
   }
 
@@ -209,12 +209,13 @@ export default function CreateEmployee({ params }) {
                 name="id_workgroup"
                 onChange={handleData}
                 required
+                value={employee.id_workgroup}
               >
                 <option key={0} value="" disabled>
                   Selecione o cargo do funcionário
                 </option>
                 {workgroups.map((workgroup) => (
-                  <option key={workgroup.id} value={workgroup.id} {... employee.id == workgroup.id ? 'selected' : ''}>
+                  <option key={workgroup.id} value={workgroup.id}>
                     {workgroup.name}
                   </option>
                 ))}
@@ -237,7 +238,14 @@ export default function CreateEmployee({ params }) {
                       />
                     ) : (
                       <span className="flex flex-col items-center justify-center">
-                        <HiCloudUpload size={35} />
+                        {previewUrl ? (
+                          <img
+                            src={previewUrl ? previewUrl : `http://localhost:8000/uploads/${employee.photo}`}
+                            className="w-32 h-32 object-cover rounded shadow mx-auto"
+                          />
+                        ) : (
+                          <HiCloudUpload size={35} />
+                        )}
                         <span className="font-semibold">
                           Selecione uma imagem
                         </span>

@@ -102,7 +102,7 @@ export async function deleteGuest(id) {
 			method: 'delete'
 		});
 
-		console.log(await result);
+		return await result.json();
 	} catch (error) {
 		
 	}

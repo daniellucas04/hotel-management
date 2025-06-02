@@ -69,7 +69,7 @@ export async function deletePlan(id) {
 			method: 'delete'
 		});
 
-		console.log(await result);
+		return await result.json();
 	} catch (error) {
 		
 	}

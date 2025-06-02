@@ -110,7 +110,7 @@ export default function CreateUser({ params }) {
   const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do zero (0 = Janeiro)
   const ano = data.getUTCFullYear();
   guest.birthday = `${dia}/${mes}/${ano}`;
-  console.log(previewUrl)
+
   return (
     <>
       <section className="overflow-x-auto p-10">

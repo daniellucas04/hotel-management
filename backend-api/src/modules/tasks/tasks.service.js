@@ -3,35 +3,24 @@
 
 import { TaskRepository } from './tasks.repository.js';
 import { z } from 'zod';
-const TaskPriorityEnum = z.enum(['Baixa', 'Normal', 'Alta', 'Urgente']);
-const TaskStatusEnum = z.enum(['Pendente', 'Em_andamento', 'Finalizado']);
 
 export const taskSchema = z.object({
-  id_employee: z.number({
-    required_error: "id_employee é obrigatório",
-    invalid_type_error: "id_employee deve ser um número",
-  }),
-
-  id_reservation: z.number({
-    required_error: "id_reservation é obrigatório",
-    invalid_type_error: "id_reservation deve ser um número",
-  }),
-
-  priority: TaskPriorityEnum.default('Baixa'),
-
-  description: z.string().min(1, 'Descrição é obrigatória'),
-
-  price: z.number().gte(0, 'O preço não pode ser negativo.'),
-
-  status: TaskStatusEnum.default('Pendente'),
+  id_employee: z.number({ message: "O ID do funcionário deve ser numérico" }).min(1, { message: "O funcionário é obrigatório" }),
+  id_reservation: z.number({ message: "O ID da reserva deve ser numérico" }).min(1, { message: "A reserva é obrigatótio" }),
+  description: z.string().min(1, { message: "A descrição é obrigatório" }),
+  price: z.number({ message: "O preço deve ser um valor positivo" }).min(-1, { message: "O preço é obrigatório" }),
+  priority: z.enum(['Baixa', 'Normal', 'Alta', 'Urgente'], { message: "A prioridade é obrigatória" }),
+  status: z.enum(['Pendente', 'Em_andamento', 'Finalizado']).optional(),
 });
 
-class ValidationError extends Error {
-  constructor(message, details) {
-    super(message);
-    this.name = 'ValidationError';
-    this.statusCode = 400;
-    this.details = details; // Objeto com os erros por campo
+function parseTypes(data) {
+  return {
+    ...data,
+    id_employee: Number(data.id_employee),
+    id_reservation: Number(data.id_reservation),
+    priority: String(data.priority),
+    description: String(data.description),
+    price: Number(data.price),
   }
 }
 
@@ -39,17 +28,27 @@ export const TaskService = {
   getAll: (page, limit) => TaskRepository.findAll(page, limit),
   getById: (id) => TaskRepository.findById(id),
   create: (data) => {
-    data = {
-      ...data,
-      id_employee: Number(data.id_employee),
-      id_reservation: Number(data.id_reservation),
-      price: Number(data.price),
-    }
+    data = parseTypes(data);
     const parsed = taskSchema.safeParse(data);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
 
-      throw new ValidationError('Erro de validação', errors);
+      // Crie um objeto apenas com os campos que possuem erros
+      const filteredErrors = Object.keys(errors).reduce((acc, key) => {
+        const errorMessages = errors[key];
+
+        if (errorMessages && errorMessages.length > 0) {
+          acc.push(errorMessages.join(', ')); // Une múltiplos erros em uma string
+        }
+
+        return acc;
+      }, []);
+
+      return {
+        status: 400,
+        errors: filteredErrors,
+        message: "Por favor, verifique os dados enviados.",
+      }
     }
 
     return TaskRepository.create(data);

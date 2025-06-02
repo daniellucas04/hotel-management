@@ -1,4 +1,5 @@
 import express from 'express';
+import dashboardRoutes from './src/modules/dashboard/dashboard.routes.js';
 import guestRoutes from './src/modules/guests/guests.routes.js';
 import bedroomsRoutes from './src/modules/bedrooms/bedrooms.routes.js';
 import employeesRoutes from './src/modules/employees/employees.routes.js';
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/auth', AuthRoutes);
+app.use('/dashboard', dashboardRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
 app.use('/employees', employeesRoutes); 

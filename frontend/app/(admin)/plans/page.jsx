@@ -71,8 +71,8 @@ export default function Plans() {
             <Table striped>
               <Table.Head>
                 <Table.HeadCell>Título</Table.HeadCell>
-                <Table.HeadCell>Preço</Table.HeadCell>
                 <Table.HeadCell>Descrição</Table.HeadCell>
+                <Table.HeadCell>Preço</Table.HeadCell>
                 <Table.HeadCell>Ações</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">

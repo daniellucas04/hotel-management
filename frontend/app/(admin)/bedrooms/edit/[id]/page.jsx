@@ -249,7 +249,6 @@ export default function EditBedroom({ params }) {
             </div>
             <div>
               <Label htmlFor="status">Status</Label>
-              {console.log(bedroom.status)}
               <Select id="status" name="status" onChange={handleData} value={bedroom.status}>
                 <option value="">Escolha uma opção</option>
                 <option>Livre</option>
@@ -274,7 +273,14 @@ export default function EditBedroom({ params }) {
                       />
                     ) : (
                       <span className="flex flex-col items-center justify-center">
-                        <HiCloudUpload size={35} />
+                        {previewUrl ? (
+                          <img
+                            src={previewUrl ? previewUrl : `http://localhost:8000/uploads/${bedroom.photo}`}
+                            className="w-32 h-32 object-cover rounded shadow mx-auto"
+                          />
+                        ) : (
+                          <HiCloudUpload size={35} />
+                        )}
                         <span className="font-semibold">
                           Selecione uma imagem
                         </span>

@@ -46,7 +46,6 @@ export default function EditPlan({ params }) {
 
     try {
       const planData = await updatePlan(id, plan);
-      console.log(planData);
       if (planData.message) {
         Swal.fire({
           text: planData.message,

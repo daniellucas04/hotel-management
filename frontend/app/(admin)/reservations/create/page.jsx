@@ -60,7 +60,7 @@ export default function CreateReservation() {
         });
 
         setTimeout(() => {
-          redirect("/reservation");
+          redirect("/reservations");
         }, 3000);
       } catch (error) {
         

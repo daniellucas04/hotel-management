@@ -203,7 +203,6 @@ export default function CreateBedroom() {
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
               <div className="flex items-center gap-2">
                 <Checkbox id="free_wifi" name="free_wifi" onChange={handleData} />
-                {console.log(bedroom)}
                 <Label htmlFor="free_wifi">Wifi gratuito</Label>
               </div>
               <div className="flex items-center gap-2">

@@ -107,7 +107,7 @@ export async function deleteEmployee(id) {
       method: 'delete'
     });
 
-    console.log(await result);
+    return await result.json();
   } catch (error) {
     
   }

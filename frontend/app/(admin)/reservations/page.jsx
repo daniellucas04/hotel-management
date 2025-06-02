@@ -63,7 +63,7 @@ export default function Reservations() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos as reservas</h1>
           <Button color="light">
-            <Link href="/reservation/create">Nova reserva</Link>
+            <Link href="/reservations/create">Nova reserva</Link>
           </Button>
         </div>
         {reservations.length > 0 ? (
@@ -93,7 +93,7 @@ export default function Reservations() {
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
                         <Link
-                          href="/reservation/details/1"
+                          href="/reservations/details/1"
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                         >
                           Detalhes

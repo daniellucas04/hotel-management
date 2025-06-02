@@ -115,8 +115,8 @@ export async function deleteBedroom(id) {
         method: 'delete'
       });
   
-      console.log(await result);
+      return await result.json();
     } catch (error) {
-      
+
     }
   }
