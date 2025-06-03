@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deletePlan, getAll } from "./actions";
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
 
-export default function Plans() {
+export function Plans() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -129,3 +130,5 @@ export default function Plans() {
     </>
   );
 }
+
+export default withPermission(Plans, ["Admin", "Gerente de Hotel"]);

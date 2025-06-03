@@ -4,8 +4,9 @@ import { Card } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiOutlineBan, HiOutlineCash, HiOutlineCheckCircle, HiOutlineCurrencyDollar, HiOutlineIdentification, HiOutlineLightBulb } from "react-icons/hi";
 import { getBedroomsOcuppied, getGuestsRegistred, getReservationsActive, getTotalCheckins, getTotalMoneyReservations, getTotalMoneyTasks } from "./actions";
+import withPermission from "../config/withPermissions";
 
-export default function Dashboard() {
+export function Dashboard() {
   const [guestsRegistred, setGuestsRegistred] = useState(0);
   const [reservationsActive, setReservationsActive] = useState(0);
   const [bedroomsOccupied, setBedroomsOccupied] = useState(0);
@@ -111,3 +112,5 @@ export default function Dashboard() {
     </>
   );
 }
+
+export default withPermission(Dashboard, ["Admin", "Gerente de Hotel", "Recepcionista", "Zelador", "Camareiro", "Cozinheiro"]);

@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteTask, getAll } from "./actions";
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
 
-export default function Tasks() {
+export function Tasks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -171,3 +172,5 @@ export default function Tasks() {
     </>
   );
 }
+
+export default withPermission(Tasks, ["Admin", "Gerente de Hotel", "Recepcionista", "Zelador", "Camareiro", "Cozinheiro"]);

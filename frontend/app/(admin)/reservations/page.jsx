@@ -5,8 +5,9 @@ import Link from "next/link";
 import { deleteReservation, getAll } from "./actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
 
-export default function Reservations() {
+export function Reservations() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -123,3 +124,5 @@ export default function Reservations() {
     </>
   );
 }
+
+export default withPermission(Reservations, ["Admin", "Gerente de Hotel", "Recepcionista"]);

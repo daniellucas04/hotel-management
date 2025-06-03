@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { deleteBedroom, getAll } from "./actions";
 import { LuBedDouble } from 'react-icons/lu'
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
 
-export default function Bedrooms() {
+export function Bedrooms() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -151,3 +152,5 @@ export default function Bedrooms() {
     </section>
   );
 }
+
+export default withPermission(Bedrooms, ["Admin", "Gerente de Hotel", "Recepcionista"]);

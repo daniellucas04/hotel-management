@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { deleteEmployee, getAll } from "./actions";
 import { HiUserCircle } from "react-icons/hi";
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
 
-export default function employee() {
+export function Employee() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -134,3 +135,5 @@ export default function employee() {
     </>
   );
 }
+
+export default withPermission(Employee, ["Admin", "Gerente de Hotel"]);

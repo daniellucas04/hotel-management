@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { deleteGuest, getAll } from "./actions";
 import Swal from "sweetalert2";
 import { HiUserCircle } from "react-icons/hi";
+import withPermission from "../config/withPermissions";
 
-export default function Guests() {
+export function Guests() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -135,3 +136,5 @@ export default function Guests() {
     </>
   );
 }
+
+export default withPermission(Guests, ["Recepcionista", "Admin"]);

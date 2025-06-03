@@ -99,7 +99,7 @@ export default function CreateUser() {
         });
 
         setTimeout(() => {
-          redirect("/employee");
+          redirect("/employees");
         }, 3000);
       } catch (error) {
         
