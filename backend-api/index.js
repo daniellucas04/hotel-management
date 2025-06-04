@@ -7,21 +7,22 @@ import reservationsRoutes from './src/modules/reservations/reservations.routes.j
 import tasksRoutes from './src/modules/tasks/tasks.routes.js';
 import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
 import authRoutes from './src/modules/auth/auth.routes.js'; // <-- Aqui o ajuste
-
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import path from 'path';
 
 const app = express();
 app.use(express.json());
 const PORT = 8000;
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
 
-    next();
-});
+app.use(cookieParser());
+
+
+app.use(cors({
+    origin: 'http://localhost:3000', // <-- Frontend URL
+    credentials: true, // <-- Permite envio de cookies
+}));
 
 // ✅ Usando o arquivo correto de rotas
 app.use('/auth', authRoutes);

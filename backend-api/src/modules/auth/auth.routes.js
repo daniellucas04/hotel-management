@@ -1,9 +1,10 @@
 import express from 'express';
-import { login } from './auth.controller.js';
+import { login, logout, verifyToken } from './auth.controller.js';
 
 const router = express.Router();
 
 router.post('/login', login);
-// Se quiser, adiciona outras rotas, como logout ou refresh
+router.post('/logout', logout);
+router.get('/verify', verifyToken);
 
 export default router;
