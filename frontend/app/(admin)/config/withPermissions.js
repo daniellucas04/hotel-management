@@ -15,7 +15,7 @@ const withPermission = (WrappedComponent, allowedRoles) => {
     // }
 
     // Verifica se o usuário tem uma role permitida
-    if (!allowedRoles.includes('Cozinheiro')) {
+    if (!allowedRoles.includes('Admin')) {
         redirect("/dashboard");  // Redireciona para a página inicial ou página de erro
     }
 

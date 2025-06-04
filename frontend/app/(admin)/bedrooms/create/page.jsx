@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { createBedroom, savePhoto, validate } from "../actions";
+import { createBedroom, savePhoto } from "../actions";
 import { redirect } from "next/navigation";
 
 export default function CreateBedroom() {
@@ -74,44 +74,32 @@ export default function CreateBedroom() {
   // Manipula o envio do formulário
   async function handleSubmit(event) {
     event.preventDefault();
-    const errors = validate(bedroom);
 
-    if (errors.length === 0) {
-      try {
-        const bedroomData = await createBedroom(bedroom);
+    try {
+      const bedroomData = await createBedroom(bedroom);
 
-        if (image) {
-          await savePhoto(bedroomData.id, image);
-        }
-
-        Swal.fire({
-          text: "Quarto cadastrado com sucesso",
-          icon: "success",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          redirect("/bedrooms");
-        }, 3000);
-      } catch (error) {
-        
-        Swal.fire({
-          text: "Erro ao cadastrar o quarto. Tente novamente!",
-          icon: "error",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
+      if (image) {
+        await savePhoto(bedroomData.id, image);
       }
-    } else {
+
       Swal.fire({
-        html: errors.join("<br>"),
+        text: "Quarto cadastrado com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        // redirect("/bedrooms");
+      }, 3000);
+    } catch (error) {
+      
+      Swal.fire({
+        text: "Erro ao cadastrar o quarto. Tente novamente!",
         icon: "error",
-        timer: 0,
+        timer: 3000,
         toast: true,
         position: "top-right",
         showConfirmButton: false,

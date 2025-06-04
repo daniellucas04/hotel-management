@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { HiOutlineExclamationCircle, HiOutlineUser } from "react-icons/hi";
 import Swal from "sweetalert2";
-import { getAllEmployees, getAllReservations, getTask, updateTask, validateCreate } from "../../actions";
+import { getAllEmployees, getAllReservations, getTask, updateTask } from "../../actions";
 
 export default function TaskEdit({ params }) {
   const { id } = use(params);
@@ -32,7 +32,9 @@ export default function TaskEdit({ params }) {
       const taskData = await updateTask(id, task);
       if (taskData.message) {
         Swal.fire({
-          text: taskData.message,
+          title: taskData.message,
+          html: taskData.errors.join('<br>'),
+          width: 500,
           icon: "error",
           timer: 3000,
           toast: true,
@@ -98,15 +100,16 @@ export default function TaskEdit({ params }) {
             <form onSubmit={handleSubmit} method="post" className="flex flex-col gap-8">
               <div className="flex gap-4">
                 <div className="flex-auto">
-                  <Label htmlFor="emplyoee">Responsável</Label>
+                  <Label htmlFor="emplyoee">Responsável *</Label>
                   <Select
                     id="emplyoee"
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_employee"
                     defaultValue={task.id_employee}
+                    required
                   >
-                    <option value="" disabled>Selecione um responsável</option>
+                    <option disabled>Selecione um responsável</option>
                     {employees.map((employee) => (
                       <option key={employee.id} value={employee.id} >
                         {employee.name}
@@ -116,13 +119,14 @@ export default function TaskEdit({ params }) {
                 </div>
 
                 <div className="flex-auto">
-                  <Label htmlFor="reservation">Reserva</Label>
+                  <Label htmlFor="reservation">Reserva *</Label>
                   <Select
                     id="reservation"
                     icon={HiOutlineUser}
                     onChange={handleData}
                     name="id_reservation"
                     defaultValue={task.id_reservation}
+                    required
                   >
                     <option value="" disabled>Selecione uma reserva</option>
                     {reservations.map((reservation) => (
@@ -135,13 +139,14 @@ export default function TaskEdit({ params }) {
               </div>
               <div className="flex gap-4">
                 <div className="flex-auto">
-                  <Label htmlFor="priority">Prioridade</Label>
+                  <Label htmlFor="priority">Prioridade *</Label>
                   <Select
                     id="priority"
                     icon={HiOutlineExclamationCircle}
                     onChange={handleData}
                     defaultValue={task.priority}
                     name="priority"
+                    required
                   >
                     <option>Baixa</option>
                     <option>Normal</option>
@@ -151,12 +156,12 @@ export default function TaskEdit({ params }) {
                 </div>
 
                 <div className="flex-auto">
-                  <Label htmlFor="priority">Preço</Label>
-                  <TextInput type="number" name="price" defaultValue={task.price} min={0} max={1000} step={0.01} onChange={handleData} />
+                  <Label htmlFor="priority">Preço *</Label>
+                  <TextInput type="number" name="price" defaultValue={task.price} min={0} max={1000} step={0.01} onChange={handleData} required />
                 </div>
               </div>
               <div>
-                <Label htmlFor="description">Descrição</Label>
+                <Label htmlFor="description">Descrição *</Label>
                 <Textarea
                   id="description"
                   placeholder="Mais informações do produto / serviço"
@@ -164,6 +169,7 @@ export default function TaskEdit({ params }) {
                   name="description"
                   value={task.description}
                   rows={4}
+                  required
                 />
               </div>
               <div className="flex justify-end gap-4">

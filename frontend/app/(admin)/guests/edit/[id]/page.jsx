@@ -41,6 +41,10 @@ export default function CreateUser({ params }) {
   async function fetchGuest(id) {
     try {
       const result = await getGuest(id);
+      let date = String(result.birthday).split('T')[0];
+      let [year, month, day] = date.split('-');
+      result.birthday = `${day}/${month}/${year}`;
+
       setGuest(result);
     } catch (error) {
       
@@ -70,9 +74,12 @@ export default function CreateUser({ params }) {
       const guestData = await updateGuest(id, guest);
 
       if (guestData.message) {
+        console.log(guestData);
         Swal.fire({
-          text: guestData.message,
+          title: guestData.message,
+          html: guestData.errors.join('<br>'),
           icon: "error",
+          width: 500,
           timer: 3000,
           toast: true,
           position: "top-right",
@@ -104,12 +111,6 @@ export default function CreateUser({ params }) {
       });
     }
   }
-
-  let data = new Date(guest.birthday);
-  const dia = String(data.getUTCDate()).padStart(2, '0'); // Garante que o dia tenha 2 dígitos
-  const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do zero (0 = Janeiro)
-  const ano = data.getUTCFullYear();
-  guest.birthday = `${dia}/${mes}/${ano}`;
 
   return (
     <>
