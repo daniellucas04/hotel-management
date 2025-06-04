@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { deleteBedroom, getAll } from "./actions";
 import { LuBedDouble } from 'react-icons/lu'
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 
 export default function Bedrooms() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +25,7 @@ export default function Bedrooms() {
       
     }
   }
+
 
   function handleDelete(id) {
       Swal.fire({
@@ -57,6 +59,16 @@ export default function Bedrooms() {
     setDeleted(false);
   }, [currentPage, deleted]);
 
+
+  const isAuthenticated = useAuth();
+
+  if (isAuthenticated === null) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
   return (
     <section className="overflow-x-auto p-10">
       <div className="flex justify-between items-center my-8 gap-2">

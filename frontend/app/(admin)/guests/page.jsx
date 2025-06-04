@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { deleteGuest, getAll } from "./actions";
 import Swal from "sweetalert2";
 import { HiUserCircle } from "react-icons/hi";
+import { useAuth } from "@/app/lib/useAuth";
 
 export default function Guests() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +57,16 @@ export default function Guests() {
     fetchAllGuests(currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div>Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { deleteEmployee, getAll } from "./actions";
 import { HiUserCircle } from "react-icons/hi";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 
 export default function employee() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +22,7 @@ export default function employee() {
       setEmployees(result.data);
       setTotalItems(result.total);
     } catch (error) {
-      
+
     }
   }
 
@@ -55,6 +56,16 @@ export default function employee() {
     fetchAllEmployees(currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+
+  if (isAuthenticated === null) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
 
   return (
     <>

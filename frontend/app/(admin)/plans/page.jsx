@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deletePlan, getAll } from "./actions";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 
 export default function Plans() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +56,16 @@ export default function Plans() {
     fetchAllPlans(currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div>Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>
