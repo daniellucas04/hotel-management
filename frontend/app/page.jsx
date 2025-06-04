@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { Button, Card, Label, TextInput } from "flowbite-react";
 import { useRouter } from 'next/navigation';
@@ -14,12 +14,11 @@ export default function Login() {
     const router = useRouter();
 
     function handleData(event) {
-        setData((p) => ({ ...p, [event.target.name]: event.target.value }));
+        setData(p => ({ ...p, [event.target.name]: event.target.value }));
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
-        setError('');
 
         try {
             const login = await loginEmployee(data);
@@ -33,10 +32,10 @@ export default function Login() {
     }
 
     return (
-        <main className='flex items-center justify-center h-screen w-full'>
-            <Card className='w-[30rem]'>
-                <div className='flex justify-center'>
-                    <img className='rounded-md' src='https://placehold.co/100x100' />
+        <main className="flex items-center justify-center h-screen w-full">
+            <Card className="w-[30rem]">
+                <div className="flex justify-center">
+                    <img className="rounded-md" src="https://placehold.co/100x100" />
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div>
