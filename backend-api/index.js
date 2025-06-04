@@ -7,7 +7,7 @@ import plansRoutes from './src/modules/plans/plans.routes.js';
 import reservationsRoutes from './src/modules/reservations/reservations.routes.js'
 import tasksRoutes from './src/modules/tasks/tasks.routes.js';
 import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
-import  AuthRoutes  from './src/modules/auth/auth.controller.js';
+import AuthRoutes  from './src/modules/auth/auth.controller.js';
 import path from 'path';
 
 const app = express();
