@@ -101,8 +101,10 @@ model reservations {
   id_bedroom          Int
   check_in            DateTime
   check_out           DateTime
-  status              ReservationStatus @default(Reservado)
+  status_checkin      CheckStatus @default(Pendente)
+  status_checkout     CheckStatus @default(Pendente)
   created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
   antecipated_payment Boolean?
   plan                plans             @relation(fields: [id_plan], references: [id])
   bedroom             bedrooms          @relation(fields: [id_bedroom], references: [id])
@@ -149,10 +151,9 @@ enum BedroomClassification {
   Deluxe
 }
 
-enum ReservationStatus {
-  Reservado
-  Confirmado
-  Cancelado
+enum CheckStatus {
+  Pendente
+  Realizado  
 }
 
 enum TaskPriority {

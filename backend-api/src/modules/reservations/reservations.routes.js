@@ -10,6 +10,8 @@ router.get('/', ReservationController.getAll);
 router.get('/:id', ReservationController.getById);
 router.post('/', ReservationController.create);
 router.put('/:id', ReservationController.update);
+router.put('/checkin/:id', ReservationController.updateCheckIn);
+router.put('/checkout/:id', ReservationController.updateCheckOut);
 router.delete('/:id', ReservationController.remove);
 
 export default router;

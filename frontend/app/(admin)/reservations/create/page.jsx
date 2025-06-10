@@ -24,8 +24,6 @@ export default function CreateReservation() {
   const [guests, setGuests] = useState([]);
   const [plans, setPlans] = useState([]);
   const [bedrooms, setBedrooms] = useState([]);
-  const [minDateForCheckOut, setMinDateForCheckOut] = useState(new Date());
-  const [isDateCheckInFill, setIsDateCheckInFill] = useState(false);
 
   function handleData(event) {
     setReservation((p) => ({ ...p, [event.target.name]: event.target.value }));
@@ -34,50 +32,38 @@ export default function CreateReservation() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const error = validateCreate(reservation);
-    if (error.length == 0) {
-      try {
-        const reservationData = await createReservation(reservation);
-        if (reservationData.message) {
-          Swal.fire({
-            text: reservationData.message,
-            icon: "error",
-            timer: 3000,
-            toast: true,
-            position: "top-right",
-            showConfirmButton: false,
-          });
-          return;
-        }
-
+    try {
+      const reservationData = await createReservation(reservation);
+      if (reservationData.message) {
         Swal.fire({
-          text: "Reserva cadastrada com sucesso",
-          icon: "success",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          redirect("/reservations");
-        }, 3000);
-      } catch (error) {
-        
-        Swal.fire({
-          text: "Erro ao cadastrar a reserva. Tente novamente!",
+          text: reservationData.message,
           icon: "error",
           timer: 3000,
           toast: true,
           position: "top-right",
           showConfirmButton: false,
         });
+        return;
       }
-    } else {
+
       Swal.fire({
-        html: error.join("<br>"),
+        text: "Reserva cadastrada com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        redirect("/reservations");
+      }, 3000);
+    } catch (error) {
+      
+      Swal.fire({
+        text: "Erro ao cadastrar a reserva. Tente novamente!",
         icon: "error",
-        timer: 0,
+        timer: 3000,
         toast: true,
         position: "top-right",
         showConfirmButton: false,
@@ -172,7 +158,7 @@ export default function CreateReservation() {
             <div className="flex gap-4">
               <div className="flex flex-auto flex-col gap-2">
                 <Label>Check In</Label>
-                <input type="datetime-local" name="check_in" onChange={handleData} required />
+                <input className="rounded-md border-zinc-300 bg-gray-50 font-normal py-2 px-2" type="datetime-local" name="check_in" onChange={handleData} required />
                 {/* <Datepicker
                   language="pt-BR"
                   onChange={(date) => { setMinDateForCheckOut(date); setIsDateCheckInFill(true) }}
@@ -186,7 +172,7 @@ export default function CreateReservation() {
               </div>
               <div className="flex flex-auto flex-col gap-2">
                 <Label>Check Out</Label>
-                <input type="datetime-local" name="check_out" onChange={handleData} required />
+                <input className="rounded-md border-zinc-300 bg-gray-50 font-normal py-2 px-2" type="datetime-local" name="check_out" onChange={handleData} required />
                 {/* <Datepicker
                   language="pt-BR"
                   labelTodayButton="Hoje"
@@ -203,7 +189,7 @@ export default function CreateReservation() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <Link href="/reservation">Cancelar</Link>
+                <Link href="/reservations">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>
