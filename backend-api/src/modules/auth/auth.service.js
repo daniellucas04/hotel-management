@@ -2,9 +2,6 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import jwt from 'jsonwebtoken';
 import { EmployeeRepository } from '../employees/employees.repository.js';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const SECRET = process.env.JWT_SECRET;
 

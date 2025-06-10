@@ -1,5 +1,6 @@
-
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config(); 
 import guestRoutes from './src/modules/guests/guests.routes.js';
 import bedroomsRoutes from './src/modules/bedrooms/bedrooms.routes.js';
 import employeesRoutes from './src/modules/employees/employees.routes.js';
@@ -25,7 +26,6 @@ app.use(cors({
     credentials: true, // <-- Permite envio de cookies
 }));
 
-// ✅ Usando o arquivo correto de rotas
 app.use('/auth', authRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
