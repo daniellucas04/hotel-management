@@ -28,7 +28,6 @@ export const TaskController = {
     },
 
     updateStatus: async (req, res) => {
-        console.log(req.body);
         const task = await TaskService.updateStatus(Number(req.params.id), req.body);
         res.json(task);
     },

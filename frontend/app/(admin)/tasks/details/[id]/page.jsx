@@ -1,160 +1,79 @@
 "use client";
 
-import { Button, HR } from "flowbite-react";
+import { Badge, Card, HR } from "flowbite-react";
 import Link from "next/link";
-import { useState } from "react";
-import {
-  HiOutlineArrowLeft,
-  HiOutlineClock,
-  HiOutlineMail,
-  HiOutlinePhone,
-  HiOutlineUser,
-  HiOutlineUsers,
-} from "react-icons/hi";
+import { use, useEffect, useState } from "react";
+import { getTask } from "../../actions";
+import { HiOutlineArrowCircleLeft } from "react-icons/hi";
 
-export default function TaskDetails() {
-  const [taskData, setTaskData] = useState({
-    id_employee: 0,
-    id_reservation: 0,
-    priority: "Baixa",
-    description: "",
-    price: 0.0,
-  });
+export default function TaskDetails({ params }) {
+  const { id } = use(params);
+
+  const [task, setTask] = useState({});
+  const [priorityColor, setPriorityColor] = useState({});
+
+  async function fetchTask(id) {
+    try {
+      const result = await getTask(id);
+
+      setTask(result);
+      setPriorityColor(getPriorityColor(result.priority));
+    } catch (error) {
+
+    }
+  }
+
+  function getPriorityColor(priority) {
+    if (priority == 'Baixa')
+      return 'gray'
+
+    if (priority == 'Normal')
+      return 'blue'
+
+    if (priority == 'Alta')
+      return 'yellow'
+
+    if (priority == 'Urgente')
+      return 'red'
+  }
+
+  useEffect(() => {
+    fetchTask(id);
+  }, []);
 
   return (
     <>
-      
-      <section className="h-full mx-52 my-14">
-        <Link
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-400 transition-all"
-          href="/tasks"
-        >
-          <HiOutlineArrowLeft size={"16px"} />
-          Tarefas
-        </Link>
-        <div className="flex items-center justify-between gap-4 mt-4">
-          <div className="flex items-center gap-4">
-            <img
-              src={taskData.photo_url}
-              className="max-w-20 max-h-2max-w-20 rounded-full"
-            />
-            <span className="text-3xl font-medium">{taskData.name}</span>
-          </div>
-          <div>
-            <Button color="light" size="sm">
-              <Link href="/task/edit/1">Editar perfil</Link>
-            </Button>
-          </div>
-        </div>
-        <HR />
-        <div className="flex justify-evenly">
-          <section className="flex flex-col items-start gap-4 text-gray-500">
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineClock />
-              </span>
-              <span className="text-zinc-900 font-medium">Nome completo</span>
-              <span>{taskData.fullName}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlinePhone />
-              </span>
-              <span className="text-zinc-900 font-medium">Telefone</span>
-              <span>{taskData.phone}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineMail />
-              </span>
-              <span className="text-zinc-900 font-medium">E-mail</span>
-              <span>{taskData.fullName}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineUser />
-              </span>
-              <span className="text-zinc-900 font-medium">Nome completo</span>
-              <span>{taskData.fullName}</span>
-            </div>
-          </section>
-          <section className="flex flex-col items-start gap-4 text-gray-500">
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineUsers />
-              </span>
-              <span className="text-zinc-900 font-medium">Acompanhantes</span>
-              <span>{taskData.escorts}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>
-                <HiOutlineClock />
-              </span>
-              <span className="text-zinc-900 font-medium">Cliente desde</span>
-              <span>{taskData.hosting.since}</span>
-            </div>
-          </section>
-        </div>
+      <section className="overflow-x-auto p-10">
+        <Link href={'/tasks'} className="text-2xl flex items-center gap-4 font-medium text-zinc-600"><HiOutlineArrowCircleLeft /> Voltar</Link>
 
-        <HR />
+        <div className="flex gap-12 justify-center mt-12">
+          <Card className="w-[44rem]">
+            <div className="">
+              <h2 className="font-bold text-zinc-800 flex items-center justify-between">Informações da Tarefa <Badge color={priorityColor}>{task.priority}</Badge></h2>
 
-        <div className="flex flex-col items-center justify-center mt-14">
-          <h1 className="text-lg font-bold">Plano do hóspede</h1>
-          <div className="flex gap-8">
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">{taskData.hosting.plan}</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {taskData.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
+              <span className="flex justify-between mt-8">
+                <span className="font-medium text-gray-700">Responsável</span> <span className="text-gray-600">{task?.employee?.name} {task?.employee?.last_name}</span>
+              </span>
+              
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Reserva</span> <span className="text-gray-600">{task?.reservation?.bedroom?.number}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Descrição</span> <span className="text-gray-600">{task?.description}</span>
+              </span>
+
+              <HR className="m-6" />
+
+              <span className="flex justify-between">
+                <span className="font-medium text-gray-700">Preço</span> <span className="text-gray-600">R$ {String(Number(task?.price).toFixed(2)).replace('.', ',')}</span>
+              </span>
             </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold hover-90 hover:scale-110 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Normal</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {taskData.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <span className="text-sm border py-2 px-4 rounded-md text-gray-500 shadow">
-                  Plano atual
-                </span>
-              </div>
-            </div>
-            <div className="text-xl mt-8 border px-12 py-8 rounded-md font-semibold scale-90 hover:scale-105 hover:cursor-default transition-all">
-              <p className="text-center text-2xl">Premium</p>
-              <div className="mt-4">
-                Neste plano está incluso:
-                {taskData.hosting.details.map((value) => (
-                  <span
-                    key={value.service}
-                    className="flex flex-col text-md text-gray-500"
-                  >
-                    - {value.service}
-                  </span>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <Button color="blue">Alterar plano</Button>
-              </div>
-            </div>
-          </div>
+          </Card>
         </div>
       </section>
     </>

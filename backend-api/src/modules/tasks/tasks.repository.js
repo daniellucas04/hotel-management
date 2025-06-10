@@ -16,7 +16,7 @@ export const TaskRepository = {
             total: totalItems
         }
     },
-    findById: (id) => prisma.tasks.findUnique({ where: { id } }),
+    findById: (id) => prisma.tasks.findUnique({ where: { id }, include: { reservation: { include: { bedroom: true } }, employee: true } }),
     create: async (data) => {
         try {
             return prisma.tasks.create({ data })
