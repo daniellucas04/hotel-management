@@ -83,6 +83,25 @@ export async function updateTask(id, task) {
 	}
 }
 
+export async function updateTaskStatus(id, status) {
+	try {
+		const data = await fetch(`http://localhost:8000/tasks/status/${id}`, {
+			method: "put",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				status: String(status).replace(' ', '_')
+			})
+
+		});
+
+		return await data.json();
+	} catch (error) {
+		
+	}
+}
+
 export async function deleteTask(id) {
 	try {
 		const result = await fetch(`http://localhost:8000/tasks/${id}`, {

@@ -49,5 +49,7 @@ export const TaskService = {
     return TaskRepository.update(id, data);
   },
 
+  updateStatus: (id, data) => TaskRepository.updateStatus(id, data),
+
   remove: (id) => TaskRepository.remove(id),
 };

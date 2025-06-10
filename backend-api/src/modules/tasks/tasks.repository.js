@@ -28,5 +28,6 @@ export const TaskRepository = {
         }
     },
     update: (id, data) => prisma.tasks.update({ where: { id }, data }),
+    updateStatus: (id, data) => prisma.tasks.update({ where: { id }, data }),
     remove: (id) => prisma.tasks.delete({ where: { id } }),
 };
