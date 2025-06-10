@@ -10,7 +10,15 @@ import {
 } from 'react-icons/hi';
 
 export default function Dashboard() {
+  const isAuthenticated = useAuth();
   
+  if (isAuthenticated === null) {
+    return <div className="flex justify-center items-center h-screen">Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; 
+  }
 
   return (
     <div className="m-10">
