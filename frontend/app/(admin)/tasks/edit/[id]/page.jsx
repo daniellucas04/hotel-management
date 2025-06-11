@@ -52,10 +52,6 @@ export default function TaskEdit({ params }) {
         position: "top-right",
         showConfirmButton: false,
       });
-
-      setTimeout(() => {
-        redirect("/tasks");
-      }, 3000);
     } catch (error) {
       Swal.fire({
         text: "Erro ao editar a tarefa. Tente novamente!",
