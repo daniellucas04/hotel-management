@@ -144,14 +144,14 @@ export default function TaskEdit({ params }) {
                     id="priority"
                     icon={HiOutlineExclamationCircle}
                     onChange={handleData}
-                    defaultValue={task.priority}
+                    value={task.priority}
                     name="priority"
                     required
                   >
-                    <option>Baixa</option>
-                    <option>Normal</option>
-                    <option>Alta</option>
-                    <option>Urgente</option>
+                    <option value="Baixa">Baixa</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Urgente">Urgente</option>
                   </Select>
                 </div>
 

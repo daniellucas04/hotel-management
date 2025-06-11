@@ -69,6 +69,9 @@ export async function createTask(task) {
 
 export async function updateTask(id, task) {
 	try {
+		delete task.employee;
+		delete task.reservation;
+
 		const data = await fetch(`http://localhost:8000/tasks/${id}`, {
 			method: "put",
 			headers: {

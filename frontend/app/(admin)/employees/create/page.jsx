@@ -307,7 +307,7 @@ export default function CreateUser() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <Link href="/employee">Cancelar</Link>
+                <Link href="/employees">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

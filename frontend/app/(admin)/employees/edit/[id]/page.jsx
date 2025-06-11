@@ -285,29 +285,12 @@ export default function EditEmployee({ params }) {
                   value={employee.email}
                 />
               </div>
-              <div className="flex gap-4">
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineKey}
-                  placeholder="Senha"
-                  name="password"
-                  onChange={handleData}
-                />
-
-                <TextInput
-                  className="flex-1"
-                  icon={HiOutlineKey}
-                  placeholder="Confirme a senha"
-                  name="password_confirm"
-                  onChange={handleData}
-                />
-              </div>
             </div>
 
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <Link href="/employee">Cancelar</Link>
+                <Link href="/employees">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

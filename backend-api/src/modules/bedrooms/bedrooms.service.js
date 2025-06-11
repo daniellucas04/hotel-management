@@ -49,9 +49,8 @@ export const BedroomService = {
 
   update: (id, data) => {
     data = parseTypes(data);
-    console.log(data);
-
     const parsed = bedroomSchema.safeParse(data);
+
     let errors = formatValidationErrors(parsed);
     if (errors)
       return errors;

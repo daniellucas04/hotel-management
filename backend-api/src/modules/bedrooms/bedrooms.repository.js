@@ -30,6 +30,7 @@ export const BedroomRepository = {
             ...data,
             privileges: data.privileges.join(",")
         }
+
         return await prisma.bedrooms.update({ where: { id }, data })
     },
     updateBedroomStatus: async (id, data) => {

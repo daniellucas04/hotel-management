@@ -109,4 +109,4 @@ function formatDateToDbFormat(dateStr) {
 	let date = `${year}-${month}-${day}`;
 
 	return date;
-  }
+}

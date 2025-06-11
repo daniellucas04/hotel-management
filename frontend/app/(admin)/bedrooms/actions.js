@@ -33,7 +33,10 @@ export async function updateBedroom(id, bedroom) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(bedroom),
+            body: JSON.stringify({
+                ...bedroom,
+                category: String(bedroom.category).replace(' ', '_')
+            }),
         });
         
         return await data.json();
@@ -49,7 +52,10 @@ export async function createBedroom(bedroom) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(bedroom),
+            body: JSON.stringify({
+                ...bedroom,
+                category: String(bedroom.category).replace(' ', '_')
+            }),
         });
 
         return await data.json();

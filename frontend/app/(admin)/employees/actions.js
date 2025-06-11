@@ -52,6 +52,10 @@ export async function getAllWorkgroups() {
 
 export async function updateEmployee(id, employee) {
   try {
+    delete employee.workgroup;
+    delete employee.tasks;
+    delete employee.logs;
+
     const data = await fetch(`http://localhost:8000/employees/${id}`, {
       method: "put",
       headers: {

@@ -92,7 +92,7 @@ export default function CreateBedroom() {
       });
 
       setTimeout(() => {
-        // redirect("/bedrooms");
+        redirect("/bedrooms");
       }, 3000);
     } catch (error) {
       

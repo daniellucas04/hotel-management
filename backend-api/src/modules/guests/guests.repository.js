@@ -23,7 +23,9 @@ export const GuestRepository = {
 
         if (guest) {
             return {
-                message: 'Documento já cadastrado.',
+                status: 400,
+                errors: ['Documento já cadastrado'],
+                message: "Ocorreu um erro ao cadastrar o hóspede"
             }
         }
 

@@ -74,7 +74,6 @@ export default function CreateUser({ params }) {
       const guestData = await updateGuest(id, guest);
 
       if (guestData.message) {
-        console.log(guestData);
         Swal.fire({
           title: guestData.message,
           html: guestData.errors.join('<br>'),
