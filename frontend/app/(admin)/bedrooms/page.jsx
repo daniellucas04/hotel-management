@@ -1,14 +1,16 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteBedroom, getAll } from "./actions";
+import { deleteBedroom, getAll, searchBedroom } from "./actions";
 import { LuBedDouble } from "react-icons/lu";
 import Swal from "sweetalert2";
 import withPermission from "../config/withPermissions";
+import { HiOutlineSearch } from "react-icons/hi";
 
 export function Bedrooms() {
+  const [search,setSearch] = useState({number: ''});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -22,6 +24,24 @@ export function Bedrooms() {
       setBedrooms(result.data);
       setTotalItems(result.total);
     } catch (error) {}
+  }
+
+  async function searchBedrooms(search, page) {
+    if(search != ""){
+      try {
+        const result = await searchBedroom(search, page, itemsPerPage);
+        setBedrooms(result.data);
+        setTotalItems(result.total);
+      } catch (error) {
+
+      }
+    }else{
+      fetchAllBedrooms(page);
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p,[event.target.name]: event.target.value}))
   }
 
   function handleDelete(id) {
@@ -71,6 +91,19 @@ export function Bedrooms() {
           <Link href="/bedrooms/create">Novo Quarto</Link>
         </Button>
       </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="number"
+            required
+            type="number"
+            value={search.number}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchBedrooms(search.number, currentPage)}}> Pesquisar </Button>
+        </div>      
       {bedrooms.length > 0 ? (
         <>
           <Table striped>

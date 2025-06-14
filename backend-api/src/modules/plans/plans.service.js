@@ -55,4 +55,6 @@ export const PlanService = {
   },
 
   remove: (id) => PlanRepository.remove(id),
+
+  search: (data, page, limit) => PlanRepository.search(data, page, limit),
 };

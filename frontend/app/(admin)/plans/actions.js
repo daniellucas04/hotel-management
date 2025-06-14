@@ -13,6 +13,21 @@ export async function getAll(page, limit) {
 	}
 }
 
+export async function searchPlan(search,page,limit) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/plans/search?data=${search}&page=${page}&limit=${limit}`,
+			{
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+
+	}
+}
+
 export async function getPlan(id) {
 	try {
 		const data = await fetch(`http://localhost:8000/plans/${id}`, {

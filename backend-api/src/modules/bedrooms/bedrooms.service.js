@@ -63,4 +63,6 @@ export const BedroomService = {
   upload: (id, data) => BedroomRepository.upload(id, data),
 
   remove: (id) => BedroomRepository.remove(id),
+
+  search: (data, page, limit) => BedroomRepository.search(data, page, limit),
 };

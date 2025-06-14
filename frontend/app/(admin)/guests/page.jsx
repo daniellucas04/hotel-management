@@ -1,14 +1,15 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteGuest, getAll } from "./actions";
+import { deleteGuest, getAll, searchGuest } from "./actions";
 import Swal from "sweetalert2";
-import { HiUserCircle } from "react-icons/hi";
+import { HiOutlineSearch, HiUserCircle } from "react-icons/hi";
 import withPermission from "../config/withPermissions";
 
 export function Guests() {
+  const [search,setSearch] = useState({name: ''});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -24,6 +25,20 @@ export function Guests() {
     } catch (error) {
       
     }
+  }
+
+  async function searchGuests(search, page) {
+    try {
+      const result = await searchGuest(search, page, itemsPerPage);
+      setGuests(result.data);
+      setTotalItems(result.total);
+    } catch (error) {
+      
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p, [event.target.name]: event.target.value}))
   }
 
   function handleDelete(id) {
@@ -54,7 +69,7 @@ export function Guests() {
   };
 
   useEffect(() => {
-    fetchAllGuests(currentPage);
+    searchGuests(search.name, currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
 
@@ -68,6 +83,18 @@ export function Guests() {
             <Link href="/guests/create">Novo hóspede</Link>
           </Button>
         </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="name"
+            required
+            value={search.name}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchGuests(search.name, currentPage)}}> Pesquisar </Button>
+        </div>        
         {guests.length > 0 ? (
           <>
             <Table striped>

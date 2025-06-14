@@ -50,4 +50,10 @@ export const BedroomController = {
         await BedroomService.remove(Number(req.params.id));
         res.status(204).send();
     },
+
+    search: async (req, res) => {
+        const { data, page, limit } = req.query;
+        const bedrooms = await BedroomService.search(data, page, limit);
+        res.json(bedrooms);
+    },
 };

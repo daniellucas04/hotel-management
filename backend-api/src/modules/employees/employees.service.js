@@ -77,4 +77,6 @@ export const EmployeeService = {
   upload: (id, data) => EmployeeRepository.upload(id, data),
 
   remove: (id) => EmployeeRepository.remove(id),
+
+  search: (data, page, limit) => EmployeeRepository.search(data, page, limit),
 };

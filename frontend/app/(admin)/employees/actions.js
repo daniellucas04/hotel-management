@@ -26,6 +26,21 @@ export async function getAll(page, limit) {
   }
 }
 
+export async function searchEmployee(search, page, limit) {
+  try {
+    const data = await fetch(
+      `http://localhost:8000/employees/search?data=${search}&page=${page}&limit=${limit}`,
+      {
+        method: "get",
+      }
+    );
+    //console.log(await data.json())
+    return await data.json();
+  } catch (error) {
+
+  }
+}
+
 export async function getEmployee(id) {
   try {
     const data = await fetch(`http://localhost:8000/employees/${id}`, {

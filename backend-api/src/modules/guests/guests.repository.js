@@ -40,4 +40,15 @@ export const GuestRepository = {
         return await prisma.guests.update({ where: { id }, data })
     },
     remove: (id) => prisma.guests.delete({ where: { id } }),
+    search: async (data, page, limit) => {
+        console.log(data)
+        let offset = (page - 1) * limit;
+        const items = await prisma.guests.findMany({where: {name: {contains: data}},take: parseInt(limit), skip: offset})
+        const totalItems = await prisma.guests.count({where: {name: {contains: data}}})
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    },
 };

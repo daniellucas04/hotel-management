@@ -59,4 +59,6 @@ export const GuestService = {
   upload: (id, data) => GuestRepository.upload(id, data),
 
   remove: (id) => GuestRepository.remove(id),
+
+  search: (data, page, limit) => GuestRepository.search(data, page, limit),
 };

@@ -13,6 +13,21 @@ export async function getAll(page, limit) {
     }
 }
 
+export async function searchBedroom(search ,page, limit) {
+    try {
+        const data = await fetch(
+            `http://localhost:8000/bedrooms/search?data=${search}&page=${page}&limit=${limit}`,
+            {
+                method: "get",
+            }
+        );
+
+        return await data.json();
+    } catch (error) {
+
+    }
+}
+
 export async function getBedroom(id) {
     try {
         const data = await fetch(`http://localhost:8000/bedrooms/${id}`, {
