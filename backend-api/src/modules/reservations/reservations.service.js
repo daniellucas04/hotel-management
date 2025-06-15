@@ -92,4 +92,6 @@ export const ReservationService = {
   }, 
   
   remove: (id) => ReservationRepository.remove(id),
+
+  search: (data, page, limit) => ReservationRepository.search(data, page, limit),
 };

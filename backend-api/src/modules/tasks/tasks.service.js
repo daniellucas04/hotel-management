@@ -52,4 +52,6 @@ export const TaskService = {
   updateStatus: (id, data) => TaskRepository.updateStatus(id, data),
 
   remove: (id) => TaskRepository.remove(id),
+
+  search: (data, page, limit) => TaskRepository.search(data, page, limit),
 };

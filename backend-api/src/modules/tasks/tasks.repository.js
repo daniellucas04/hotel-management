@@ -1,6 +1,7 @@
 // vai comunica com o banco de dados pelo prisma
 
-import prisma from '../../config/prisma.js';
+//import prisma from '../../config/prisma.js';
+import prisma from '../../middlewares/prismamiddleware.js'
 
 export const TaskRepository = {
     findAll: async (page, limit) => {
@@ -30,4 +31,14 @@ export const TaskRepository = {
     update: (id, data) => prisma.tasks.update({ where: { id }, data }),
     updateStatus: (id, data) => prisma.tasks.update({ where: { id }, data }),
     remove: (id) => prisma.tasks.delete({ where: { id } }),
+    search: async (data, page, limit) => {
+        let offset = ( page - 1 ) * limit;
+        const items = await prisma.tasks.findMany({where: {employee: {name: {contains: data}}}, take: parseInt(limit), skip: offset, include: { reservation: { include: { bedroom: true } }, employee: true } })
+        const totalItems = await prisma.tasks.count()
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    },
 };
