@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Outras rotas
 router.get('/', BedroomController.getAll);
+router.get('/search', BedroomController.search);
 router.get('/:id', BedroomController.getById);
 router.post('/', BedroomController.create);
 router.post('/:id/uploads', upload.single('image'), BedroomController.upload);

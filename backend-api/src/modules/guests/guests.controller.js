@@ -48,4 +48,10 @@ export const GuestController = {
         await GuestService.remove(Number(req.params.id));
         res.status(204).send();
     },
+
+    search: async (req, res) => {
+        const {data, page, limit} = req.query;
+        const guests = await GuestService.search(data, page, limit);
+        res.json(guests);
+    },
 };

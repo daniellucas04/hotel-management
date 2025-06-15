@@ -62,8 +62,8 @@ export default function Header() {
         <Navbar.Link
           as={Link}
           className="flex items-center gap-2"
-          href="/employee"
-          active={pathName.includes("employee")}
+          href="/employees"
+          active={pathName.includes("employees") ? true : false}
         >
           <HiOutlineUserGroup size={20} /> Funcionários
         </Navbar.Link>

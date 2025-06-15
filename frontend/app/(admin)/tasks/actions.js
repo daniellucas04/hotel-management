@@ -1,11 +1,3 @@
-const requiredCreateFields = {
-	id_employee: "O funcionário é obrigatório",
-	id_reservation: "A reserva é obrigatória",
-	priority: "A prioridade é obrigatória",
-	price: "O preço é obrigatório",
-    description: 'A descrição é obrigatória',
-};
-
 export async function getAll(page, limit) {
 	try {
 		const data = await fetch(
@@ -77,12 +69,34 @@ export async function createTask(task) {
 
 export async function updateTask(id, task) {
 	try {
+		delete task.employee;
+		delete task.reservation;
+
 		const data = await fetch(`http://localhost:8000/tasks/${id}`, {
 			method: "put",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(task),
+		});
+
+		return await data.json();
+	} catch (error) {
+		
+	}
+}
+
+export async function updateTaskStatus(id, status) {
+	try {
+		const data = await fetch(`http://localhost:8000/tasks/status/${id}`, {
+			method: "put",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				status: String(status).replace(' ', '_')
+			})
+
 		});
 
 		return await data.json();
@@ -101,17 +115,4 @@ export async function deleteTask(id) {
 	} catch (error) {
 		
 	}
-}
-
-export function validateCreate(tasks) {
-	let error = [];
-
-	Object.entries(requiredCreateFields).forEach(([field, message]) => {
-		if (!tasks[field]) {
-			error.push(message);
-		}
-	});
-
-	console.log(tasks);
-	return error;
 }

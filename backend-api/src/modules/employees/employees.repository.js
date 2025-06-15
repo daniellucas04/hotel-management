@@ -19,10 +19,9 @@ export const EmployeeRepository = {
             total: totalItems
         }
     },
-    // findAll: ()=>prisma.employees.findMany(), buscar todos os employess
     findById: (id) => prisma.employees.findUnique({ where: { id } }),
     create: async (data) => {
-        let employee = await prisma.employees.findUnique({ where: {document: data.document }});
+        let employee = await prisma.employees.findUnique({ where: {document: data.document } });
 
         if (employee) {
             return {
@@ -54,4 +53,15 @@ export const EmployeeRepository = {
         return await prisma.employees.update({ where: { id }, data })
     },
     remove: (id) => prisma.employees.delete({ where: { id } }),
+    search: async (data, page, limit) => {
+        let offset = ( page - 1 ) * limit;
+        const items = await prisma.employees.findMany({ where: {name: {contains: data}}, take: parseInt(limit), skip: offset })
+        
+        const totalItems = await prisma.employees.count({where: {name: {contains: data}}})
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    },
 };

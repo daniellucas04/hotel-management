@@ -12,7 +12,8 @@ model workgroups {
   name       String
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt @default(now())
-  employees  employees[]
+
+  employees employees[]
 }
 
 model employees {
@@ -31,9 +32,10 @@ model employees {
   password   String
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt @default(now())
+  workgroup workgroups   @relation(fields: [id_workgroup], references: [id])
+
 
   @@index([id_workgroup], map: "employees_id_workgroup_fkey")
-  workgroups workgroups[]
   tasks tasks[]
   logs logs[]
 }
@@ -54,8 +56,8 @@ model guests {
   last_name  String
   document   String    @db.VarChar(14) @unique
   birthday   DateTime? @db.Date
-  phone1     String    @db.VarChar(14)
-  phone2     String    @db.VarChar(14)
+  phone1     String    @db.VarChar(18)
+  phone2     String    @db.VarChar(18)
   address    String
   photo      String
   created_at DateTime  @default(now())
@@ -84,7 +86,7 @@ model bedrooms {
   category          bedrooms_category     @default(Solteiro)
   classification    BedroomClassification @default(Standard)
   privileges        String?
-  short_description String
+  short_description String                @db.VarChar(150)
   status            bedrooms_status       @default(Livre)
   photo             String?
   created_at        DateTime              @default(now())
@@ -99,8 +101,10 @@ model reservations {
   id_bedroom          Int
   check_in            DateTime
   check_out           DateTime
-  status              ReservationStatus @default(Reservado)
+  status_checkin      CheckStatus @default(Pendente)
+  status_checkout     CheckStatus @default(Pendente)
   created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
   antecipated_payment Boolean?
   plan                plans             @relation(fields: [id_plan], references: [id])
   bedroom             bedrooms          @relation(fields: [id_bedroom], references: [id])
@@ -147,10 +151,9 @@ enum BedroomClassification {
   Deluxe
 }
 
-enum ReservationStatus {
-  Reservado
-  Confirmado
-  Cancelado
+enum CheckStatus {
+  Pendente
+  Realizado  
 }
 
 enum TaskPriority {
@@ -168,8 +171,8 @@ enum TaskStatus {
 
 enum bedrooms_category {
   Solteiro
-  Duplo_solteiro @map("Duplo solteiro")
-  Quarto_casal @map("Quarto casal")
+  Duplo_solteiro
+  Quarto_casal
   Dormitório
   Apartamento
 }

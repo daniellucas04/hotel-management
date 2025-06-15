@@ -1,11 +1,3 @@
-const requiredCreateFields = {
-	id_guest: "O hóspede é obrigatório",
-	id_bedroom: "O quarto é obrigatório",
-	id_plan: "O plano é obrigatório",
-	check_in: "A data de check-in é obrigatória",
-	check_out: "A data de check-out é obrigatória",
-};
-
 export async function getAll(page, limit) {
 	try {
 		const data = await fetch(
@@ -18,6 +10,21 @@ export async function getAll(page, limit) {
 		return await data.json();
 	} catch (error) {
 		
+	}
+}
+
+export async function getReservation(id) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/reservations/${id}`,
+			{
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+
 	}
 }
 
@@ -103,15 +110,26 @@ export async function deleteReservation(id) {
 	}
 }
 
-export function validateCreate(reservation) {
-	let error = [];
+export async function confirmCheckIn(id) {
+	try {
+		const result = await fetch(`http://localhost:8000/reservations/checkin/${id}`, {
+			method: 'put',
+		});
 
-	Object.entries(requiredCreateFields).forEach(([field, message]) => {
-		if (!reservation[field]) {
-			error.push(message);
-		}
-	});
+		return await result.json();
+	} catch (error) {
 
+	}
+}
 
-	return error;
+export async function confirmCheckOut(id) {
+	try {
+		const result = await fetch(`http://localhost:8000/reservations/checkout/${id}`, {
+			method: 'put',
+		});
+
+		return await result.json();
+	} catch (error) {
+
+	}
 }

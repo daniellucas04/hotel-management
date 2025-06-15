@@ -21,7 +21,7 @@ export default function TaskCreate() {
     id_reservation: '',
     priority: 'Baixa',
     description: '',
-    price: 0.00,
+    price: 0,
   });
   const [employees, setEmployees] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -33,49 +33,39 @@ export default function TaskCreate() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const error = validateCreate(task);
-    if (error.length == 0) {
-      try {
-        const taskData = await createTask(task);
-        if (taskData.message) {
-          Swal.fire({
-            text: taskData.message,
-            icon: "error",
-            timer: 3000,
-            toast: true,
-            position: "top-right",
-            showConfirmButton: false,
-          });
-          return;
-        }
-
+    try {
+      const taskData = await createTask(task);
+      if (taskData.message) {
         Swal.fire({
-          text: "Tarefa cadastrada com sucesso",
-          icon: "success",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          redirect("/tasks");
-        }, 3000);
-      } catch (error) {
-        Swal.fire({
-          text: "Erro ao cadastrar a tarefa. Tente novamente!",
+          title: taskData.message,
+          html: taskData.errors.join('<br>'),
+          width: 500,
           icon: "error",
           timer: 3000,
           toast: true,
           position: "top-right",
           showConfirmButton: false,
         });
+        return;
       }
-    } else {
+
       Swal.fire({
-        html: error.join("<br>"),
+        text: "Tarefa cadastrada com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        redirect("/tasks");
+      }, 3000);
+    } catch (error) {
+      Swal.fire({
+        text: "Erro ao cadastrar a tarefa. Tente novamente!",
         icon: "error",
-        timer: 0,
+        timer: 3000,
         toast: true,
         position: "top-right",
         showConfirmButton: false,
@@ -160,7 +150,7 @@ export default function TaskCreate() {
 
                 <div className="flex-auto">
                   <Label htmlFor="priority">Preço</Label>
-                  <TextInput type="number" name="price" onChange={handleData} />
+                  <TextInput type="number" name="price" defaultValue={task.price} onChange={handleData} />
                 </div>
               </div>
               <div>

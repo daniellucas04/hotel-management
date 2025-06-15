@@ -1,18 +1,21 @@
 "use client";
 
-import { Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
-import { deleteReservation, getAll } from "./actions";
+import { confirmCheckIn, confirmCheckOut, deleteReservation, getAll } from "./actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth } from "@/app/lib/useAuth";
+import withPermission from "../config/withPermissions";
+import { LuCheck } from "react-icons/lu";
 
-export default function Reservations() {
+export function Reservations() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [reservations, setReservations] = useState([]);
   const [deleted, setDeleted] = useState(false);
+  const [check, setCheck] = useState(false);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   async function fetchAllReservations(page) {
@@ -49,6 +52,50 @@ export default function Reservations() {
     });
   }
 
+  function handleCheckIn(id) {
+    Swal.fire({
+      title: 'Atenção!',
+      text: 'Tem certeza que deseja realizar o check-in para esta reserva?',
+      icon: 'warning',
+      confirmButtonText: 'Confirmar',
+      confirmButtonColor: '#00d062',
+      cancelButtonText: 'Cancelar',
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await confirmCheckIn(id);
+          setCheck(true);
+        } catch (error) {
+          setCheck(false);
+        }
+      }
+    });
+  }
+
+  function handleCheckOut(id) {
+    Swal.fire({
+      title: 'Atenção!',
+      text: 'Tem certeza que deseja realizar o check-in para esta reserva?',
+      icon: 'warning',
+      confirmButtonText: 'Confirmar',
+      confirmButtonColor: '#00d062',
+      cancelButtonText: 'Cancelar',
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await confirmCheckOut(id);
+          setCheck(true);
+        } catch (error) {
+          setCheck(false);
+        }
+      }
+    });
+  }
+
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
@@ -56,7 +103,7 @@ export default function Reservations() {
   useEffect(() => {
     fetchAllReservations(currentPage);
     setDeleted(false);
-  }, [currentPage, deleted]);
+  }, [currentPage, deleted, check]);
 
   const isAuthenticated = useAuth();
   
@@ -74,7 +121,7 @@ export default function Reservations() {
         <div className="flex justify-between items-center my-8 gap-2">
           <h1 className="text-2xl mb-4">Todos as reservas</h1>
           <Button color="light">
-            <Link href="/reservation/create">Nova reserva</Link>
+            <Link href="/reservations/create">Nova reserva</Link>
           </Button>
         </div>
         {reservations.length > 0 ? (
@@ -84,6 +131,8 @@ export default function Reservations() {
                 <Table.HeadCell>Hóspede</Table.HeadCell>
                 <Table.HeadCell>Quarto</Table.HeadCell>
                 <Table.HeadCell>Plano</Table.HeadCell>
+                <Table.HeadCell>Data de Check in</Table.HeadCell>
+                <Table.HeadCell>Data de Check out</Table.HeadCell>
                 <Table.HeadCell>Ações</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
@@ -102,13 +151,19 @@ export default function Reservations() {
                       <Table.Cell>
                         {reservation.plan.title}
                       </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex items-center gap-2">
+                          <Badge color={reservation.status_checkin == `Realizado` ? `success` : `yellow`} className="w-fit p-2">{new Date(reservation.check_in).toLocaleString('pt-BR')}</Badge>
+                          {reservation.status_checkin != "Realizado" && (<button onClick={() => {handleCheckIn(reservation.id)}} className="border py-1 px-2 rounded bg-emerald-500 text-white hover:bg-emerald-600 hover:text-gray-100 transition-colors duration-300"><LuCheck size={20} /></button>)}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex items-center gap-2">
+                          <Badge color={reservation.status_checkout == `Realizado` ? `success` : `yellow`} className="w-fit p-2">{new Date(reservation.check_out).toLocaleString('pt-BR')}</Badge>
+                          {reservation.status_checkout != "Realizado" && (<button onClick={() => {handleCheckOut(reservation.id)}} className="border py-1 px-2 rounded bg-emerald-500 text-white hover:bg-emerald-600 hover:text-gray-100 transition-colors duration-300"><LuCheck size={20} /></button>)}
+                        </div>
+                      </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
-                        <Link
-                          href="/reservation/details/1"
-                          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                        >
-                          Detalhes
-                        </Link>
                         <button className="text-cyan-600 font-medium hover:underline" onClick={() => handleDelete(reservation.id)}>Deletar</button>
                       </Table.Cell>
                     </Table.Row>
@@ -134,3 +189,5 @@ export default function Reservations() {
     </>
   );
 }
+
+export default withPermission(Reservations, ["Admin", "Gerente de Hotel", "Recepcionista"]);

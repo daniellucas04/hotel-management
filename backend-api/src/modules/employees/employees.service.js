@@ -64,6 +64,7 @@ export const EmployeeService = {
   
   //fazer o update
   update: (id, data) =>{
+     data = {...data, id_workgroup: Number(data.id_workgroup)}
     const parsed = employeeSchema.safeParse(data);
     if(!parsed.success){
       const errors = parsed.error.flatten().fieldErrors;
@@ -76,4 +77,6 @@ export const EmployeeService = {
   upload: (id, data) => EmployeeRepository.upload(id, data),
 
   remove: (id) => EmployeeRepository.remove(id),
+
+  search: (data, page, limit) => EmployeeRepository.search(data, page, limit),
 };

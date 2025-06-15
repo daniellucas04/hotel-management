@@ -3,7 +3,8 @@
 import { use, useEffect, useState } from "react";
 import { getGuest } from "../../actions";
 import { Card, HR } from "flowbite-react";
-import { HiOutlineUserCircle, HiUserCircle } from "react-icons/hi";
+import { HiOutlineArrowCircleLeft, HiOutlineUserCircle, HiUserCircle } from "react-icons/hi";
+import Link from "next/link";
 
 export default function GuestDetails({ params }) {
   const { id } = use(params);
@@ -25,7 +26,7 @@ export default function GuestDetails({ params }) {
   return (
     <>
       <section className="overflow-x-auto p-10">
-        <h1 className="text-2xl font-medium text-zinc-600">Detalhes do hóspede</h1>
+        <Link href={'/guests'} className="text-2xl flex items-center gap-4 font-medium text-zinc-600"><HiOutlineArrowCircleLeft /> Voltar</Link>
 
         <div className="flex gap-12 mt-12">
           <Card className="w-[32rem] h-fit">

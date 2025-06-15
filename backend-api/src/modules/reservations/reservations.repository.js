@@ -16,9 +16,23 @@ export const ReservationRepository = {
             total: totalItems
         }
     },
-    findById: (id) => prisma.reservations.findUnique({ where: { id } }),
+    findById: (id) => prisma.reservations.findUnique({ where: { id }, include: { bedroom: true, guest: true, plan: true } }),
     create: (data) => prisma.reservations.create({ data }),
     update: (id, data) => prisma.reservations.update({ where: { id }, data }),
+    updateCheckIn: async (id) => {
+        let data = {
+            status_checkin: 'Realizado'
+        }
+
+        return await prisma.reservations.update({ where: { id }, data })
+    },
+    updateCheckOut: async (id) => {
+        let data = {
+            status_checkout: 'Realizado'
+        }
+
+        return await prisma.reservations.update({ where: { id }, data })
+    },
     remove: async (id) => {
         let reservation = await prisma.reservations.findUnique({ where: { id }, include: { bedroom: true }});
 

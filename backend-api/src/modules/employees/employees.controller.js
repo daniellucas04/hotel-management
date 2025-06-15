@@ -46,6 +46,12 @@ export const EmployeeController = {
         await EmployeeService.remove(Number(req.params.id));
         res.status(204).send();
     },
+
+    search: async (req, res) => {
+        const {data,page,limit} = req.query;
+        const employees = await EmployeeService.search(data, page, limit);
+        res.json(employees);
+    }
 };
 
 

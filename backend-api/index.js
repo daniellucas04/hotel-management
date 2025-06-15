@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config(); 
+import dashboardRoutes from './src/modules/dashboard/dashboard.routes.js';
 import guestRoutes from './src/modules/guests/guests.routes.js';
 import bedroomsRoutes from './src/modules/bedrooms/bedrooms.routes.js';
 import employeesRoutes from './src/modules/employees/employees.routes.js';
@@ -11,22 +11,23 @@ import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
 import authRoutes from './src/modules/auth/auth.routes.js'; // <-- Aqui o ajuste
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import AuthRoutes  from './src/modules/auth/auth.controller.js';
 import path from 'path';
 
+dotenv.config(); 
 const app = express();
 app.use(express.json());
 const PORT = 8000;
 
 
 app.use(cookieParser());
-
-
 app.use(cors({
     origin: 'http://localhost:3000', // <-- Frontend URL
     credentials: true, // <-- Permite envio de cookies
 }));
-
 app.use('/auth', authRoutes);
+app.use('/auth', AuthRoutes);
+app.use('/dashboard', dashboardRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
 app.use('/employees', employeesRoutes);

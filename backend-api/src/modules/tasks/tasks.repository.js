@@ -16,8 +16,18 @@ export const TaskRepository = {
             total: totalItems
         }
     },
-    findById: (id) => prisma.tasks.findUnique({ where: { id } }),
-    create: (data) => prisma.tasks.create({ data }),
+    findById: (id) => prisma.tasks.findUnique({ where: { id }, include: { reservation: { include: { bedroom: true } }, employee: true } }),
+    create: async (data) => {
+        try {
+            return prisma.tasks.create({ data })
+        } catch {
+            return {
+                status: 400,
+                message: 'Erro ao cadastrar o usuário. Tente novamente',
+            }
+        }
+    },
     update: (id, data) => prisma.tasks.update({ where: { id }, data }),
+    updateStatus: (id, data) => prisma.tasks.update({ where: { id }, data }),
     remove: (id) => prisma.tasks.delete({ where: { id } }),
 };

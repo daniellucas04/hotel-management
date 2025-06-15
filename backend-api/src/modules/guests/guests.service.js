@@ -1,67 +1,57 @@
+import { formatValidationErrors } from '../../utils/validation.js';
 import { GuestRepository } from './guests.repository.js';
 import { z } from 'zod';
 
-const GuestShchema = z.object({
-  name: z.string().min(1),
-  last_name: z.string().min(1),
-  // document: z.string()
-  //   .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
-  //     message: "Documento deve estar no formato xxx.xxx.xxx-xx",
-  //   }),
-  // birthday: z.string().refine((val) => !isNaN(Date.parse(val)), {
-  //   message: "Data de nascimento inválida",
-  // }),
-  phone1: z.string().min(10),
+const MIN_DATE = new Date(1900, 0, 1);
+
+const guestShchema = z.object({
+  name: z.string().min(1, { message: "O Nome do hóspede é obrigatório" }),
+  last_name: z.string().min(1, { message: "O Sobrenome do hóspede é obrigatório" }),
+  document: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, { message: "CPF inválido" }),
+  birthday: z.date().min(MIN_DATE, { message: `Data mínima permitida ${MIN_DATE.toLocaleDateString()}`}),
+  phone1: z.string().regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Número de telefone inválido"),
   phone2: z.string().optional(),
-  address: z.string().min(1),
+  address: z.string().min(1, { message: "O Endereço é obrigatório" }),
   photo: z.string().optional(),
 });
 
-// Tratamento de erro para o front receber o erro
-class ValidationError extends Error {
-  constructor(message, details) {
-    super(message);
-    this.name = 'ValidationError';
-    this.statusCode = 400;
-    this.details = details; // Objeto com os erros por campo
+function parseTypes(data) {
+  return {
+    ...data,
+    name: String(data.name),
+    last_name: String(data.last_name),
+    document: String(data.document),
+    birthday: new Date(data.birthday),
+    phone1: String(data.phone1),
+    phone2: String(data.phone2),
+    address: String(data.address),
+    photo: String(data.photo)
   }
 }
 
 export const GuestService = {
   getAll: (page, limit) => GuestRepository.findAll(page, limit),
+
   getById: (id) => GuestRepository.findById(id),
+
   create: async (data) => {
-    // Validação
-    const parsed = GuestShchema.safeParse(data);
-    if (!parsed.success) {
-      const errors = parsed.error.flatten().fieldErrors;
+    data = parseTypes(data);
+    const parsed = guestShchema.safeParse(data);
 
-      throw new ValidationError('Erro de validação', errors);
-    }
-
-    // const validData = parsed.data;
-    let split = String(data.birthday).split('/');
-    let year = split[2];
-    let month = split[1];
-    let day = split[0];
-    data.birthday = new Date(year, month, day);
+    let errors = formatValidationErrors(parsed);
+    if (errors)
+      return errors;
 
     return GuestRepository.create(data);
   },
 
-  //fazer o update
   update: (id, data) => {
-    const parsed = GuestShchema.safeParse(data);
-    if (!parsed.success) {
-      const errors = parsed.error.flatten().fieldErrors
-      throw new ValidationError('Erro de validação', errors)
-    }
+    data = parseTypes(data);
+    const parsed = guestShchema.safeParse(data);
 
-    let split = String(data.birthday).split('/');
-    let year = split[2];
-    let month = split[1];
-    let day = split[0];
-    data.birthday = new Date(year, month, day);
+    let errors = formatValidationErrors(parsed);
+    if (errors)
+      return errors;
 
     return GuestRepository.update(id, data)
   },
@@ -69,4 +59,6 @@ export const GuestService = {
   upload: (id, data) => GuestRepository.upload(id, data),
 
   remove: (id) => GuestRepository.remove(id),
+
+  search: (data, page, limit) => GuestRepository.search(data, page, limit),
 };

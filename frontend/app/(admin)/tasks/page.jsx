@@ -3,16 +3,18 @@
 import { Badge, Button, Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteTask, getAll } from "./actions";
+import { deleteTask, getAll, updateTaskStatus } from "./actions";
 import Swal from "sweetalert2";
 import { useAuth } from "@/app/lib/useAuth";
+import withPermission from "../config/withPermissions";
 
-export default function Tasks() {
+export function Tasks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [deleted, setDeleted] = useState(false);
+  const [status, setStatus] = useState(false);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   async function fetchAllTasks(page) {
@@ -74,6 +76,16 @@ export default function Tasks() {
       return 'green'
   }
 
+  async function handleTaskStatus(id, status) {
+    setStatus(false);
+    try {
+      const result = await updateTaskStatus(id, status);
+      setStatus(true);
+    } catch (error) {
+      
+    }
+  }
+
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
@@ -81,7 +93,7 @@ export default function Tasks() {
   useEffect(() => {
     fetchAllTasks(currentPage);
     setDeleted(false);
-  }, [currentPage, deleted]);
+  }, [currentPage, deleted, status]);
 
   const isAuthenticated = useAuth();
 
@@ -139,7 +151,11 @@ export default function Tasks() {
                       </Table.Cell>
                       <Table.Cell>
                         <Badge color={statusColor} className="w-fit">
-                          {String(task.status).split('_').join(' ')}
+                          <select defaultValue={task.status} onChange={(e) => {handleTaskStatus(task.id, e.target.value)}} className="bg-transparent border-none p-1 m-0 text-sm focus:outline-none focus:ring-0" name="" id="">
+                            <option>Pendente</option>
+                            <option value="Em_andamento">Em andamento</option>
+                            <option>Finalizado</option>
+                          </select>
                         </Badge>
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
@@ -180,3 +196,5 @@ export default function Tasks() {
     </>
   );
 }
+
+export default withPermission(Tasks, ["Admin", "Gerente de Hotel", "Recepcionista", "Zelador", "Camareiro", "Cozinheiro"]);

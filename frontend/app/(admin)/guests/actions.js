@@ -1,15 +1,22 @@
-const requiredCreateFields = {
-	name: "O nome é obrigatório",
-	last_name: "O sobrenome é obrigatório",
-	document: "O documento é obrigatório",
-	birthday: "A data de nascimento é obrigatória",
-	phone1: "O telefone 1 é obrigatório",
-};
-
 export async function getAll(page, limit) {
 	try {
 		const data = await fetch(
 			`http://localhost:8000/guests?page=${page}&limit=${limit}`,
+			{
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+		
+	}
+}
+
+export async function searchGuest(search, page, limit) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/guests/search?data=${search}&page=${page}&limit=${limit}`,
 			{
 				method: "get",
 			}
@@ -47,6 +54,7 @@ export async function getAllPlans() {
 
 export async function updateGuest(id, guest) {
 	try {
+		guest.birthday = formatDateToDbFormat(guest.birthday);
 		const data = await fetch(`http://localhost:8000/guests/${id}`, {
 			method: "put",
 			headers: {
@@ -63,6 +71,7 @@ export async function updateGuest(id, guest) {
 
 export async function createGuest(guest) {
 	try {
+		guest.birthday = formatDateToDbFormat(guest.birthday);
 		const data = await fetch(`http://localhost:8000/guests/`, {
 			method: "post",
 			headers: {
@@ -73,7 +82,7 @@ export async function createGuest(guest) {
 
 		return await data.json();
 	} catch (error) {
-		
+		console.log(error);
 	}
 }
 
@@ -102,42 +111,17 @@ export async function deleteGuest(id) {
 			method: 'delete'
 		});
 
-		console.log(await result);
+		return await result.json();
 	} catch (error) {
 		
 	}
 }
 
-export function validateUpdate(guest) {
-	let error = [];
+function formatDateToDbFormat(dateStr) {
+	// O formato de entrada é "DD/MM/YYYY"
+	const [day, month, year] = String(dateStr).split("/");
 
-	error = validate(guest, error);
+	let date = `${year}-${month}-${day}`;
 
-	return error;
-}
-
-export function validateCreate(guest) {
-	let error = [];
-
-	Object.entries(requiredCreateFields).forEach(([field, message]) => {
-		if (!guest[field]) {
-			error.push(message);
-		}
-	});
-
-	error = validate(guest, error);
-
-	return error;
-}
-
-function validate(guest, error) {
-	if (guest.document.length != 11) {
-		error.push("- Documento inválido");
-	}
-
-	if (guest.phone1.length != 11) {
-		error.push("- Telefone 1 inválido");
-	}
-
-	return error;
+	return date;
 }
