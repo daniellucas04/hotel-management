@@ -1,44 +1,61 @@
-"use client";
+'use client';
 
 import { Button, Navbar } from "flowbite-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   HiOutlineBookmark,
   HiOutlineCash,
   HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
   HiOutlineCollection,
   HiOutlineTemplate,
   HiOutlineUserGroup,
   HiOutlineUsers,
-} from "react-icons/hi";
+} from 'react-icons/hi';
 
 export default function Header() {
   const pathName = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      const logout = await fetch("http://localhost:8000/auth/logout", {
+        method: "POST",
+        credentials: "include", // ⬅️ importante para enviar o cookie
+      });
+
+      // Redireciona para a página de login após logout
+      if(logout){
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  };
 
   return (
-    <Navbar fluid rounded className="border-b border-b-gray-200">
-      <Navbar.Brand as={Link} href="/dashboard">
+    <Navbar fluid rounded className='border-b border-b-gray-200'>
+      <Navbar.Brand as={Link} href='/dashboard'>
         <img
-          src="https://placehold.co/400x400"
-          className="mr-3 h-6 sm:h-9"
-          alt="hotel logo"
+          src='https://placehold.co/400x400'
+          className='mr-3 h-6 sm:h-9'
+          alt='hotel logo'
         />
-        <span className="font-bold">Hotel name</span>
+        <span className='font-bold'>Hotel name</span>
       </Navbar.Brand>
       <div className="flex items-center gap-4 md:order-2">
-        <Button as={Link} href="/" color="red" size="sm">
+        <Button color="red" size="sm" onClick={handleLogout}>
           Log out
         </Button>
         <Navbar.Toggle />
       </div>
+
       <Navbar.Collapse>
         <Navbar.Link
           as={Link}
           className="flex items-center gap-2"
           href="/dashboard"
-          active={pathName.includes("dashboard") ? true : false}
+          active={pathName.includes("dashboard")}
         >
           <HiOutlineTemplate size={20} /> Dashboard
         </Navbar.Link>
@@ -54,7 +71,7 @@ export default function Header() {
           as={Link}
           className="flex items-center gap-2"
           href="/plans"
-          active={pathName.includes("plans") ? true : false}
+          active={pathName.includes("plans")}
         >
           <HiOutlineCash size={20} /> Planos
         </Navbar.Link>
@@ -62,7 +79,7 @@ export default function Header() {
           as={Link}
           className="flex items-center gap-2"
           href="/guests"
-          active={pathName.includes("guests") ? true : false}
+          active={pathName.includes("guests")}
         >
           <HiOutlineUsers size={20} /> Hóspedes
         </Navbar.Link>
@@ -70,7 +87,7 @@ export default function Header() {
           as={Link}
           className="flex items-center gap-2"
           href="/bedrooms"
-          active={pathName.includes("bedrooms") ? true : false}
+          active={pathName.includes("bedrooms")}
         >
           <HiOutlineCollection size={20} /> Quartos
         </Navbar.Link>
@@ -78,7 +95,7 @@ export default function Header() {
           as={Link}
           className="flex items-center gap-2"
           href="/reservations"
-          active={pathName.includes("reservations") ? true : false}
+          active={pathName.includes("reservations")}
         >
           <HiOutlineClipboardCheck size={20} /> Reservas
         </Navbar.Link>
@@ -86,7 +103,7 @@ export default function Header() {
           as={Link}
           className="flex items-center gap-2"
           href="/tasks"
-          active={pathName.includes("tasks") ? true : false}
+          active={pathName.includes("tasks")}
         >
           <HiOutlineBookmark size={20} /> Tarefas
         </Navbar.Link>

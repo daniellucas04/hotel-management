@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deletePlan, getAll, searchPlan } from "./actions";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 import withPermission from "../config/withPermissions";
 import { HiOutlineSearch } from "react-icons/hi";
 
@@ -73,6 +74,16 @@ export function Plans() {
     searchPlans(search.title, currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div>Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>

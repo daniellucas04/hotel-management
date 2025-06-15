@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
+import jwt from 'jsonwebtoken';
 import { EmployeeRepository } from '../employees/employees.repository.js';
 
+const SECRET = process.env.JWT_SECRET;
 
 const LoginSchema = z.object({
   login: z.string(),
@@ -29,14 +31,26 @@ export const AuthService = {
       throw new Error('login ou senha inválidos');
     }
 
+    // onde vai se gerado o token
+    const token = jwt.sign(
+      {
+        userId: employee.id,
+        name: employee.name,
+        login: employee.login,
+      },
+      SECRET,
+      { expiresIn: '8h' } 
+    );
+
     return {
       message: 'Login realizado com sucesso',
+      token,
       user: {
         id: employee.id,
         name: employee.name,
         login: employee.login,
         photo: employee.photo,
-      }
+      },
     };
-  }
+  },
 };

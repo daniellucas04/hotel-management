@@ -5,6 +5,7 @@ import Link from "next/link";
 import { confirmCheckIn, confirmCheckOut, deleteReservation, getAll } from "./actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 import withPermission from "../config/withPermissions";
 import { LuCheck } from "react-icons/lu";
 
@@ -103,6 +104,16 @@ export function Reservations() {
     fetchAllReservations(currentPage);
     setDeleted(false);
   }, [currentPage, deleted, check]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div>Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>

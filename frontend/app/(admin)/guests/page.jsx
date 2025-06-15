@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteGuest, getAll, searchGuest } from "./actions";
 import Swal from "sweetalert2";
+import { HiUserCircle } from "react-icons/hi";
+import { useAuth } from "@/app/lib/useAuth";
 import { HiOutlineSearch, HiUserCircle } from "react-icons/hi";
 import withPermission from "../config/withPermissions";
 
@@ -72,6 +74,16 @@ export function Guests() {
     searchGuests(search.name, currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div>Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>

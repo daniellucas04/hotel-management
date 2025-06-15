@@ -1,19 +1,30 @@
+'use server';
+
+import { cookies } from 'next/headers'; 
+
 export async function loginEmployee(data) {
-    try {
-        const response = await fetch('http://localhost:8000/auth/login', {
-            method: "POST",  
-            headers: {
-                "Content-Type": "application/json",  
-            },
-            body: JSON.stringify(data),  
-        });
+  const response = await fetch('http://localhost:8000/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+ 
+  });
 
-        if (!response.ok) {
-            throw new Error('Erro ao tentar fazer login');
-        }
+  const responseData = await response.json(); 
 
-        return await response.json();
-    } catch (error) {
-        throw error;  
-    }
+  if (!response.ok) {
+    throw new Error(responseData.error || 'Erro ao fazer login');
+  }
+
+  cookies().set('token', responseData.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 8, 
+  });
+
+  return responseData.user;
 }

@@ -1,4 +1,13 @@
-"use client";
+'use client';
+
+import { Card } from 'flowbite-react';
+import { useAuth } from '@/app/lib/useAuth';
+import {
+  HiOutlineBan,
+  HiOutlineCurrencyDollar,
+  HiOutlineIdentification,
+  HiOutlineLightBulb,
+} from 'react-icons/hi';
 
 import { Card } from "flowbite-react";
 import { useEffect, useState } from "react";

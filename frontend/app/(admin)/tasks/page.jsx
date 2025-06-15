@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteTask, getAll, updateTaskStatus } from "./actions";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
 import withPermission from "../config/withPermissions";
 
 export function Tasks() {
@@ -94,7 +95,15 @@ export function Tasks() {
     setDeleted(false);
   }, [currentPage, deleted, status]);
 
+  const isAuthenticated = useAuth();
 
+  if (isAuthenticated === null) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
   return (
     <>
       <section className="overflow-x-auto p-10">
