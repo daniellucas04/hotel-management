@@ -24,31 +24,23 @@ export default function Login() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        try {
-            const login = await loginEmployee(data);
-            if (login) {
-                 Swal.fire({
-                    title: "Login realizado com sucesso!",
-                    text: "Aguarde o redirecionamento...",
-                    icon: "success",
-                    timer: 3000,
-                    toast: true,
-                    position: "top-right",
-                    showConfirmButton: false,
-                });
-                redirect('/dashboard');
-            }
-        } catch (error) {
-            console.log(error);
-             Swal.fire({
-                title: "Erro ao realizar login!",
-                text: "Tente novamente.",
-                icon: "error",
+        const login = await loginEmployee(data);
+        console.log(login);
+        if (login) {
+            console.log('oi')
+            Swal.fire({
+                title: "Login realizado com sucesso!",
+                text: "Aguarde o redirecionamento...",
+                icon: "success",
                 timer: 3000,
                 toast: true,
                 position: "top-right",
                 showConfirmButton: false,
             });
+
+            setTimeout(() => {
+                redirect('/dashboard');
+            }, 3000)
         }
     }
 
