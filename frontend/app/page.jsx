@@ -1,17 +1,21 @@
 'use client'
 
 import { Button, Card, Label, TextInput } from "flowbite-react";
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useState } from "react";
 import { loginEmployee } from "./actions";
+import Swal from "sweetalert2";
+import { useAuth } from "./lib/useAuth";
 
 export default function Login() {
+    if (useAuth()) {
+        redirect('/dashboard');
+    }
+
     const [data, setData] = useState({
         login: '',
         password: '',
     });
-
-    const router = useRouter();
 
     function handleData(event) {
         setData(p => ({ ...p, [event.target.name]: event.target.value }));
@@ -20,14 +24,22 @@ export default function Login() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        try {
-            const login = await loginEmployee(data);
-            if (login) {
-                alert('Login feito com sucesso');
-                router.push('/dashboard');
-            }
-        } catch (error) {
-            alert('Erro no login');
+        const login = await loginEmployee(data);
+        console.log(login);
+        if (login) {
+            console.log('oi')
+            Swal.fire({
+                title: "Login realizado com sucesso!",
+                text: "Aguarde o redirecionamento...",
+                icon: "success",
+                timer: 3000,
+                toast: true,
+                position: "top-right",
+                showConfirmButton: false,
+            });
+            setTimeout(() => {
+                redirect('/dashboard');
+            }, 3000)
         }
     }
 

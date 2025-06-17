@@ -1,6 +1,7 @@
 // vai comunica com o banco de dados pelo prisma
 
-import prisma from '../../config/prisma.js';
+//import prisma from '../../config/prisma.js';
+import prisma from '../../middlewares/prismamiddleware.js'
 
 export const ReservationRepository = {
     findAll: async (page, limit) => {
@@ -9,7 +10,7 @@ export const ReservationRepository = {
         
         let offset = ( page - 1 ) * limit;
         const items = await prisma.reservations.findMany({ take: parseInt(limit), skip: offset, include: { bedroom: true, guest: true, plan: true } })
-        const totalItems = await prisma.reservations.count()
+        const totalItems = await prisma.reservations.count() 
 
         return {
             data: items,
@@ -38,5 +39,15 @@ export const ReservationRepository = {
 
         await prisma.bedrooms.update({ where: { id: reservation.bedroom.id }, data: { status: 'Livre' }})
         return await prisma.reservations.delete({ where: { id } })
+    },
+    search: async (data, page, limit) => {
+        let offset = ( page - 1 ) * limit;
+        const items = await prisma.reservations.findMany({ where: {guest: {name: {contains: data}}},take: parseInt(limit), skip: offset, include: { bedroom: true, guest: true, plan: true } })
+        const totalItems = await prisma.reservations.count()  
+
+        return {
+            data: items,
+            total: totalItems
+        }
     },
 };
