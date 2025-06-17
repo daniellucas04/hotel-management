@@ -37,11 +37,11 @@ export default function Header() {
     <Navbar fluid rounded className='border-b border-b-gray-200'>
       <Navbar.Brand as={Link} href='/dashboard'>
         <img
-          src='https://placehold.co/400x400'
+          src='/logo.svg'
           className='mr-3 h-6 sm:h-9'
           alt='hotel logo'
         />
-        <span className='font-bold'>Hotel name</span>
+        <span className='font-bold'>Monteluz Hotel</span>
       </Navbar.Brand>
       <div className="flex items-center gap-4 md:order-2">
         <Button color="red" size="sm" onClick={handleLogout}>

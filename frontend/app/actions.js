@@ -18,7 +18,7 @@ export async function loginEmployee(data) {
     throw new Error(responseData.error || 'Erro ao fazer login');
   }
 
-  cookies().set('token', responseData.token, {
+  (await cookies()).set('token', responseData.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

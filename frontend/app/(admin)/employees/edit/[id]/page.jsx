@@ -52,6 +52,10 @@ export default function EditEmployee({ params }) {
   async function fetchEmployee(id) {
     try {
       const result = await getEmployee(id);
+      // Reformat birthday from YYYY-MM-DD to DD/MM/YYYY
+      let date = String(result.birthday).split('T')[0];
+      let [year, month, day] = date.split('-');
+      result.birthday = `${day}/${month}/${year}`;
       setEmployee(result);
     } catch (error) {
       console.log(error);
@@ -62,7 +66,7 @@ export default function EditEmployee({ params }) {
     fetchEmployee(id);
     fetchAllWorkgroups();
   }, []);
-  
+
   function handleFileChange(event) {
     const file = event.target.files?.[0];
     if (file) {
@@ -79,7 +83,14 @@ export default function EditEmployee({ params }) {
     event.preventDefault();
 
     try {
-      const employeeData = await updateEmployee(id, employee);
+      // Convert birthday back to YYYY-MM-DD for backend
+      const employeeDataToSend = { ...employee };
+      if (employeeDataToSend.birthday) {
+        const [day, month, year] = employeeDataToSend.birthday.split('/');
+        employeeDataToSend.birthday = `${year}-${month}-${day}`;
+      }
+
+      const employeeData = await updateEmployee(id, employeeDataToSend);
       if (employeeData.message) {
         Swal.fire({
           text: employeeData.message,
@@ -120,12 +131,6 @@ export default function EditEmployee({ params }) {
     const results = await getAllWorkgroups();
     setWorkgroups(results ?? []);
   }
-
-  let data = new Date(employee.birthday);
-  const dia = String(data.getUTCDate()).padStart(2, '0'); // Garante que o dia tenha 2 dígitos
-  const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do zero (0 = Janeiro)
-  const ano = data.getUTCFullYear();
-  employee.birthday = `${dia}/${mes}/${ano}`;
 
   return (
     <>

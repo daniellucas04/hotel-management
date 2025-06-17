@@ -24,50 +24,46 @@ export default function Login() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        try {
-            const login = await loginEmployee(data);
-            if (login) {
-                 Swal.fire({
-                    title: "Login realizado com sucesso!",
-                    text: "Aguarde o redirecionamento...",
-                    icon: "success",
-                    timer: 3000,
-                    toast: true,
-                    position: "top-right",
-                    showConfirmButton: false,
-                });
-                redirect('/dashboard');
-            }
-        } catch (error) {
-            console.log(error);
-             Swal.fire({
-                title: "Erro ao realizar login!",
-                text: "Tente novamente.",
-                icon: "error",
+        const login = await loginEmployee(data);
+        console.log(login);
+        if (login) {
+            console.log('oi')
+            Swal.fire({
+                title: "Login realizado com sucesso!",
+                text: "Aguarde o redirecionamento...",
+                icon: "success",
                 timer: 3000,
                 toast: true,
                 position: "top-right",
                 showConfirmButton: false,
             });
+
+            setTimeout(() => {
+                redirect('/dashboard');
+            }, 3000)
         }
     }
 
     return (
-        <main className="flex items-center justify-center h-screen w-full">
-            <Card className="w-[30rem]">
-                <div className="flex justify-center">
-                    <img className="rounded-md" src="https://placehold.co/100x100" />
+        <main className="flex items-center justify-center h-screen w-full bg-gray-50 px-4">
+            <Card className="w-full max-w-md shadow-lg border border-gray-200">
+                <div className="flex flex-col items-center mb-6">
+                    <img src="/logo.svg" alt="Logo Monteluz Hotel" className="h-16 w-auto mb-2" />
+                    <span className="text-2xl font-semibold text-gray-800">Monteluz Hotel</span>
                 </div>
+
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div>
                         <Label htmlFor="login" className="mb-2 block">Login</Label>
-                        <TextInput id="login" type="text" onChange={handleData} name="login" required />
+                        <TextInput id="login" type="text" onChange={handleData} name="login" required shadow />
                     </div>
                     <div>
                         <Label htmlFor="password" className="mb-2 block">Senha</Label>
-                        <TextInput id="password" type="password" onChange={handleData} name="password" required />
+                        <TextInput id="password" type="password" onChange={handleData} name="password" required shadow />
                     </div>
-                    <Button type="submit">Entrar</Button>
+                    <Button type="submit" gradientDuoTone="purpleToBlue" className="mt-2">
+                        Entrar
+                    </Button>
                 </form>
             </Card>
         </main>
