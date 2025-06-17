@@ -60,6 +60,7 @@ export const EmployeeService = {
     // Inserção no banco com senha hash e data convertida
     return EmployeeRepository.create({
       ...validData,
+      birthday: new Date(validData.birthday), // ⬅️ conversão aqui
       password: hashedPassword,
     });
   },

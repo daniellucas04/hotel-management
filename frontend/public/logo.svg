@@ -1,0 +1,13 @@
+<svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Sol -->
+  <circle cx="100" cy="60" r="30" fill="#FBBF24"/>
+  
+  <!-- Raios -->
+  <line x1="100" y1="10" x2="100" y2="25" stroke="#FBBF24" stroke-width="3"/>
+  <line x1="100" y1="95" x2="100" y2="110" stroke="#FBBF24" stroke-width="3"/>
+  <line x1="70" y1="30" x2="60" y2="20" stroke="#FBBF24" stroke-width="3"/>
+  <line x1="130" y1="30" x2="140" y2="20" stroke="#FBBF24" stroke-width="3"/>
+  
+  <!-- Montanha -->
+  <path d="M30 120 L80 60 L120 110 L150 80 L190 120 Z" fill="#4B5563"/>
+</svg>

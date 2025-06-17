@@ -54,6 +54,17 @@ export function Dashboard() {
     fetchTotalMoneyInReservations();
   }, []);
 
+   const isAuthenticated = useAuth();
+
+  if (isAuthenticated === null) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
+
+
   return (
     <>
       <div className="m-10">
