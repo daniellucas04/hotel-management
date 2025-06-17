@@ -6,11 +6,8 @@ import { useEffect, useState } from "react";
 import { deleteEmployee, getAll, getEmployee, searchEmployee } from "./actions";
 import { HiOutlineSearch, HiUserCircle } from "react-icons/hi";
 import Swal from "sweetalert2";
-<<<<<<< HEAD:frontend/app/(admin)/employee/page.jsx
 import { useAuth } from "@/app/lib/useAuth";
-=======
 import withPermission from "../config/withPermissions";
->>>>>>> develop:frontend/app/(admin)/employees/page.jsx
 
 export function Employee() {
   const [search,setSearch] = useState({name: ''})
@@ -80,7 +77,7 @@ export function Employee() {
   const isAuthenticated = useAuth();
 
   if (isAuthenticated === null) {
-    return <div>Carregando...</div>;
+    return <div className="flex items-center justify-center">Carregando...</div>;
   }
 
   if (!isAuthenticated) {

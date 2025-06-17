@@ -1,17 +1,9 @@
 'use client';
 
-import { Card } from 'flowbite-react';
 import { useAuth } from '@/app/lib/useAuth';
-import {
-  HiOutlineBan,
-  HiOutlineCurrencyDollar,
-  HiOutlineIdentification,
-  HiOutlineLightBulb,
-} from 'react-icons/hi';
-
 import { Card } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiOutlineBan, HiOutlineCash, HiOutlineCheckCircle, HiOutlineCurrencyDollar, HiOutlineIdentification, HiOutlineLightBulb } from "react-icons/hi";
+import { HiOutlineBan, HiOutlineCash, HiOutlineCheckCircle, HiOutlineIdentification, HiOutlineLightBulb } from "react-icons/hi";
 import { getBedroomsOcuppied, getGuestsRegistred, getReservationsActive, getTotalCheckins, getTotalMoneyReservations, getTotalMoneyTasks } from "./actions";
 import withPermission from "../config/withPermissions";
 

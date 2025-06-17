@@ -11,7 +11,6 @@ import workgroupsRoutes from './src/modules/workgroups/workgroups.routes.js';
 import authRoutes from './src/modules/auth/auth.routes.js'; // <-- Aqui o ajuste
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import AuthRoutes  from './src/modules/auth/auth.controller.js';
 import path from 'path';
 
 dotenv.config(); 
@@ -26,7 +25,6 @@ app.use(cors({
     credentials: true, // <-- Permite envio de cookies
 }));
 app.use('/auth', authRoutes);
-app.use('/auth', AuthRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/guests', guestRoutes);
 app.use('/bedrooms', bedroomsRoutes);
