@@ -1,6 +1,7 @@
 // vai comunica com o banco de dados pelo prisma
 
-import prisma from '../../config/prisma.js';
+//import prisma from '../../config/prisma.js';
+import prisma from '../../middlewares/prismamiddleware.js';
 
 export const BedroomRepository = {
     findAll: async (page, limit) => {
@@ -30,6 +31,7 @@ export const BedroomRepository = {
             ...data,
             privileges: data.privileges.join(",")
         }
+
         return await prisma.bedrooms.update({ where: { id }, data })
     },
     updateBedroomStatus: async (id, data) => {
@@ -43,4 +45,16 @@ export const BedroomRepository = {
         await prisma.bedrooms.update({ where: { id }, data })
     },
     remove: (id) => prisma.bedrooms.delete({ where: { id } }),
+
+    search: async (data, page, limit) => {
+        data = parseInt(data);
+        let offset = ( page - 1 ) * limit;
+        const items = await prisma.bedrooms.findMany({ where: {number: data}, take: parseInt(limit), skip: offset })
+        const totalItems = await prisma.bedrooms.count({where: {number: data}})
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    }
 };

@@ -183,11 +183,11 @@ export default function EditBedroom({ params }) {
                 <Label htmlFor="category">Categoria *</Label>
                 <Select id="category" name="category" onChange={handleData} value={bedroom.category}>
                   <option value="">Escolha uma opção</option>
-                  <option>Solteiro</option>
-                  <option>Duplo solteiro</option>
-                  <option>Quarto casal</option>
-                  <option>Dormitório</option>
-                  <option>Apartamentos</option>
+                  <option value="Solteiro">Solteiro</option>
+                  <option value="Duplo_solteiro">Duplo solteiro</option>
+                  <option value="Quarto_casal">Quarto casal</option>
+                  <option value="Dormitório">Dormitório</option>
+                  <option value="Apartamento">Apartamento</option>
                 </Select>
               </div>
 

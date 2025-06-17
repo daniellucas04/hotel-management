@@ -27,8 +27,24 @@ export const ReservationController = {
         res.json(reservation);
     },
 
+    updateCheckIn: async (req, res) => {
+        const reservation = await ReservationService.updateCheckIn(Number(req.params.id));
+        res.json(reservation);
+    },
+
+    updateCheckOut: async (req, res) => {
+        const reservation = await ReservationService.updateCheckOut(Number(req.params.id));
+        res.json(reservation);
+    },
+
     remove: async (req, res) => {
         await ReservationService.remove(Number(req.params.id));
         res.status(204).send();
+    },
+
+    search: async (req, res) => {
+        const { data, page, limit } = req.query;
+        const reservations = await ReservationService.search(data, page, limit);
+        res.json(reservations);
     },
 };

@@ -31,55 +31,45 @@ export default function CreatePlan() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const error = validateCreate(plan);
-    if (error.length == 0) {
-          try {
-            const planData = await createPlan(plan);
-            if (planData.message) {
-              Swal.fire({
-                text: planData.message,
-                icon: "error",
-                timer: 3000,
-                toast: true,
-                position: "top-right",
-                showConfirmButton: false,
-              });
-              return;
-            }
-    
-            Swal.fire({
-              text: "Plano cadastrado com sucesso",
-              icon: "success",
-              timer: 3000,
-              toast: true,
-              position: "top-right",
-              showConfirmButton: false,
-            });
-    
-            setTimeout(() => {
-              redirect("/plans");
-            }, 3000);
-          } catch (error) {
-            
-            Swal.fire({
-              text: "Erro ao cadastrar o plano. Tente novamente!",
-              icon: "error",
-              timer: 3000,
-              toast: true,
-              position: "top-right",
-              showConfirmButton: false,
-            });
-          }
-        } else {
-          Swal.fire({
-            html: error.join("<br>"),
-            icon: "error",
-            timer: 0,
-            toast: true,
-            position: "top-right",
-            showConfirmButton: false,
-          });
-        }
+    try {
+      const planData = await createPlan(plan);
+      if (planData.message) {
+        Swal.fire({
+          title: planData.message,
+          html: planData.errors.join('<br>'),
+          icon: "error",
+          width: 500,
+          timer: 3000,
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+        });
+        return;
+      }
+
+      Swal.fire({
+        text: "Plano cadastrado com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        redirect("/plans");
+      }, 3000);
+    } catch (error) {
+      
+      Swal.fire({
+        text: "Erro ao cadastrar o plano. Tente novamente!",
+        icon: "error",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+    }
   }
 
   return (

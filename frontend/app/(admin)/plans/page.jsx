@@ -1,12 +1,16 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deletePlan, getAll } from "./actions";
+import { deletePlan, getAll, searchPlan } from "./actions";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
+import withPermission from "../config/withPermissions";
+import { HiOutlineSearch } from "react-icons/hi";
 
-export default function Plans() {
+export function Plans() {
+  const [search,setSearch] = useState({title: ''});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -14,7 +18,7 @@ export default function Plans() {
   const [deleted, setDeleted] = useState(false);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  async function fetchAllPlans(page) {
+  /*async function fetchAllPlans(page) {
     try {
       const result = await getAll(page, itemsPerPage);
       setPlans(result.data);
@@ -22,6 +26,21 @@ export default function Plans() {
     } catch (error) {
       
     }
+  }*/
+
+  async function searchPlans(search,page) {
+    try {
+      const result = await searchPlan(search, page, itemsPerPage);
+      setPlans(result.data);
+      setTotalItems(result.total);
+    }
+    catch (error) {
+
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p, [event.target.name]: event.target.value}));
   }
 
   function handleDelete(id) {
@@ -52,9 +71,19 @@ export default function Plans() {
   };
 
   useEffect(() => {
-    fetchAllPlans(currentPage);
+    searchPlans(search.title, currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+  
+    if (isAuthenticated === null) {
+      return <div className="flex items-center justify-center">Carregando...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null; // O hook já redireciona
+    }
 
   return (
     <>
@@ -65,6 +94,18 @@ export default function Plans() {
           <Button color="light">
             <Link href="/plans/create">Novo plano</Link>
           </Button>
+        </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="title"
+            required
+            value={search.title}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchPlans(search.title, currentPage)}}> Pesquisar </Button>
         </div>
         {plans.length > 0 ? (
           <>
@@ -129,3 +170,5 @@ export default function Plans() {
     </>
   );
 }
+
+export default withPermission(Plans, ["Admin", "Gerente de Hotel"]);

@@ -1,16 +1,3 @@
-const requiredCreateFields = {
-  id_workgroup: "O cargo é obrigatório",
-  name: "O nome é obrigatório",
-  last_name: "O sobrenome é obrigatório",
-  document: "O documento é obrigatório",
-  birthday: "A data de nascimento é obrigatória",
-  phone1: "O telefone 1 é obrigatório",
-  login: "O nome de login é obrigatório",
-  email: "O email é obrigatório",
-  password: "A senha é obrigatória",
-  password_confirm: "A confirmação de senha é obrigatória",
-};
-
 export async function getAll(page, limit) {
   try {
     const data = await fetch(
@@ -23,6 +10,21 @@ export async function getAll(page, limit) {
     return await data.json();
   } catch (error) {
     
+  }
+}
+
+export async function searchEmployee(search, page, limit) {
+  try {
+    const data = await fetch(
+      `http://localhost:8000/employees/search?data=${search}&page=${page}&limit=${limit}`,
+      {
+        method: "get",
+      }
+    );
+    //console.log(await data.json())
+    return await data.json();
+  } catch (error) {
+
   }
 }
 
@@ -52,6 +54,10 @@ export async function getAllWorkgroups() {
 
 export async function updateEmployee(id, employee) {
   try {
+    delete employee.workgroup;
+    delete employee.tasks;
+    delete employee.logs;
+
     const data = await fetch(`http://localhost:8000/employees/${id}`, {
       method: "put",
       headers: {
@@ -111,52 +117,4 @@ export async function deleteEmployee(id) {
   } catch (error) {
     
   }
-}
-
-export function validateUpdate(employee) {
-  let error = [];
-
-  error = validate(employee, error);
-
-  return error;
-}
-
-export function validateCreate(employee) {
-  let error = [];
-
-  Object.entries(requiredCreateFields).forEach(([field, message]) => {
-    if (!employee[field]) {
-      error.push(message);
-    }
-  });
-
-  error = validate(employee, error);
-
-  return error;
-}
-
-function validate(employee, error) {
-  if (employee.password != '') {
-    if (employee.password_confirm != employee.password) {
-      error.push("- Senhas não conferem");
-    }
-
-    if (employee.password.length < 6) {
-      error.push("- A senha precisa conter pelo menos 6 caracteres");
-    }
-  }
-
-  if (employee.document.length != 14) {
-    error.push("- Documento inválido");
-  }
-
-  if (employee.phone1.length != 11) {
-    error.push("- Telefone 1 inválido");
-  }
-
-  if (!String(employee.email).match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-    error.push("- Email inválido");
-  }
-
-  return error;
 }

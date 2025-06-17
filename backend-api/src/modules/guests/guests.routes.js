@@ -6,6 +6,7 @@ import { upload } from '../../middlewares/upload.js';
 const router = express.Router();
 
 router.get('/', GuestController.getAll);
+router.get('/search', GuestController.search);
 router.get('/:id', GuestController.getById);
 router.post('/', GuestController.create);
 router.post('/:id/upload', upload.single('image'), GuestController.upload);

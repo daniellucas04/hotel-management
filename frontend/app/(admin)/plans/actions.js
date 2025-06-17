@@ -1,9 +1,3 @@
-const requiredCreateFields = {
-	title: "O título é obrigatório",
-	description: "A descrição é obrigatório",
-	price: "O cargo é obrigatório",
-};
-
 export async function getAll(page, limit) {
 	try {
 		const data = await fetch(
@@ -16,6 +10,21 @@ export async function getAll(page, limit) {
 		return await data.json();
 	} catch (error) {
 		
+	}
+}
+
+export async function searchPlan(search,page,limit) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/plans/search?data=${search}&page=${page}&limit=${limit}`,
+			{
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+
 	}
 }
 
@@ -73,17 +82,4 @@ export async function deletePlan(id) {
 	} catch (error) {
 		
 	}
-}
-
-export function validateCreate(plan) {
-	let error = [];
-
-	Object.entries(requiredCreateFields).forEach(([field, message]) => {
-		if (!plan[field]) {
-			error.push(message);
-		}
-	});
-
-
-	return error;
 }

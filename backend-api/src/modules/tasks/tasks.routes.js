@@ -7,9 +7,11 @@ import { TaskController } from './tasks.controller.js';
 const router = express.Router();
 
 router.get('/', TaskController.getAll);
+router.get('/search', TaskController.search);
 router.get('/:id', TaskController.getById);
 router.post('/', TaskController.create);
 router.put('/:id', TaskController.update);
+router.put('/status/:id', TaskController.updateStatus);
 router.delete('/:id', TaskController.remove);
 
 export default router;

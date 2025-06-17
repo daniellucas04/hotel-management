@@ -1,6 +1,6 @@
 // vai comunica com o banco de dados pelo prisma
 
-import prisma from '../../config/prisma.js';
+import prisma from '../../middlewares/prismamiddleware.js';
 
 export const GuestRepository = {
     findAll: async (page, limit) => {
@@ -23,7 +23,9 @@ export const GuestRepository = {
 
         if (guest) {
             return {
-                message: 'Documento já cadastrado.',
+                status: 400,
+                errors: ['Documento já cadastrado'],
+                message: "Ocorreu um erro ao cadastrar o hóspede"
             }
         }
 
@@ -38,4 +40,15 @@ export const GuestRepository = {
         return await prisma.guests.update({ where: { id }, data })
     },
     remove: (id) => prisma.guests.delete({ where: { id } }),
+    search: async (data, page, limit) => {
+        console.log(data)
+        let offset = (page - 1) * limit;
+        const items = await prisma.guests.findMany({where: {name: {contains: data}},take: parseInt(limit), skip: offset})
+        const totalItems = await prisma.guests.count({where: {name: {contains: data}}})
+
+        return {
+            data: items,
+            total: totalItems
+        }
+    },
 };

@@ -1,6 +1,6 @@
 services:
   db:
-    image: "mysql:latest"
+    image: "mysql:8"
     ports: 
       - "3306:3306" 
     environment:
@@ -21,7 +21,7 @@ services:
       - prisma-network
     depends_on:
       - db
-    command: sh -c "npx prisma generate && npx prisma db push && npm start"
+    command: sh -c "npx prisma generate && npx prisma db push && npm run seed && npm start"
 
   frontend:
     build:

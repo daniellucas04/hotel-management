@@ -1,6 +1,7 @@
 // vai comunica com o banco de dados pelo prisma
 
-import prisma from '../../config/prisma.js';
+//import prisma from '../../config/prisma.js';
+import prisma from '../../middlewares/prismamiddleware.js';
 
 export const DashboardRepository = {
     getGuestsRegistred: async () => {
@@ -14,7 +15,7 @@ export const DashboardRepository = {
 
     getReservationsActive: async () => {
         const results = await prisma.$queryRaw`
-            SELECT COUNT(*) as total FROM reservations WHERE status IN ('Reservado', 'Confirmado');
+            SELECT COUNT(*) as total FROM reservations WHERE status_checkin IN ('Pendente', 'Realizado');
         `;
         return {
             count: Number(results[0].total)

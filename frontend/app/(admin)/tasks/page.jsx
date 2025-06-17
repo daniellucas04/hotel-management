@@ -1,17 +1,21 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteTask, getAll } from "./actions";
+import { deleteTask, getAll, searchTask, updateTaskStatus } from "./actions";
 import Swal from "sweetalert2";
+import withPermission from "../config/withPermissions";
+import { HiOutlineSearch } from "react-icons/hi";
 
-export default function Tasks() {
+export function Tasks() {
+  const [search,setSearch] = useState({name: ''});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [deleted, setDeleted] = useState(false);
+  const [status, setStatus] = useState(false);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   async function fetchAllTasks(page) {
@@ -23,6 +27,21 @@ export default function Tasks() {
     } catch (error) {
       
     }
+  }
+
+  async function searchTasks(search, page) {
+    try {
+      const result = await searchTask(search, page, itemsPerPage);
+
+      setTasks(result.data);
+      setTotalItems(result.total);
+    } catch (error) {
+      
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p, [event.target.name]: event.target.value}))
   }
 
   function handleDelete(id) {
@@ -73,14 +92,24 @@ export default function Tasks() {
       return 'green'
   }
 
+  async function handleTaskStatus(id, status) {
+    setStatus(false);
+    try {
+      const result = await updateTaskStatus(id, status);
+      setStatus(true);
+    } catch (error) {
+      
+    }
+  }
+
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
 
   useEffect(() => {
-    fetchAllTasks(currentPage);
+    searchTasks(search.name, currentPage);
     setDeleted(false);
-  }, [currentPage, deleted]);
+  }, [currentPage, deleted, status]);
 
 
   return (
@@ -91,6 +120,18 @@ export default function Tasks() {
           <Button color="light">
             <Link href="/tasks/create">Nova tarefa</Link>
           </Button>
+        </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="name"
+            required
+            value={search.name}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchTasks(search.name, currentPage)}}> Pesquisar </Button>
         </div>
         {tasks.length > 0 ? (
           <>
@@ -130,7 +171,11 @@ export default function Tasks() {
                       </Table.Cell>
                       <Table.Cell>
                         <Badge color={statusColor} className="w-fit">
-                          {String(task.status).split('_').join(' ')}
+                          <select defaultValue={task.status} onChange={(e) => {handleTaskStatus(task.id, e.target.value)}} className="bg-transparent border-none p-1 m-0 text-sm focus:outline-none focus:ring-0" name="" id="">
+                            <option>Pendente</option>
+                            <option value="Em_andamento">Em andamento</option>
+                            <option>Finalizado</option>
+                          </select>
                         </Badge>
                       </Table.Cell>
                       <Table.Cell className="flex items-center gap-4">
@@ -171,3 +216,5 @@ export default function Tasks() {
     </>
   );
 }
+
+export default withPermission(Tasks, ["Admin", "Gerente de Hotel", "Recepcionista", "Zelador", "Camareiro", "Cozinheiro"]);

@@ -68,11 +68,9 @@ export default function CreateUser() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let error = validateCreate(employee);
-
-    if (error.length == 0) {
       try {
         const employeeData = await createEmployee(employee);
+        console.log(employeeData);
         if (employeeData.message) {
           Swal.fire({
             text: employeeData.message,
@@ -98,11 +96,10 @@ export default function CreateUser() {
           showConfirmButton: false,
         });
 
-        setTimeout(() => {
-          redirect("/employee");
-        }, 3000);
+        // setTimeout(() => {
+        //   redirect("/employees");
+        // }, 3000);
       } catch (error) {
-        
         Swal.fire({
           text: "Erro ao cadastrar o funcionário. Tente novamente!",
           icon: "error",
@@ -112,16 +109,6 @@ export default function CreateUser() {
           showConfirmButton: false,
         });
       }
-    } else {
-      Swal.fire({
-        html: error.join("<br>"),
-        icon: "error",
-        timer: 0,
-        toast: true,
-        position: "top-right",
-        showConfirmButton: false,
-      });
-    }
   }
 
   async function fetchAllWorkgroups() {
@@ -307,7 +294,7 @@ export default function CreateUser() {
             <HR />
             <div className="flex items-center gap-4 justify-end">
               <Button color="light">
-                <Link href="/employee">Cancelar</Link>
+                <Link href="/employees">Cancelar</Link>
               </Button>
               <Button type="submit">Salvar</Button>
             </div>

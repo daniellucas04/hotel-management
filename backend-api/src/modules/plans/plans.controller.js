@@ -31,6 +31,12 @@ export const PlanController = {
         await PlanService.remove(Number(req.params.id));
         res.status(204).send();
     },
+
+    search: async (req, res) => {
+        const {data, page, limit} = req.query;
+        const plans = await PlanService.search(data, page, limit);
+        res.json(plans);
+    },
 };
 
 

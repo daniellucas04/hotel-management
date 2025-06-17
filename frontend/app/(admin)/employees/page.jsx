@@ -1,13 +1,16 @@
 "use client";
 
-import { Button, Pagination, Table } from "flowbite-react";
+import { Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteEmployee, getAll } from "./actions";
-import { HiUserCircle } from "react-icons/hi";
+import { deleteEmployee, getAll, getEmployee, searchEmployee } from "./actions";
+import { HiOutlineSearch, HiUserCircle } from "react-icons/hi";
 import Swal from "sweetalert2";
+import { useAuth } from "@/app/lib/useAuth";
+import withPermission from "../config/withPermissions";
 
-export default function employee() {
+export function Employee() {
+  const [search,setSearch] = useState({name: ''})
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -21,8 +24,23 @@ export default function employee() {
       setEmployees(result.data);
       setTotalItems(result.total);
     } catch (error) {
-      
+
     }
+  }
+
+  async function searchEmployees(search,page) {
+    try {
+      const result = await searchEmployee(search, page, itemsPerPage);
+      setEmployees(result.data);
+      setTotalItems(result.total);
+    }
+    catch (error) {
+
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p, [event.target.name]: event.target.value}));
   }
 
   function handleDelete(id) {
@@ -52,9 +70,19 @@ export default function employee() {
   };
 
   useEffect(() => {
-    fetchAllEmployees(currentPage);
+    searchEmployees(search.name, currentPage);
     setDeleted(false);
   }, [currentPage, deleted]);
+
+  const isAuthenticated = useAuth();
+
+  if (isAuthenticated === null) {
+    return <div className="flex items-center justify-center">Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
 
   return (
     <>
@@ -64,6 +92,18 @@ export default function employee() {
           <Button color="light">
             <Link href="/employees/create">Novo funcionário</Link>
           </Button>
+        </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="name"
+            required
+            value={search.name}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchEmployees(search.name,currentPage)}}> Pesquisar </Button>
         </div>
         {employees.length > 0 ? (
           <>
@@ -134,3 +174,5 @@ export default function employee() {
     </>
   );
 }
+
+export default withPermission(Employee, ["Admin", "Gerente de Hotel"]);

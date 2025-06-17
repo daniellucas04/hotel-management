@@ -22,11 +22,9 @@ prisma.$use(async (params, next) => {
   }
 
   if(params.action === "update" && params.args?.data) {
-
     params.args.data.updated_at = DateTime.fromJSDate(new Date())
       .minus({hours: 3})
       .toJSDate();
-
   }
 
   if(params.model === "reservations" && (params.action === "create" || params.action === "update")){

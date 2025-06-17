@@ -82,6 +82,16 @@ export const ReservationService = {
   
     return ReservationRepository.update(id, data);
   },
+
+  updateCheckIn: (id) => {
+   return ReservationRepository.updateCheckIn(id);
+  },
+  
+  updateCheckOut: (id) => {
+    return ReservationRepository.updateCheckOut(id);
+  }, 
   
   remove: (id) => ReservationRepository.remove(id),
+
+  search: (data, page, limit) => ReservationRepository.search(data, page, limit),
 };

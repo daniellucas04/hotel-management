@@ -19,7 +19,7 @@ import {
 } from "flowbite-react";
 import { useState } from "react";
 import Link from "next/link";
-import { createGuest, savePhoto, validateCreate } from "../actions";
+import { createGuest, savePhoto } from "../actions";
 import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -36,7 +36,6 @@ export default function CreateUser() {
   });
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [uploading, setUploading] = useState(false);
 
   function handleFileChange(event) {
     const file = event.target.files?.[0];
@@ -52,55 +51,44 @@ export default function CreateUser() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let error = validateCreate(guest);
-
-    if (error.length == 0) {
-      try {
-        const guestData = await createGuest(guest);
-        if (guestData.message) {
-          Swal.fire({
-            text: guestData.message,
-            icon: "error",
-            timer: 3000,
-            toast: true,
-            position: "top-right",
-            showConfirmButton: false,
-          });
-          return;
-        }
-
-        if (image) {
-          await savePhoto(guestData.id, image);
-        }
-
+    try {
+      const guestData = await createGuest({...guest});
+      if (guestData.message) {
         Swal.fire({
-          text: "Hóspede cadastrado com sucesso",
-          icon: "success",
-          timer: 3000,
-          toast: true,
-          position: "top-right",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          redirect("/guests");
-        }, 3000);
-      } catch (error) {
-        
-        Swal.fire({
-          text: "Erro ao cadastrar o hópede. Tente novamente!",
+          title: guestData.message,
+          html: guestData.errors.join('<br>'),
           icon: "error",
           timer: 3000,
+          width: 500,
           toast: true,
           position: "top-right",
           showConfirmButton: false,
         });
+        return;
       }
-    } else {
+
+      if (image) {
+        await savePhoto(guestData.id, image);
+      }
+
       Swal.fire({
-        html: error.join("<br>"),
+        text: "Hóspede cadastrado com sucesso",
+        icon: "success",
+        timer: 3000,
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        redirect("/guests");
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        text: "Erro ao cadastrar o hópede. Tente novamente!",
         icon: "error",
-        timer: 0,
+        timer: 3000,
         toast: true,
         position: "top-right",
         showConfirmButton: false,

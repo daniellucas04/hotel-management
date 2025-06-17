@@ -12,6 +12,20 @@ export async function getAll(page, limit) {
 	}
 }
 
+export async function searchTask(search, page, limit) {
+	try {
+		const data = await fetch(
+			`http://localhost:8000/tasks/search?data=${search}&page=${page}&limit=${limit}`, {
+				method: "get",
+			}
+		);
+
+		return await data.json();
+	} catch (error) {
+		
+	}
+}
+
 export async function getTask(id) {
 	try {
 		const data = await fetch(
@@ -69,12 +83,34 @@ export async function createTask(task) {
 
 export async function updateTask(id, task) {
 	try {
+		delete task.employee;
+		delete task.reservation;
+
 		const data = await fetch(`http://localhost:8000/tasks/${id}`, {
 			method: "put",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(task),
+		});
+
+		return await data.json();
+	} catch (error) {
+		
+	}
+}
+
+export async function updateTaskStatus(id, status) {
+	try {
+		const data = await fetch(`http://localhost:8000/tasks/status/${id}`, {
+			method: "put",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				status: String(status).replace(' ', '_')
+			})
+
 		});
 
 		return await data.json();

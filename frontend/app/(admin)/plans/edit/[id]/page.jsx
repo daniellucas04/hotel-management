@@ -2,7 +2,7 @@
 
 import {
   HiOutlineBadgeCheck,
-  HiOutlineIdentification,
+  HiOutlineCash,
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import {
@@ -48,8 +48,10 @@ export default function EditPlan({ params }) {
       const planData = await updatePlan(id, plan);
       if (planData.message) {
         Swal.fire({
-          text: planData.message,
+          title: planData.message,
+          html: planData.errors.join('<br>'),
           icon: "error",
+          width: 500,
           timer: 3000,
           toast: true,
           position: "top-right",
@@ -109,7 +111,7 @@ export default function EditPlan({ params }) {
               />
               <TextInput
                 className="flex-auto"
-                icon={HiOutlineIdentification}
+                icon={HiOutlineCash}
                 placeholder="Preço *"
                 onChange={handleData}
                 name="price"
