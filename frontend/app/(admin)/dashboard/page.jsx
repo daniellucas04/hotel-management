@@ -1,13 +1,12 @@
 'use client';
 
-import { Card } from 'flowbite-react';
 import { useAuth } from '@/app/lib/useAuth';
-import {
-  HiOutlineBan,
-  HiOutlineCurrencyDollar,
-  HiOutlineIdentification,
-  HiOutlineLightBulb,
-} from 'react-icons/hi';
+// import {
+//   HiOutlineBan,
+//   HiOutlineCurrencyDollar,
+//   HiOutlineIdentification,
+//   HiOutlineLightBulb,
+// } from 'react-icons/hi';
 
 import { Card } from "flowbite-react";
 import { useEffect, useState } from "react";
@@ -61,6 +60,17 @@ export function Dashboard() {
     fetchTotalMoneyInTasks();
     fetchTotalMoneyInReservations();
   }, []);
+
+   const isAuthenticated = useAuth();
+
+  if (isAuthenticated === null) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // O hook já redireciona
+  }
+
 
   return (
     <>
