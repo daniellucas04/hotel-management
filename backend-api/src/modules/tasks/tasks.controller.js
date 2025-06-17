@@ -36,6 +36,11 @@ export const TaskController = {
         await TaskService.remove(Number(req.params.id));
         res.status(204).send();
     },
+    search: async (req, res) => {
+        const {data, page, limit} = req.query;
+        const tasks = await TaskService.search(data, page, limit);
+        res.json(tasks);
+    },
 };
 
 

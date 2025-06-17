@@ -1,15 +1,16 @@
 "use client";
 
-import { Badge, Button, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Pagination, Table, TextInput } from "flowbite-react";
 import Link from "next/link";
-import { confirmCheckIn, confirmCheckOut, deleteReservation, getAll } from "./actions";
+import { confirmCheckIn, confirmCheckOut, deleteReservation, getAll, searchReservation } from "./actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useAuth } from "@/app/lib/useAuth";
 import withPermission from "../config/withPermissions";
 import { LuCheck } from "react-icons/lu";
+import { HiOutlineSearch } from "react-icons/hi";
 
 export function Reservations() {
+  const [search,setSearch] = useState({name: ''})
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -27,6 +28,21 @@ export function Reservations() {
     } catch (error) {
       
     }
+  }
+
+  async function searchReservations(search, page) {
+    try {
+      const result = await searchReservation(search, page, itemsPerPage);
+
+      setReservations(result.data);
+      setTotalItems(result.total);
+    } catch (error) {
+      
+    }
+  }
+
+  function handleData(event) {
+    setSearch(p => ({...p, [event.target.name]: event.target.value}))
   }
 
   function handleDelete(id) {
@@ -101,19 +117,9 @@ export function Reservations() {
   };
 
   useEffect(() => {
-    fetchAllReservations(currentPage);
+    searchReservations(search.name, currentPage);
     setDeleted(false);
   }, [currentPage, deleted, check]);
-
-  const isAuthenticated = useAuth();
-  
-    if (isAuthenticated === null) {
-      return <div>Carregando...</div>;
-    }
-  
-    if (!isAuthenticated) {
-      return null; // O hook já redireciona
-    }
 
   return (
     <>
@@ -123,6 +129,18 @@ export function Reservations() {
           <Button color="light">
             <Link href="/reservations/create">Nova reserva</Link>
           </Button>
+        </div>
+        <div className="flex justify-between items-center my-8 gap-2">
+          <TextInput
+            className="flex-auto"
+            icon={HiOutlineSearch}
+            placeholder="Pesquisa"
+            onChange={handleData}
+            name="name"
+            required
+            value={search.name}
+          />
+          <Button color="light" onClick={() => {setCurrentPage(1), searchReservations(search.name, currentPage)}}> Pesquisar </Button>
         </div>
         {reservations.length > 0 ? (
           <>
