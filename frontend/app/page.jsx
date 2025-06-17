@@ -37,6 +37,7 @@ export default function Login() {
                 position: "top-right",
                 showConfirmButton: false,
             });
+
             setTimeout(() => {
                 redirect('/dashboard');
             }, 3000)
